@@ -13,6 +13,8 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let hw01 = HW01()
+        hw01.main()
         
     }
 }
