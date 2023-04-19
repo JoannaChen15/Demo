@@ -25,9 +25,8 @@ class ViewController: UIViewController {
             make.height.equalTo(200)
         }
         
-        let storyPageText = StoryPage.text
         let label = UILabel()
-        label.text = storyPageText
+        label.text = "Hello, World"
         label.textAlignment = .center
         myView.addSubview(label)
         
@@ -44,3 +43,12 @@ class ViewController: UIViewController {
 
 }
 
+class CapsuleBorderButton: UIButton {
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        layer.borderWidth = 2
+        layer.cornerRadius = bounds.midY
+        layer.borderColor = titleColor(for: .normal)?.cgColor
+    }
+}
