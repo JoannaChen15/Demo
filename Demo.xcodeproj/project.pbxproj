@@ -17,7 +17,7 @@
 		F521C06229EE6D2B008A5F7C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F521C06129EE6D2B008A5F7C /* Assets.xcassets */; };
 		F521C06529EE6D2B008A5F7C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F521C06329EE6D2B008A5F7C /* LaunchScreen.storyboard */; };
 		F521C06E29EE6E65008A5F7C /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = F521C06D29EE6E65008A5F7C /* SnapKit */; };
-		F5C9868229F134B8003438FE /* ClassPractice.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5C9868129F134B8003438FE /* ClassPractice.swift */; };
+		F5C9868429F14327003438FE /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5C9868329F14327003438FE /* Song.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,7 +32,7 @@
 		F521C06129EE6D2B008A5F7C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F521C06429EE6D2B008A5F7C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F521C06629EE6D2B008A5F7C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F5C9868129F134B8003438FE /* ClassPractice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassPractice.swift; sourceTree = "<group>"; };
+		F5C9868329F14327003438FE /* Song.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Song.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +60,7 @@
 			isa = PBXGroup;
 			children = (
 				C0EFECD729F135D20064F647 /* HW02.swift */,
+				F5C9868329F14327003438FE /* Song.swift */,
 			);
 			path = HW02;
 			sourceTree = "<group>";
@@ -86,7 +87,6 @@
 				F521C05829EE6D2A008A5F7C /* AppDelegate.swift */,
 				F521C05A29EE6D2A008A5F7C /* SceneDelegate.swift */,
 				F521C05C29EE6D2A008A5F7C /* ViewController.swift */,
-				F5C9868129F134B8003438FE /* ClassPractice.swift */,
 				C0EFECD629F135C10064F647 /* HW02 */,
 				C0EFECD529F1358D0064F647 /* HW01 */,
 				F521C05E29EE6D2A008A5F7C /* Main.storyboard */,
@@ -176,8 +176,8 @@
 			files = (
 				F521C05D29EE6D2A008A5F7C /* ViewController.swift in Sources */,
 				C0EFECDA29F136860064F647 /* Dog.swift in Sources */,
-				F5C9868229F134B8003438FE /* ClassPractice.swift in Sources */,
 				F521C05929EE6D2A008A5F7C /* AppDelegate.swift in Sources */,
+				F5C9868429F14327003438FE /* Song.swift in Sources */,
 				C0EFECD429F1357C0064F647 /* HW01.swift in Sources */,
 				C0EFECD829F135D20064F647 /* HW02.swift in Sources */,
 				F521C05B29EE6D2A008A5F7C /* SceneDelegate.swift in Sources */,

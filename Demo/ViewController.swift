@@ -8,7 +8,6 @@
 import UIKit
 import SnapKit
 
-
 class ViewController: UIViewController {
     
     override func viewDidLoad() {
@@ -18,8 +17,9 @@ class ViewController: UIViewController {
         
         let hw02 = HW02()
         hw02.main()
-        let classPractice = ClassPractice()
-        classPractice.main()
-        
+    }
+    
+    @IBAction func speak(_ sender: UIButton) {
+        print("hello")
     }
 }
