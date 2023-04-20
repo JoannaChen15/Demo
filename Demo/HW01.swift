@@ -19,7 +19,7 @@ struct HW01 {
         let totalSalary = "\(baseSalary) + \(bonusAmount)"
         print("Congratulations for your bonus! You will receive a total of \(totalSalary)(additional bonus).")
         
-        
+        // class 應該移出去與 struct 同層
         class Dog {
             let sex: String
             let color: String
