@@ -14,10 +14,8 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //Dog
-        let sunny: Dog = Dog(sex: "boy", color: "yellow")
-        print(sunny.color)
-        sunny.bark()
+        let classPractice = ClassPractice()
+        classPractice.main()
         
     }
 }
