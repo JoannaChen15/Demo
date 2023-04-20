@@ -18,5 +18,8 @@ class ViewController: UIViewController {
         
         let hw02 = HW02()
         hw02.main()
+        let classPractice = ClassPractice()
+        classPractice.main()
+        
     }
 }
