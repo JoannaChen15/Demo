@@ -13,6 +13,11 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // 沒有呼叫 HW1.main 來執行
+        
+        //Dog
+        let sunny: Dog = Dog(sex: "boy", color: "yellow")
+        print(sunny.color)
+        sunny.bark()
+        
     }
 }
