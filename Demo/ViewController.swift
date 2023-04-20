@@ -13,11 +13,10 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let hw01 = HW01()
+        hw01.main()
         
-        //Dog
-        let sunny: Dog = Dog(sex: "boy", color: "yellow")
-        print(sunny.color)
-        sunny.bark()
-        
+        let hw02 = HW02()
+        hw02.main()
     }
 }
