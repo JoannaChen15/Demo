@@ -10,9 +10,23 @@ import SnapKit
 
 
 class ViewController: UIViewController {
+    private let pageControl = UIPageControl()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.addSubview(pageControl)
+        pageControl.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+            make.width.equalTo(300)
+            make.height.equalTo(30)
+        }
+        pageControl.backgroundColor = .red
+        pageControl.numberOfPages = 4
+        
         
     }
 }
+
+
+
