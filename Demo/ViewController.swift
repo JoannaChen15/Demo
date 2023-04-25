@@ -10,11 +10,12 @@ import SnapKit
 
 
 class ViewController: UIViewController {
-    private let pageControl = UIPageControl()
+    
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let pageControl = UIPageControl()
         view.addSubview(pageControl)
         pageControl.snp.makeConstraints { make in
             make.center.equalToSuperview()
@@ -25,6 +26,27 @@ class ViewController: UIViewController {
         pageControl.numberOfPages = 4
         
         
+        demo(i: 77, completion: { (result: Int) in
+            print(result)
+            print(pageControl.numberOfPages)
+        })
+        
+        demo(i: 77, completion: comp)
+        
+        demo(i: 77) {
+            print(#line, $0)
+        }
+    }
+    
+    func comp(result: Int) {
+        print(result)
+//        print(pageControl.numberOfPages) 無法辨識
+    }
+    
+    func demo(i: Int, completion: (_ result: Int) -> Void) {
+        let result = i + 1
+        // 計算了很久以後
+        completion(result)
     }
 }
 
