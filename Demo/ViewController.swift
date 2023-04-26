@@ -11,6 +11,7 @@ import SnapKit
 class ViewController: UIViewController {
     private let mainStack = UIStackView()
     private let displayLabel = UILabel()
+    private var inputBuffer = ""
     override func viewDidLoad() {
         super.viewDidLoad()
         configUI()
@@ -68,11 +69,29 @@ private extension ViewController {
         let title = sender.titleLabel?.text ?? ""
         if title == "AC" {
             reset()
+        } else if Int(title) != nil {
+            inputNumber(title)
+        } else if title == "=" {
+            calculate()
+        } else {
+            inputOperator(title)
         }
     }
     
     func reset() {
         displayLabel.text = "0"
+    }
+    
+    func inputNumber(_ title: String) {
+        
+    }
+    
+    func calculate() {
+        
+    }
+    
+    func inputOperator(_ title: String) {
+        
     }
 }
 
