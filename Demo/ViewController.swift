@@ -10,6 +10,7 @@ import SnapKit
 
 class ViewController: UIViewController {
     private let mainStack = UIStackView()
+    private let displayLabel = UILabel()
     override func viewDidLoad() {
         super.viewDidLoad()
         configUI()
@@ -26,10 +27,9 @@ extension ViewController {
         mainStack.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        
+        addDisplayLabel()
         addButtons()
     }
-    
     func addButtons() {
         let buttonDatas = ButtonDatas()
         for titles in buttonDatas.titles {
@@ -46,6 +46,14 @@ extension ViewController {
             }
             mainStack.addArrangedSubview(stack)
         }
+    }
+    func addDisplayLabel() {
+        displayLabel.backgroundColor = .white
+        displayLabel.text = "0"
+        displayLabel.textColor = .black
+        displayLabel.textAlignment = .right
+        displayLabel.font = UIFont.systemFont(ofSize: 60)
+        mainStack.addArrangedSubview(displayLabel)
     }
 }
 
