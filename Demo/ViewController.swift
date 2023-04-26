@@ -298,9 +298,9 @@ class ViewController: UIViewController {
     }
     
     func configSegment() {
-        segment.insertSegment(withTitle: "或是一首歌", at: 0, animated: true)
-        segment.insertSegment(withTitle: "無人知曉", at: 1, animated: true)
-        segment.insertSegment(withTitle: "皆可", at: 2, animated: true)
+        for index in names.indices {
+            segment.insertSegment(withTitle: musicVideos[index], at: index, animated: true)
+        }
         segment.selectedSegmentIndex = index
         segment.backgroundColor = .systemPink
         view.addSubview(segment)
