@@ -183,6 +183,8 @@ class ViewController: UIViewController {
     ]
     let lastButton = UIButton()
     let nextButton = UIButton()
+    let swipeGestureLeft = UISwipeGestureRecognizer()
+    let swipeGestureRight = UISwipeGestureRecognizer()
     var index = 0
     
     
@@ -194,7 +196,8 @@ class ViewController: UIViewController {
         nextButton.addTarget(self, action: #selector(nextButtonPressed), for: .touchUpInside)
         pageControl.addTarget(self, action: #selector(selectPage), for: .valueChanged)
         segment.addTarget(self, action: #selector(selectSegment), for: .valueChanged)
-
+        swipeGestureLeft.addTarget(self, action: #selector(handleSwipeGesture))
+        swipeGestureRight.addTarget(self, action: #selector(handleSwipeGesture))
     }
     
     func updateUI() {
@@ -225,6 +228,16 @@ class ViewController: UIViewController {
         updateUI()
     }
     
+    @objc func handleSwipeGesture(_ gesture: UISwipeGestureRecognizer) {
+        if gesture.direction == .right {
+            index = (index - 1 + musicVideos.count) % musicVideos.count
+            updateUI()
+        } else if gesture.direction == .left {
+            index = (index + 1) % musicVideos.count
+            updateUI()
+        }
+    }
+    
     
     func configUI() {
         configMusicVideoImage()
@@ -234,6 +247,7 @@ class ViewController: UIViewController {
         configLyrics()
         configLastButton()
         configNextButton()
+        configSwipeGesture()
     }
     
     func configMusicVideoImage() {
@@ -321,5 +335,12 @@ class ViewController: UIViewController {
             make.width.equalToSuperview().multipliedBy(0.8)
             make.bottom.equalToSuperview().inset(60)
         }
+    }
+    
+    func configSwipeGesture() {
+        view.addGestureRecognizer(swipeGestureLeft)
+        swipeGestureLeft.direction = .left
+        view.addGestureRecognizer(swipeGestureRight)
+        swipeGestureRight.direction = .right
     }
 }
