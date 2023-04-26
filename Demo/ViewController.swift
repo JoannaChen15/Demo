@@ -15,6 +15,8 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         configUI()
     }
+    
+    
 }
 
 // UI
@@ -43,6 +45,7 @@ extension ViewController {
                 button.setTitleColor(.black, for: .normal)
                 button.backgroundColor = .white
                 stack.addArrangedSubview(button)
+                bindButtonAction(button)
             }
             mainStack.addArrangedSubview(stack)
         }
@@ -54,6 +57,17 @@ extension ViewController {
         displayLabel.textAlignment = .right
         displayLabel.font = UIFont.systemFont(ofSize: 60)
         mainStack.addArrangedSubview(displayLabel)
+    }
+}
+
+// Actions
+extension ViewController {
+    func bindButtonAction(_ button: UIButton) {
+        button.addTarget(self, action: #selector(tabButton(_:)), for: .touchUpInside)
+    }
+    
+    @objc func tabButton(_ sender: UIButton) {
+        print(sender.titleLabel?.text ?? "")
     }
 }
 
