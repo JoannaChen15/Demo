@@ -15,8 +15,6 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         configUI()
     }
-    
-    
 }
 
 // UI
@@ -61,13 +59,20 @@ extension ViewController {
 }
 
 // Actions
-extension ViewController {
+private extension ViewController {
     func bindButtonAction(_ button: UIButton) {
         button.addTarget(self, action: #selector(tabButton(_:)), for: .touchUpInside)
     }
     
     @objc func tabButton(_ sender: UIButton) {
-        print(sender.titleLabel?.text ?? "")
+        let title = sender.titleLabel?.text ?? ""
+        if title == "AC" {
+            reset()
+        }
+    }
+    
+    func reset() {
+        displayLabel.text = "0"
     }
 }
 
