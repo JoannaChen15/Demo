@@ -132,11 +132,14 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         configUI()
         lastButton.addTarget(self, action: #selector(lastButtonPressed), for: .touchUpInside)
-        nextButton.addTarget(self, action: #selector(lastButtonPressed), for: .touchUpInside)
+        nextButton.addTarget(self, action: #selector(nextButtonPressed), for: .touchUpInside)
     }
     
     func updateUI() {
         musicVideoImage.image = UIImage(named: musicVideos[index])
+        segment.selectedSegmentIndex = index
+        lyrics.text = songLyrics[index]
+        name.text = names[index]
         print(musicVideos[index])
     }
     
@@ -209,9 +212,9 @@ class ViewController: UIViewController {
     }
     
     func configSegment() {
-        segment.insertSegment(withTitle: "或是一首歌", at: 0, animated: true)
-        segment.insertSegment(withTitle: "無人知曉", at: 1, animated: true)
-        segment.insertSegment(withTitle: "皆可", at: 2, animated: true)
+        for i in names.indices {
+            segment.insertSegment(withTitle: names[i], at: i, animated: true)
+        }
         segment.selectedSegmentIndex = 0
         segment.backgroundColor = .systemPink
         view.addSubview(segment)
@@ -219,6 +222,7 @@ class ViewController: UIViewController {
             make.centerX.equalToSuperview()
             make.top.equalTo(pageControl.snp.bottom).offset(30)
         }
+        segment.addTarget(self, action: #selector(segmentedControlDidChange(_:)), for: .valueChanged)
     }
     
     func configName() {
@@ -281,5 +285,13 @@ class ViewController: UIViewController {
             make.width.equalToSuperview().multipliedBy(0.8)
             make.bottom.equalToSuperview().inset(60)
         }
+    }
+    
+    
+
+    @objc func segmentedControlDidChange(_ segmentedControl: UISegmentedControl) {
+        index = segmentedControl.selectedSegmentIndex
+        print(segmentedControl.selectedSegmentIndex)
+        updateUI()
     }
 }
