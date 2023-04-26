@@ -136,7 +136,7 @@ class ViewController: UIViewController {
     }
     
     func updateUI() {
-        musicVideoImage.image = UIImage(systemName: musicVideos[index])
+        musicVideoImage.image = UIImage(named: musicVideos[index])
         print(musicVideos[index])
     }
     
