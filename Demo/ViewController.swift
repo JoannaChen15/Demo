@@ -8,10 +8,44 @@
 import UIKit
 import SnapKit
 
-class ViewController: UIViewController {    
+class ViewController: UIViewController {
+    private let mainStack = UIStackView()
     override func viewDidLoad() {
         super.viewDidLoad()
+        configUI()
+    }
+}
+
+// UI
+extension ViewController {
+    func configUI() {
+        mainStack.axis = .vertical
+        mainStack.spacing = 10
+        mainStack.distribution = .fillEqually
+        view.addSubview(mainStack)
+        mainStack.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
         
+        addButtons()
+    }
+    
+    func addButtons() {
+        let buttonDatas = ButtonDatas()
+        for titles in buttonDatas.titles {
+            let stack = UIStackView()
+            stack.axis = .horizontal
+            stack.distribution = .fillEqually
+            stack.spacing = 10
+            for title in titles {
+                let button = UIButton()
+                button.setTitle(title, for: .normal)
+                button.setTitleColor(.black, for: .normal)
+                button.backgroundColor = .white
+                stack.addArrangedSubview(button)
+            }
+            mainStack.addArrangedSubview(stack)
+        }
     }
 }
 
