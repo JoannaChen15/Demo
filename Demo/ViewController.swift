@@ -12,6 +12,7 @@ class ViewController: UIViewController {
     private let mainStack = UIStackView()
     private let displayLabel = UILabel()
     private var inputBuffer = ""
+    private var operatorBuffer = ""
     override func viewDidLoad() {
         super.viewDidLoad()
         configUI()
@@ -80,18 +81,34 @@ private extension ViewController {
     
     func reset() {
         displayLabel.text = "0"
+        inputBuffer = ""
+        operatorBuffer = ""
     }
     
     func inputNumber(_ title: String) {
-        
+        let text = displayLabel.text ?? ""
+        displayLabel.text = text + title
     }
     
     func calculate() {
-        
+        if inputBuffer.isEmpty { reset() }
+        if operatorBuffer.isEmpty { reset() }
+        let text = displayLabel.text ?? ""
+        if operatorBuffer == "+" {
+            displayLabel.text = "\(Int(inputBuffer)! + Int(text)!)"
+        } else if operatorBuffer == "-" {
+            displayLabel.text = "\(Int(inputBuffer)! - Int(text)!)"
+        } else if operatorBuffer == "x" {
+            displayLabel.text = "\(Int(inputBuffer)! * Int(text)!)"
+        } else if operatorBuffer == "÷" {
+            displayLabel.text = "\(Int(inputBuffer)! / Int(text)!)"
+        }
     }
     
     func inputOperator(_ title: String) {
-        
+        inputBuffer = displayLabel.text ?? "0"
+        displayLabel.text = "0"
+        operatorBuffer = title
     }
 }
 
