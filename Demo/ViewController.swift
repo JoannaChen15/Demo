@@ -15,8 +15,8 @@ class ViewController: UIViewController {
     let segment = UISegmentedControl()
     let name = UILabel()
     let lyrics = UITextView()
-    let musicVideos = ["或是一首歌", "皆可", "無人知曉"]
-    let names = ["或是一首歌", "皆可", "無人知曉"]
+    let musicVideos = ["或是一首歌", "無人知曉", "皆可"]
+    let names = ["或是一首歌", "無人知曉", "皆可"]
     let songLyrics = [
     """
     我把我的靈魂送給你
@@ -132,12 +132,28 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         configUI()
         lastButton.addTarget(self, action: #selector(lastButtonPressed), for: .touchUpInside)
-        nextButton.addTarget(self, action: #selector(lastButtonPressed), for: .touchUpInside)
+        nextButton.addTarget(self, action: #selector(nextButtonPressed), for: .touchUpInside)
+        pageControl.addTarget(self, action: #selector(selectPage), for: .valueChanged)
+        segment.addTarget(self, action: #selector(selectSegment), for: .valueChanged)
+
     }
     
     func updateUI() {
-        musicVideoImage.image = UIImage(systemName: musicVideos[index])
-        print(musicVideos[index])
+        musicVideoImage.image = UIImage(named: musicVideos[index])
+        name.text = names[index]
+        lyrics.text = songLyrics[index]
+        pageControl.currentPage = index
+        segment.selectedSegmentIndex = index
+    }
+    
+    @objc func selectPage(_ sender: UIPageControl) {
+        index = pageControl.currentPage
+        updateUI()
+    }
+    
+    @objc func selectSegment(_ sender: UISegmentedControl) {
+        index = segment.selectedSegmentIndex
+        updateUI()
     }
     
     @objc func lastButtonPressed(_ sender: UIButton) {
@@ -199,7 +215,7 @@ class ViewController: UIViewController {
     
     func configPageControl() {
         pageControl.numberOfPages = 3
-        pageControl.currentPage = 0
+        pageControl.currentPage = index
         view.addSubview(pageControl)
         pageControl.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
@@ -212,7 +228,7 @@ class ViewController: UIViewController {
         segment.insertSegment(withTitle: "或是一首歌", at: 0, animated: true)
         segment.insertSegment(withTitle: "無人知曉", at: 1, animated: true)
         segment.insertSegment(withTitle: "皆可", at: 2, animated: true)
-        segment.selectedSegmentIndex = 0
+        segment.selectedSegmentIndex = index
         segment.backgroundColor = .systemPink
         view.addSubview(segment)
         segment.snp.makeConstraints { make in
@@ -222,7 +238,7 @@ class ViewController: UIViewController {
     }
     
     func configName() {
-        name.text = "或是一首歌"
+        name.text = names[index]
         name.font = .systemFont(ofSize: 28)
         name.textColor = .systemBackground
         view.addSubview(name)
@@ -233,42 +249,7 @@ class ViewController: UIViewController {
     }
     
     func configLyrics() {
-        lyrics.text = """
-        我把我的靈魂送給你
-        或是一首歌
-        帶你潛進深海裡
-        
-        我把我的秘密借給你
-        一些孤獨的 自言自語
-        
-        我把我的靈魂送給你
-        或是一首歌
-        帶你潛進深海裡
-        
-        我把我的秘密借給你
-        一些孤獨的 自言自語
-        
-        春天的憂愁 是拚命揮灑毫無保留
-        世界的盡頭 是悲傷和快樂相同
-        
-        我無處可躲
-        藏在影子背後任憑時光溜走
-        沒有人對我說 除了溫柔的晚風
-        
-        春天的憂愁 是拚命揮灑毫無保留
-        世界的盡頭 是悲傷和快樂相同
-        
-        我無處可躲
-        藏在影子背後任憑時光溜走
-        沒有人對我說 除了溫柔的晚風
-        
-        我把我的靈魂送給你
-        或是一首歌
-        帶你潛進深海裡
-        
-        我把我的秘密借給你
-        一些孤獨的 自言自語
-        """
+        lyrics.text = songLyrics[index]
         lyrics.textAlignment = NSTextAlignment.center
         lyrics.font = .systemFont(ofSize: 20)
         lyrics.backgroundColor = .clear
