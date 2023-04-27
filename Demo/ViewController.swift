@@ -14,6 +14,7 @@ class ViewController: UIViewController {
     let displayLabel = UILabel()
     let operatorLabel = UILabel()
     var currentNumber = ""
+    var currentOperatorLabel = ""
     var originalNumber = ""
     var operatorBuffer = ""
     let operators = ["÷", "x", "-", "+"]
@@ -112,12 +113,13 @@ extension ViewController {
             displayLabel.text = "\(currentNumber)\(number)" //把字串往後加
         }
         if operators.contains(buttonPressed!)  { //如果按的是運算子
+            currentOperatorLabel = operatorLabel.text!
             //把被運算的數字存起來
             originalNumber = displayLabel.text!
             //把運算子存起來
             operatorBuffer = buttonPressed!
             //當前結果顯示在上方
-            operatorLabel.text = originalNumber + operatorBuffer
+            operatorLabel.text = currentOperatorLabel + originalNumber + operatorBuffer
             displayLabel.text = ""
         }
         if others.contains(buttonPressed!) { //如果按的是特殊符號
