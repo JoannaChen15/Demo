@@ -26,10 +26,9 @@ class ViewController: UIViewController {
     }
 }
 
-//
 extension ViewController {
     func configUI() {
-        view.backgroundColor = UIColor(red: 23/255, green: 23/255, blue: 28/255, alpha: 1)
+        view.backgroundColor = .background
         configMainStackView()
         configOperatorLabel()
         configDisplayLabel()
@@ -54,11 +53,13 @@ extension ViewController {
 //              設定button顏色
                 switch title {
                 case "C", "±", "%":
-                    button.backgroundColor = UIColor(red: 78/255, green: 80/255, blue: 95/255, alpha: 1)
+                    button.backgroundColor = .buttonSecondary
+                    button.setTitleColor(.text, for: .normal)
                 case "÷", "x", "-", "+", "=":
-                    button.backgroundColor = UIColor(red: 75/255, green: 94/255, blue: 252/255, alpha: 1)
+                    button.backgroundColor = .buttonPrimary
                 default:
-                    button.backgroundColor = UIColor(red: 46/255, green: 47/255, blue: 56/255, alpha: 1)
+                    button.backgroundColor = .buttonDefault
+                    button.setTitleColor(.text, for: .normal)
                 }
 //              連結功能
                 button.addTarget(self, action: #selector(tabButton), for: .touchUpInside)
@@ -80,7 +81,7 @@ extension ViewController {
     func configDisplayLabel() {
         displayLabel.text = "0"
         displayLabel.font = .systemFont(ofSize: 96)
-        displayLabel.textColor = .systemBackground
+        displayLabel.textColor = .text
         displayLabel.textAlignment = .right
         displayLabel.minimumScaleFactor = 0.6 // 設置最小比例為0.5
         displayLabel.adjustsFontSizeToFitWidth = true // 開啟自動縮小字體大小
@@ -100,13 +101,15 @@ extension ViewController {
     
     @objc func tabButton(_ sender: UIButton) {
         let buttonPressed = sender.currentTitle
-//      如果數字不為0就存起來
-        if displayLabel.text != "0" {
             currentNumber = displayLabel.text!
-        }
      //      判斷按了什麼按鈕
         if let number = Int(buttonPressed!) { //如果按的是數字
-            displayLabel.text = "\(currentNumber)\(number)" //就把字串往後加
+            if currentNumber.hasPrefix("0") { //字首為0時移除
+                currentNumber.removeFirst()
+            } else if currentNumber.hasPrefix("Error") { //字首為error時移除
+                currentNumber.removeFirst(5)
+            }
+            displayLabel.text = "\(currentNumber)\(number)" //把字串往後加
         }
         if operators.contains(buttonPressed!)  { //如果按的是運算子
             //把被運算的數字存起來
@@ -143,21 +146,31 @@ extension ViewController {
         } else if math == "." {
             //待處理
         } else if math == "⌫" {
-            //待處理
-        } else if math == "=" {
-            if originalNumber != ""{
-                currentNumber = displayLabel.text!
-                if operatorBuffer == "+" {
-                    displayLabel.text = "\(Int(originalNumber)! + Int(currentNumber)!)"
-                } else if operatorBuffer == "-" {
-                    displayLabel.text = "\(Int(originalNumber)! - Int(currentNumber)!)"
-                } else if operatorBuffer == "x" {
-                    displayLabel.text = "\(Int(originalNumber)! * Int(currentNumber)!)"
-                } else if operatorBuffer == "÷" {
-                    displayLabel.text = "\(Int(originalNumber)! / Int(currentNumber)!)"
-                }
+            if currentNumber != "" {
+                currentNumber.removeLast()
+                displayLabel.text = currentNumber
             }
-            reset()
+        } else if math == "=" {
+            if let originalInt = Int(originalNumber),
+               let currentInt = Int(currentNumber) {
+                if originalNumber != "" {
+                    currentNumber = displayLabel.text!
+                    if operatorBuffer == "+" {
+                        displayLabel.text = "\(originalInt + currentInt)"
+                    } else if operatorBuffer == "-" {
+                        displayLabel.text = "\(originalInt - currentInt)"
+                    } else if operatorBuffer == "x" {
+                        displayLabel.text = "\(originalInt * currentInt)"
+                    } else if operatorBuffer == "÷" {
+                        if currentInt == 0 {
+                            displayLabel.text = "Error"
+                        } else {
+                            displayLabel.text = "\(originalInt / currentInt)"
+                        }
+                    }
+                }
+                reset()
+            }
         }
     }
     
@@ -177,3 +190,4 @@ struct ButtonDatas {
         [".", "0", "⌫", "="]
     ]
 }
+
