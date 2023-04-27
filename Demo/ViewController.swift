@@ -82,8 +82,8 @@ extension ViewController {
         displayLabel.font = .systemFont(ofSize: 96)
         displayLabel.textColor = .systemBackground
         displayLabel.textAlignment = .right
-        displayLabel.minimumScaleFactor = 0.6 // 设置最小比例为0.5
-        displayLabel.adjustsFontSizeToFitWidth = true // 开启自动缩小字体大小
+        displayLabel.minimumScaleFactor = 0.6 // 設置最小比例為0.5
+        displayLabel.adjustsFontSizeToFitWidth = true // 開啟自動縮小字體大小
         mainStackView.addArrangedSubview(displayLabel)
         displayLabel.snp.makeConstraints { make in
             make.height.equalTo(96)
@@ -118,37 +118,32 @@ extension ViewController {
             displayLabel.text = ""
         }
         if others.contains(buttonPressed!) { //如果按的是特殊符號
-//            做運算處理
-            calculate(buttonPressed!)
+            otherCalculate(buttonPressed!)
         }
-        
-
     }
     
-    func calculate(_ math: String) {
+    func otherCalculate(_ math: String) {
         if math == "C" {
             displayLabel.text = "0"
-            currentNumber = ""
-            operatorBuffer = ""
-            operatorLabel.text = ""
-//            originalNumber = ""
+            reset()
         } else if math == "±" {
-            if currentNumber.hasPrefix("-") {
-                displayLabel.text = currentNumber.replacingOccurrences(of: "-", with: "")
-            } else {
-                displayLabel.text = "-" + currentNumber
+            if displayLabel.text != "0" {
+                if currentNumber.hasPrefix("-") {
+                    displayLabel.text = currentNumber.replacingOccurrences(of: "-", with: "")
+                } else {
+                    displayLabel.text = "-" + currentNumber
+                }
             }
         } else if math == "%" {
-            originalNumber = displayLabel.text!
-            currentNumber = "\(Double(originalNumber)! / 100)"
-            print(currentNumber)
-            displayLabel.text = currentNumber
+            //待處理
+//            originalNumber = displayLabel.text!
+//            currentNumber = "\(Double(originalNumber)! / 100)"
+//            print(currentNumber)
+//            displayLabel.text = currentNumber
         } else if math == "." {
-            
+            //待處理
         } else if math == "⌫" {
-            originalNumber = displayLabel.text!
-//            currentNumber = originalNumber.removeLast()
-            displayLabel.text = currentNumber
+            //待處理
         } else if math == "=" {
             if originalNumber != ""{
                 currentNumber = displayLabel.text!
@@ -159,13 +154,17 @@ extension ViewController {
                 } else if operatorBuffer == "x" {
                     displayLabel.text = "\(Int(originalNumber)! * Int(currentNumber)!)"
                 } else if operatorBuffer == "÷" {
-                    displayLabel.text = "\(Double(originalNumber)! / Double(currentNumber)!)".replacingOccurrences(of: ".0", with: "")
+                    displayLabel.text = "\(Int(originalNumber)! / Int(currentNumber)!)"
                 }
             }
-            currentNumber = ""
-            operatorBuffer = ""
-            operatorLabel.text = ""
+            reset()
         }
+    }
+    
+    func reset() {
+        currentNumber = ""
+        operatorBuffer = ""
+        operatorLabel.text = ""
     }
 }
 
