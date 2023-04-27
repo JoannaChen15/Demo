@@ -14,7 +14,6 @@
 		F521C06229EE6D2B008A5F7C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F521C06129EE6D2B008A5F7C /* Assets.xcassets */; };
 		F521C06529EE6D2B008A5F7C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F521C06329EE6D2B008A5F7C /* LaunchScreen.storyboard */; };
 		F521C06E29EE6E65008A5F7C /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = F521C06D29EE6E65008A5F7C /* SnapKit */; };
-		F5532C7429F96C31006B98A5 /* SwifterSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F5532C7329F96C31006B98A5 /* SwifterSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,7 +33,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F521C06E29EE6E65008A5F7C /* SnapKit in Frameworks */,
-				F5532C7429F96C31006B98A5 /* SwifterSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -89,7 +87,6 @@
 			name = Demo;
 			packageProductDependencies = (
 				F521C06D29EE6E65008A5F7C /* SnapKit */,
-				F5532C7329F96C31006B98A5 /* SwifterSwift */,
 			);
 			productName = Demo;
 			productReference = F521C05529EE6D2A008A5F7C /* Demo.app */;
@@ -121,7 +118,6 @@
 			mainGroup = F521C04C29EE6D2A008A5F7C;
 			packageReferences = (
 				F521C06C29EE6E65008A5F7C /* XCRemoteSwiftPackageReference "SnapKit" */,
-				F5532C7229F96C31006B98A5 /* XCRemoteSwiftPackageReference "SwifterSwift" */,
 			);
 			productRefGroup = F521C05629EE6D2A008A5F7C /* Products */;
 			projectDirPath = "";
@@ -380,14 +376,6 @@
 				minimumVersion = 5.0.0;
 			};
 		};
-		F5532C7229F96C31006B98A5 /* XCRemoteSwiftPackageReference "SwifterSwift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/SwifterSwift/SwifterSwift.git";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -395,11 +383,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F521C06C29EE6E65008A5F7C /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
-		};
-		F5532C7329F96C31006B98A5 /* SwifterSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = F5532C7229F96C31006B98A5 /* XCRemoteSwiftPackageReference "SwifterSwift" */;
-			productName = SwifterSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
