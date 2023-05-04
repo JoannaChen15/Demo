@@ -33,6 +33,7 @@ class QnaViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         view.backgroundColor = .systemBackground
         questionRandom()
         
@@ -59,26 +60,35 @@ class QnaViewController: UIViewController {
             make.top.equalTo(questionLabel.snp.bottom).offset(50)
             make.left.right.equalToSuperview().inset(100)
         }
-                
-        let options = newQuestions[index].options
-        for option in options {
+        addOptionButtons()
+    }
+        
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        index = 0
+        score = 0
+        questionRandom()
+        updateUI()
+    }
+    
+    func questionRandom() {
+        newQuestions.removeAll()
+        var questions = questions
+        questions.shuffle()
+        for index in 1...10 {
+            newQuestions.append(questions[index])
+        }
+    }
+    
+    func addOptionButtons() {
+        for _ in 0 ..< 4 {
             let button = UIButton()
-            button.setTitle(option, for: .normal)
             button.titleLabel?.font = .systemFont(ofSize: 18)
             button.layer.cornerRadius = 6
             button.backgroundColor = .darkGray
             button.addTarget(self, action: #selector(tabButton), for: .touchUpInside)
             optionButtons.append(button)
             stackView.addArrangedSubview(button)
-            
-        }
-    }
-    
-    func questionRandom() {
-        var questions = questions
-        questions.shuffle()
-        for index in 1...10 {
-            newQuestions.append(questions[index])
         }
     }
     
@@ -120,8 +130,6 @@ class QnaViewController: UIViewController {
                 }
             }
         }
-        
-        
     }
     
     func next() {

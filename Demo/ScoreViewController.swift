@@ -7,7 +7,14 @@
 
 import UIKit
 
+//protocol ScoreViewControllerDelegate: AnyObject {
+//    func scoreViewControllerDidClosed()
+//}
+
+
 class ScoreViewController: UIViewController {
+//    weak var delegate: ScoreViewControllerDelegate?
+    
     var scoreTitle = UILabel()
     var scoreLabel = UILabel()
     var result = UILabel()
@@ -69,11 +76,11 @@ class ScoreViewController: UIViewController {
     }
     
     @objc func restartPressed(_ sender: UIButton) {
-        let qna = QnaViewController()
         navigationController?.popViewController(animated: true)
-//        這裡回去會壞掉
-        qna.index = 0
-        qna.questionRandom()
-        qna.updateUI()
     }
+    
+//    override func viewWillDisappear(_ animated: Bool) {
+//        super.viewWillDisappear(animated)
+//        delegate?.scoreViewControllerDidClosed()
+//    }
 }
