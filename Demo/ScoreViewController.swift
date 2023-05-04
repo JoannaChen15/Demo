@@ -8,12 +8,11 @@
 import UIKit
 
 class ScoreViewController: UIViewController {
-
-    let score: Int!
-    init(score: Int!) {
-        self.score = score
-        super.init(nibName: nil, bundle: nil)
-    }
+    var scoreTitle = UILabel()
+    var scoreLabel = UILabel()
+    var result = UILabel()
+    
+    var score: Int!
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -21,10 +20,34 @@ class ScoreViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        scoreTitle.text = "你的分數為:"
+        scoreTitle.font = .systemFont(ofSize: 20)
+        view.addSubview(scoreTitle)
+        scoreTitle.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalToSuperview().inset(100)
+        }
+        
+        scoreLabel.text = String(score)
+        scoreLabel.font = .systemFont(ofSize: 50)
+        view.addSubview(scoreLabel)
+        scoreLabel.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalTo(scoreTitle).inset(100)
+        }
         // Do any additional setup after loading the view.
     }
     
+    func getResult() {
+        if score == 100 {
+            result.text = "台灣景點小達人！"
+        } else if score >= 60 {
+            result.text = "還有一些景點等著你去探索喔！"
+        } else if score < 60 {
+            result.text = "太宅了，多出門走走吧！"
+        }
+    }
 
     /*
     // MARK: - Navigation

@@ -85,10 +85,14 @@ class ViewController: UIViewController {
                     score += 10
                 }
             }
+            
+//            let controller = ScoreViewController(score: score)
+//            present(controller, animated: true)
+            
         } else {
             if let optionChosen = optionButtons.firstIndex(of: sender) {
                 if optionChosen == question.answerIndex {
-                    let controller = UIAlertController(title: "答對了!", message: "恭喜，請繼續加油！", preferredStyle: .alert)
+                    let controller = UIAlertController(title: "答對了!", message: "太棒了，請繼續加油！", preferredStyle: .alert)
                     let continueAction = UIAlertAction(title: "繼續", style: .default, handler: nil)
                     controller.addAction(continueAction)
                     present(controller, animated: true)
@@ -106,10 +110,6 @@ class ViewController: UIViewController {
             index += 1
             updateUI()
         }
-        
-//        let controller = ScoreViewController()
-//        controller.score = score
-//        present(controller, animated: true)
     }
     
     func updateUI() {
