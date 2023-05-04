@@ -11,6 +11,7 @@ class ScoreViewController: UIViewController {
     var scoreTitle = UILabel()
     var scoreLabel = UILabel()
     var result = UILabel()
+    let restart = UIButton()
     
     var score: Int?
     
@@ -41,8 +42,19 @@ class ScoreViewController: UIViewController {
         result.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(scoreLabel.snp.bottom).offset(100)
-            // Do any additional setup after loading the view.
         }
+        
+        restart.setTitle("重新開始", for: .normal)
+        restart.titleLabel?.font = .systemFont(ofSize: 20)
+        restart.layer.cornerRadius = 6
+        restart.backgroundColor = .tintColor
+        view.addSubview(restart)
+        restart.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalTo(result.snp.bottom).offset(100)
+            make.width.equalToSuperview().multipliedBy(0.6)
+        }
+        restart.addTarget(self, action: #selector(restartPressed), for: .touchUpInside)
     }
     
     func getResult() {
@@ -54,5 +66,14 @@ class ScoreViewController: UIViewController {
         } else if score < 60 {
             result.text = "太宅了，多出門走走吧！"
         }
+    }
+    
+    @objc func restartPressed(_ sender: UIButton) {
+        let qna = QnaViewController()
+        navigationController?.popViewController(animated: true)
+//        這裡回去會壞掉
+        qna.index = 0
+        qna.questionRandom()
+        qna.updateUI()
     }
 }

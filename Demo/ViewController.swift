@@ -9,8 +9,19 @@ import UIKit
 import SnapKit
 import AVKit
 
-
 class ViewController: UIViewController {
+    override func viewDidAppear(_ animated: Bool) {
+            super.viewDidAppear(animated)
+            // 正常是第一頁就要用 nav 但你用 sb 不好改, 所以就先 present 一個 nav 出來
+            let qna = QnaViewController()
+            let nav = UINavigationController(rootViewController: qna)
+            nav.modalPresentationStyle = .fullScreen
+            present(nav, animated: false)
+        }
+}
+
+
+class QnaViewController: UIViewController {
     
     var questionNumber = UILabel()
     var questionLabel = UILabel()
@@ -22,7 +33,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        view.backgroundColor = .systemBackground
         questionRandom()
         
         questionNumber.text = "題目\(index + 1)/10"
@@ -79,7 +90,7 @@ class ViewController: UIViewController {
             let continueAction = UIAlertAction(title: "確定", style: .default) { _ in
                 let scoreController = ScoreViewController()
                 scoreController.score = self.score
-                self.present(scoreController, animated: true)
+                self.navigationController?.pushViewController(scoreController, animated: true)
             }
             alertController.addAction(continueAction)
             present(alertController, animated: true)
