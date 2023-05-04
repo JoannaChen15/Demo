@@ -75,38 +75,45 @@ class ViewController: UIViewController {
         let question = newQuestions[index]
         
         if index == 9 {
-//            let alertController = UIAlertController(title: "作答完畢", message: "快來看看你的分數吧！", preferredStyle: .alert)
-//            let continueAction = UIAlertAction(title: "確定", style: .default, handler: nil)
-//            alertController.addAction(continueAction)
-//            present(alertController, animated: true)
+            let alertController = UIAlertController(title: "作答完畢", message: "快來看看你的分數吧！", preferredStyle: .alert)
+            let continueAction = UIAlertAction(title: "確定", style: .default) { _ in
+                let scoreController = ScoreViewController()
+                scoreController.score = self.score
+                self.present(scoreController, animated: true)
+            }
+            alertController.addAction(continueAction)
+            present(alertController, animated: true)
             
             if let optionChosen = optionButtons.firstIndex(of: sender) {
                 if optionChosen == question.answerIndex {
                     score += 10
                 }
             }
-            
-            let scoreController = ScoreViewController()
-            scoreController.score = score
-            present(scoreController, animated: true)
-            
         } else {
             if let optionChosen = optionButtons.firstIndex(of: sender) {
                 if optionChosen == question.answerIndex {
                     let controller = UIAlertController(title: "答對了!", message: "太棒了，請繼續加油！", preferredStyle: .alert)
-                    let continueAction = UIAlertAction(title: "繼續", style: .default, handler: nil)
+                    let continueAction = UIAlertAction(title: "繼續", style: .default) { _ in
+                        self.next()
+                    }
                     controller.addAction(continueAction)
                     present(controller, animated: true)
                     score += 10
                 } else {
                     let controller = UIAlertController(title: "答錯了!", message: "正確答案是：\(question.options[question.answerIndex])", preferredStyle: .alert)
-                    let continueAction = UIAlertAction(title: "繼續", style: .default, handler: nil)
+                    let continueAction = UIAlertAction(title: "繼續", style: .default) { _ in
+                        self.next()
+                    }
                     controller.addAction(continueAction)
                     present(controller, animated: true)
                 }
             }
         }
         
+        
+    }
+    
+    func next() {
         if index < 9 {
             index += 1
             updateUI()
