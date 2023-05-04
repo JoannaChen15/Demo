@@ -12,15 +12,11 @@ class ScoreViewController: UIViewController {
     var scoreLabel = UILabel()
     var result = UILabel()
     
-    var score: Int!
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    var score: Int?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        guard let score = score else { return }
         scoreTitle.text = "你的分數為:"
         scoreTitle.font = .systemFont(ofSize: 20)
         view.addSubview(scoreTitle)
@@ -40,6 +36,7 @@ class ScoreViewController: UIViewController {
     }
     
     func getResult() {
+        guard let score = score else { return }
         if score == 100 {
             result.text = "台灣景點小達人！"
         } else if score >= 60 {

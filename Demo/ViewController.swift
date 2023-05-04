@@ -86,8 +86,9 @@ class ViewController: UIViewController {
                 }
             }
             
-//            let controller = ScoreViewController(score: score)
-//            present(controller, animated: true)
+            let controller = ScoreViewController()
+            controller.score = score
+            present(controller, animated: true)
             
         } else {
             if let optionChosen = optionButtons.firstIndex(of: sender) {
