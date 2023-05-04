@@ -16,12 +16,14 @@ class ViewController: UIViewController {
     var questionLabel = UILabel()
     var optionButtons = [UIButton]()
     let stackView = UIStackView()
+    var newQuestions = [Question]()
     var index = 0
     var score = 0
-//    let playButton = UIButton()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        questionRandom()
         
         questionNumber.text = "題目\(index + 1)/10"
         questionNumber.font = .systemFont(ofSize: 18)
@@ -31,7 +33,7 @@ class ViewController: UIViewController {
             make.top.equalToSuperview().inset(100)
         }
         
-        questionLabel.text = questions[0].text
+        questionLabel.text = newQuestions[index].text
         questionLabel.font = .systemFont(ofSize: 18)
         view.addSubview(questionLabel)
         questionLabel.snp.makeConstraints { make in
@@ -44,71 +46,83 @@ class ViewController: UIViewController {
         view.addSubview(stackView)
         stackView.snp.makeConstraints { make in
             make.top.equalTo(questionLabel.snp.bottom).offset(50)
-            make.left.right.equalToSuperview().inset(50)
+            make.left.right.equalToSuperview().inset(100)
         }
                 
-        let options = questions[index].options
+        let options = newQuestions[index].options
         for option in options {
             let button = UIButton()
             button.setTitle(option, for: .normal)
             button.titleLabel?.font = .systemFont(ofSize: 18)
-            button.backgroundColor = .orange
+            button.layer.cornerRadius = 6
+            button.backgroundColor = .darkGray
             button.addTarget(self, action: #selector(tabButton), for: .touchUpInside)
             optionButtons.append(button)
             stackView.addArrangedSubview(button)
+            
         }
-        
-//        playButton.setTitle("PLAY", for: .normal)
-//        playButton.backgroundColor = .blue
-//        view.addSubview(playButton)
-//        playButton.snp.makeConstraints { make in
-//            make.center.equalToSuperview()
-//            make.width.height.equalTo(100)
-//        }
-//        playButton.addTarget(self, action: #selector(play), for: .touchUpInside)
-        
+    }
+    
+    func questionRandom() {
+        var questions = questions
+        questions.shuffle()
+        for index in 1...10 {
+            newQuestions.append(questions[index])
+        }
     }
     
     @objc func tabButton(_ sender: UIButton) {
-//        計分
-        let question = questions[index]
-        if let optionChosen = optionButtons.firstIndex(of: sender) {
-            if optionChosen == question.answerIndex {
-                score += 10
+        let question = newQuestions[index]
+        
+        if index == 9 {
+            let controller = UIAlertController(title: "作答完畢", message: "快來看看你的分數吧！", preferredStyle: .alert)
+            let continueAction = UIAlertAction(title: "確定", style: .default, handler: nil)
+            controller.addAction(continueAction)
+            present(controller, animated: true)
+            
+            if let optionChosen = optionButtons.firstIndex(of: sender) {
+                if optionChosen == question.answerIndex {
+                    score += 10
+                }
+            }
+        } else {
+            if let optionChosen = optionButtons.firstIndex(of: sender) {
+                if optionChosen == question.answerIndex {
+                    let controller = UIAlertController(title: "答對了!", message: "恭喜，請繼續加油！", preferredStyle: .alert)
+                    let continueAction = UIAlertAction(title: "繼續", style: .default, handler: nil)
+                    controller.addAction(continueAction)
+                    present(controller, animated: true)
+                    score += 10
+                } else {
+                    let controller = UIAlertController(title: "答錯了!", message: "正確答案是：\(question.options[question.answerIndex])", preferredStyle: .alert)
+                    let continueAction = UIAlertAction(title: "繼續", style: .default, handler: nil)
+                    controller.addAction(continueAction)
+                    present(controller, animated: true)
+                }
             }
         }
-//        檢查是否為最後一題
-        let controller = ScoreViewController()
-        controller.score = score
-        present(controller, animated: true)
         
+        if index < 9 {
+            index += 1
+            updateUI()
+        }
         
-//        下一題
-        index += 1
-        updateUI()
+//        let controller = ScoreViewController()
+//        controller.score = score
+//        present(controller, animated: true)
     }
     
     func updateUI() {
-        let question = questions[index]
+        let question = newQuestions[index]
         questionLabel.text = question.text
         
-        let options = questions[index].options
+        let options = newQuestions[index].options
         for index in options.indices {
             optionButtons[index].setTitle(options[index], for: .normal)
         }
         
         questionNumber.text = "題目\(index + 1)/10"
-    }
-          
-    
-   
-    
-//    @objc func play(_ sender: Any) {
-//        if let url = URL(string: "https://video-ssl.itunes.apple.com/apple-assets-us-std-000001/Video128/v4/ac/7c/62/ac7c6274-60ea-5b7c-4c99-f08d78bfe574/mzvf_484000410198456586.640x352.h264lc.U.p.m4v") {
-//            let player = AVPlayer(url: url)
-//
-//        }
-//    }
+        }
 }
 
 
