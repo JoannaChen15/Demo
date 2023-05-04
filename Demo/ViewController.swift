@@ -75,10 +75,10 @@ class ViewController: UIViewController {
         let question = newQuestions[index]
         
         if index == 9 {
-            let alertController = UIAlertController(title: "作答完畢", message: "快來看看你的分數吧！", preferredStyle: .alert)
-            let continueAction = UIAlertAction(title: "確定", style: .default, handler: nil)
-            alertController.addAction(continueAction)
-            present(alertController, animated: true)
+//            let alertController = UIAlertController(title: "作答完畢", message: "快來看看你的分數吧！", preferredStyle: .alert)
+//            let continueAction = UIAlertAction(title: "確定", style: .default, handler: nil)
+//            alertController.addAction(continueAction)
+//            present(alertController, animated: true)
             
             if let optionChosen = optionButtons.firstIndex(of: sender) {
                 if optionChosen == question.answerIndex {
