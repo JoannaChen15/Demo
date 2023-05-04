@@ -75,10 +75,10 @@ class ViewController: UIViewController {
         let question = newQuestions[index]
         
         if index == 9 {
-            let controller = UIAlertController(title: "作答完畢", message: "快來看看你的分數吧！", preferredStyle: .alert)
+            let alertController = UIAlertController(title: "作答完畢", message: "快來看看你的分數吧！", preferredStyle: .alert)
             let continueAction = UIAlertAction(title: "確定", style: .default, handler: nil)
-            controller.addAction(continueAction)
-            present(controller, animated: true)
+            alertController.addAction(continueAction)
+            present(alertController, animated: true)
             
             if let optionChosen = optionButtons.firstIndex(of: sender) {
                 if optionChosen == question.answerIndex {
@@ -86,9 +86,9 @@ class ViewController: UIViewController {
                 }
             }
             
-            let controller = ScoreViewController()
-            controller.score = score
-            present(controller, animated: true)
+            let scoreController = ScoreViewController()
+            scoreController.score = score
+            present(scoreController, animated: true)
             
         } else {
             if let optionChosen = optionButtons.firstIndex(of: sender) {

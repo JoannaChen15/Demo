@@ -16,7 +16,7 @@ class ScoreViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        guard let score = score else { return }
+        
         scoreTitle.text = "你的分數為:"
         scoreTitle.font = .systemFont(ofSize: 20)
         view.addSubview(scoreTitle)
@@ -25,12 +25,21 @@ class ScoreViewController: UIViewController {
             make.top.equalToSuperview().inset(100)
         }
         
-        scoreLabel.text = String(score)
+        guard let score = score else { return }
+        scoreLabel.text = "\(score)分"
         scoreLabel.font = .systemFont(ofSize: 50)
         view.addSubview(scoreLabel)
         scoreLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(scoreTitle).inset(100)
+        }
+        
+        getResult()
+        result.font = .systemFont(ofSize: 30)
+        view.addSubview(result)
+        result.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalTo(scoreLabel).inset(100)
         }
         // Do any additional setup after loading the view.
     }
@@ -39,7 +48,7 @@ class ScoreViewController: UIViewController {
         guard let score = score else { return }
         if score == 100 {
             result.text = "台灣景點小達人！"
-        } else if score >= 60 {
+        } else if score >= 60, score < 100 {
             result.text = "還有一些景點等著你去探索喔！"
         } else if score < 60 {
             result.text = "太宅了，多出門走走吧！"
