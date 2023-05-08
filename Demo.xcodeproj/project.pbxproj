@@ -302,6 +302,7 @@
 				DEVELOPMENT_TEAM = H684NQZS4N;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Demo/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "請支援拍照";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -330,6 +331,7 @@
 				DEVELOPMENT_TEAM = H684NQZS4N;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Demo/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "請支援拍照";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
