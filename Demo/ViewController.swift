@@ -53,9 +53,9 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         let animal = animals[indexPath.row]
         print("選擇的是 \(animal)")
         let detailController = AnimalDetailViewController()
-        #warning("why找不到AnimalDetailViewController")
+        detailController.fact.text = animal.facts
         self.present(detailController, animated: true)
-//        self.navigationController?.pushViewController(detailController, animated: true)＄
+//        self.navigationController?.pushViewController(detailController, animated: true)
     }
 }
 
