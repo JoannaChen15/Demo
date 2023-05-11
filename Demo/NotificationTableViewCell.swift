@@ -7,29 +7,37 @@
 
 import UIKit
 
-class notificationTableViewCell: UITableViewCell {
+protocol NotificationTableViewCellDelegate: AnyObject {
+    func didTapbutton(cellModel: CellModel)
+}
+
+class NotificationTableViewCell: UITableViewCell {
     private let mainStackView = UIStackView()
     private let avatar = UIImageView()
     private let text = UILabel()
     private let followButton = FollowButton()
+    private var cellModel: CellModel?
+    weak var delegate: NotificationTableViewCellDelegate?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configUI()
+        followButton.addTarget(self, action: #selector(tapButton), for: .touchUpInside)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func set(account: Account) {
-        text.text = "\(account.name) 開始追蹤你。"
-        avatar.image = account.avatar
-        followButton.status = account.followStatus
+    func set(cellModel: CellModel) {
+        self.cellModel = cellModel
+        text.text = "\(cellModel.name) 開始追蹤你。"
+        avatar.image = cellModel.avatar
+        followButton.status = cellModel.followStatus
     }
 }
 
-extension notificationTableViewCell {
+private extension NotificationTableViewCell {
     func configUI() {
         mainStackView.axis = .horizontal
         mainStackView.alignment = .center
@@ -56,9 +64,14 @@ extension notificationTableViewCell {
             make.width.equalTo(100)
         }
     }
+    
+    @objc func tapButton() {
+        guard let cellModel = cellModel else { return }
+        delegate?.didTapbutton(cellModel: cellModel)
+    }
 }
 
-struct Account {
+struct CellModel: Equatable {
     var avatar: UIImage?
     var name: String
     var followStatus: FollowStatus

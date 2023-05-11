@@ -8,24 +8,23 @@
 import UIKit
 
 class FollowButton: UIButton {
-
-    var status: FollowStatus = .unfollow
+    var status: FollowStatus = .unfollow {
+        didSet {
+            updateUI()
+        }
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: .zero)
         updateUI()
         self.layer.cornerRadius = 8
-        self.addTarget(self, action: #selector(clicked), for: .touchUpInside)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    @objc func clicked(_ sender: UIButton) {
-        
-    }
-    
-    func updateUI() {
+    private func updateUI() {
         self.backgroundColor = status.backgroundColor
         self.setTitle(status.title, for: .normal)
         self.titleLabel?.textColor = status.textColor
