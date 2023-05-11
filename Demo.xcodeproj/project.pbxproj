@@ -16,7 +16,7 @@
 		F521C06E29EE6E65008A5F7C /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = F521C06D29EE6E65008A5F7C /* SnapKit */; };
 		F5532C7129F96BFF006B98A5 /* SwifterSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F5532C7029F96BFF006B98A5 /* SwifterSwift */; };
 		F575761F2A0A229C00AD8D2F /* AnimalDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F575761E2A0A229C00AD8D2F /* AnimalDetailViewController.swift */; };
-		F57576232A0B705E00AD8D2F /* notificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57576222A0B705E00AD8D2F /* notificationTableViewCell.swift */; };
+		F57576232A0B705E00AD8D2F /* NotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57576222A0B705E00AD8D2F /* NotificationTableViewCell.swift */; };
 		F5FB2ACE2A0B83360068F045 /* FollowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5FB2ACD2A0B83360068F045 /* FollowButton.swift */; };
 /* End PBXBuildFile section */
 
@@ -30,7 +30,7 @@
 		F521C06429EE6D2B008A5F7C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F521C06629EE6D2B008A5F7C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F575761E2A0A229C00AD8D2F /* AnimalDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimalDetailViewController.swift; sourceTree = "<group>"; };
-		F57576222A0B705E00AD8D2F /* notificationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = notificationTableViewCell.swift; sourceTree = "<group>"; };
+		F57576222A0B705E00AD8D2F /* NotificationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTableViewCell.swift; sourceTree = "<group>"; };
 		F5FB2ACD2A0B83360068F045 /* FollowButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -69,7 +69,7 @@
 				F521C05829EE6D2A008A5F7C /* AppDelegate.swift */,
 				F521C05A29EE6D2A008A5F7C /* SceneDelegate.swift */,
 				F521C05C29EE6D2A008A5F7C /* ViewController.swift */,
-				F57576222A0B705E00AD8D2F /* notificationTableViewCell.swift */,
+				F57576222A0B705E00AD8D2F /* NotificationTableViewCell.swift */,
 				F5FB2ACD2A0B83360068F045 /* FollowButton.swift */,
 				F575761E2A0A229C00AD8D2F /* AnimalDetailViewController.swift */,
 				F521C05E29EE6D2A008A5F7C /* Main.storyboard */,
@@ -159,7 +159,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F57576232A0B705E00AD8D2F /* notificationTableViewCell.swift in Sources */,
+				F57576232A0B705E00AD8D2F /* NotificationTableViewCell.swift in Sources */,
 				F521C05D29EE6D2A008A5F7C /* ViewController.swift in Sources */,
 				F5FB2ACE2A0B83360068F045 /* FollowButton.swift in Sources */,
 				F521C05929EE6D2A008A5F7C /* AppDelegate.swift in Sources */,

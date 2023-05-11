@@ -7,15 +7,22 @@
 
 import UIKit
 
-class notificationTableViewCell: UITableViewCell {
+protocol NotificationTableViewCellDelegate: AnyObject {
+    func didTabFollowButton(account: Account)
+}
+
+class NotificationTableViewCell: UITableViewCell {
     private let mainStackView = UIStackView()
     private let avatar = UIImageView()
     private let text = UILabel()
     private let followButton = FollowButton()
+    private var account: Account?
+    weak var delegate: NotificationTableViewCellDelegate?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configUI()
+        followButton.addTarget(self, action: #selector(tabFollowButton), for: .touchUpInside)
     }
     
     required init?(coder: NSCoder) {
@@ -26,10 +33,20 @@ class notificationTableViewCell: UITableViewCell {
         text.text = "\(account.name) 開始追蹤你。"
         avatar.image = account.avatar
         followButton.status = account.followStatus
+//        邊畫資料時（account資料傳進來時）逐個取得account資料存起來
+        self.account = account
+//        print(self.account!)
+    }
+    
+    @objc func tabFollowButton() {
+//        按下按鈕後抓到account資料
+        guard let account = self.account else { return }
+//        呼叫delegate執行按下按鈕要做的事
+        delegate?.didTabFollowButton(account: account)
     }
 }
 
-extension notificationTableViewCell {
+extension NotificationTableViewCell {
     func configUI() {
         mainStackView.axis = .horizontal
         mainStackView.alignment = .center
@@ -58,7 +75,7 @@ extension notificationTableViewCell {
     }
 }
 
-struct Account {
+struct Account: Equatable {
     var avatar: UIImage?
     var name: String
     var followStatus: FollowStatus

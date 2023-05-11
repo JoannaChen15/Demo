@@ -9,11 +9,16 @@ import UIKit
 
 class FollowButton: UIButton {
 
-    var status: FollowStatus = .unfollow
+    var status: FollowStatus = .unfollow {
+        didSet {
+            updateUI()
+        }
+    }
     override init(frame: CGRect) {
         super.init(frame: .zero)
         updateUI()
         self.layer.cornerRadius = 8
+        self.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
         self.addTarget(self, action: #selector(clicked), for: .touchUpInside)
     }
     
@@ -28,7 +33,7 @@ class FollowButton: UIButton {
     func updateUI() {
         self.backgroundColor = status.backgroundColor
         self.setTitle(status.title, for: .normal)
-        self.titleLabel?.textColor = status.textColor
+        self.setTitleColor(status.textColor, for: .normal)
     }
 }
 
@@ -50,7 +55,7 @@ enum FollowStatus {
         case .unfollow:
             return .tintColor
         case .following:
-            return .lightGray
+            return .systemGray5
         }
     }
     
