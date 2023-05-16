@@ -14,7 +14,7 @@ class HomeViewController: UIViewController {
     
     init() {
         super.init(nibName: nil, bundle: nil)
-        tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "house"), selectedImage: UIImage(systemName: "house.fill"))
+        tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "house.fill"), selectedImage: UIImage(systemName: "house.fill"))
     }
     
     required init?(coder: NSCoder) {
@@ -23,12 +23,12 @@ class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .systemBackground
         
         view.addSubview(notificationTableView)
         notificationTableView.snp.makeConstraints { make in
             make.left.right.equalToSuperview()
             make.top.bottom.equalTo(view.safeAreaLayoutGuide)
-            make.center.equalToSuperview()
         }
         
         notificationTableView.delegate = self

@@ -1,5 +1,5 @@
 //
-//  ProfileViewController.swift
+//  PostPageViewController.swift
 //  Demo
 //
 //  Created by 譚培成 on 2023/5/15.
@@ -9,13 +9,14 @@ import Foundation
 import UIKit
 import SnapKit
 
-class ProfileViewController: UIViewController {
+class PostPageViewController: UIViewController {
     
-    let postCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+    let postPageCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+    let pageControl = UIPageControl()
     
     init() {
         super.init(nibName: nil, bundle: nil)
-        tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "person.circle.fill"), selectedImage: UIImage(systemName: "person.circle.fill"))
+        tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "photo.on.rectangle.fill"), selectedImage: UIImage(systemName: "photo.on.rectangle.fill"))
     }
     
     required init?(coder: NSCoder) {
@@ -25,47 +26,58 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-                
-        view.addSubview(postCollectionView)
         
-        postCollectionView.snp.makeConstraints { make in
+        view.addSubview(postPageCollectionView)
+        postPageCollectionView.snp.makeConstraints { make in
             make.top.bottom.equalTo(view.safeAreaLayoutGuide)
             make.left.right.equalToSuperview()
         }
-        
         let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical // 设置滚动方向为垂直方向
-//        layout.itemSize = CGSize(width: 100, height: 100) // 设置每个 cell 的大小
+        layout.scrollDirection = .horizontal
         layout.minimumInteritemSpacing = 1 // 设置每个 cell 的水平间距
         layout.minimumLineSpacing = 1 // 设置每个 cell 的垂直间距
-        postCollectionView.collectionViewLayout = layout // 设置集合视图的布局
-                
-        postCollectionView.delegate = self
-        postCollectionView.dataSource = self
+        postPageCollectionView.collectionViewLayout = layout
         
-        postCollectionView.register(PostCell.self, forCellWithReuseIdentifier: "postCell")
+        postPageCollectionView.delegate = self
+        postPageCollectionView.dataSource = self
+        
+        postPageCollectionView.register(PostPageCell.self, forCellWithReuseIdentifier: "postPageCell")
+        
+        postPageCollectionView.addSubview(pageControl)
+        pageControl.snp.makeConstraints { make in
+            make.bottom.equalTo(postPageCollectionView.snp.bottom).offset(20)
+            make.centerX.equalTo(postPageCollectionView.snp.centerX)
+        }
     }
 }
 
-extension ProfileViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-//    UICollectionViewDataSource
+extension PostPageViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return posts.count
+        return postPages.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "postCell", for: indexPath) as! PostCell
-        cell.postImageView.image = UIImage(named: posts[indexPath.item].postImage)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "postPageCell", for: indexPath) as! PostPageCell
+        cell.postImageView.image = UIImage(named: postPages[indexPath.item].postImage)
         return cell
     }
-//    UICollectionViewDelegateFlowLayout
+}
+
+extension PostPageViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let itemSize = postCollectionView.frame.width / 3 - 1
+        let itemSize = postPageCollectionView.frame.width
         return CGSize(width: itemSize, height: itemSize)
     }
 }
 
-let posts = [
+extension PostPageViewController: UIScrollViewDelegate {
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        let pageNumber = scrollView.contentOffset.x / scrollView.bounds.width
+        pageControl.currentPage = Int(pageNumber)
+    }
+}
+
+let postPages = [
     PostModel(postImage: "Teamwork-1"),
     PostModel(postImage: "Teamwork-2"),
     PostModel(postImage: "Teamwork-3"),

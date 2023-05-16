@@ -12,6 +12,7 @@ class ViewController: UIViewController {
     let tabBar = UITabBarController()
     let home = HomeViewController()
     let profile = ProfileViewController()
+    let postPage = PostPageViewController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,7 +20,7 @@ class ViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        tabBar.viewControllers = [home, profile]
+        tabBar.viewControllers = [home, profile, postPage]
         tabBar.modalPresentationStyle = .fullScreen
         present(tabBar, animated: true)
     }
