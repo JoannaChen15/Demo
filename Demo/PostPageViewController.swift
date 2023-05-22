@@ -45,11 +45,15 @@ class PostPageViewController: UIViewController {
         
         view.addSubview(pageControl)
         pageControl.snp.makeConstraints { make in
-            make.bottom.equalTo(postPageCollectionView.snp.bottom).inset(100)
+            make.bottom.equalTo(postPageCollectionView.snp.bottom).inset(160)
             make.centerX.equalTo(postPageCollectionView.snp.centerX)
             make.width.equalTo(200)
             make.height.equalTo(25)
         }
+//        pageControl.backgroundColor = .lightGray
+        pageControl.tintColor = .tintColor
+        pageControl.numberOfPages = 25
+        pageControl.currentPage = 0
     }
 }
 
