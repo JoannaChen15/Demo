@@ -45,15 +45,16 @@ class PostPageViewController: UIViewController {
         
         view.addSubview(pageControl)
         pageControl.snp.makeConstraints { make in
-            make.bottom.equalTo(postPageCollectionView.snp.bottom).inset(160)
+            make.bottom.equalTo(postPageCollectionView.snp.bottom).inset(100)
             make.centerX.equalTo(postPageCollectionView.snp.centerX)
             make.width.equalTo(200)
             make.height.equalTo(25)
         }
-//        pageControl.backgroundColor = .lightGray
-        pageControl.tintColor = .tintColor
-        pageControl.numberOfPages = 25
+        
+        pageControl.numberOfPages = postPages.count
         pageControl.currentPage = 0
+        pageControl.pageIndicatorTintColor = .gray
+        pageControl.currentPageIndicatorTintColor = .black
     }
 }
 
@@ -80,6 +81,13 @@ extension PostPageViewController: UIScrollViewDelegate {
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         let pageNumber = scrollView.contentOffset.x / scrollView.bounds.width
         pageControl.currentPage = Int(pageNumber)
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let offSet = scrollView.contentOffset.x
+        let width = scrollView.frame.width
+        let horizontalCenter = width / 2
+        pageControl.currentPage = Int(offSet + horizontalCenter) / Int(width)
     }
 }
 
