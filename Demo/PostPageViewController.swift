@@ -45,7 +45,7 @@ class PostPageViewController: UIViewController {
         
         view.addSubview(pageControl)
         pageControl.snp.makeConstraints { make in
-            make.bottom.equalTo(postPageCollectionView.snp.bottom).inset(100)
+            make.bottom.equalTo(postPageCollectionView.snp.bottom).inset(120)
             make.centerX.equalTo(postPageCollectionView.snp.centerX)
             make.width.equalTo(200)
             make.height.equalTo(25)
@@ -53,8 +53,8 @@ class PostPageViewController: UIViewController {
         
         pageControl.numberOfPages = postPages.count
         pageControl.currentPage = 0
-        pageControl.pageIndicatorTintColor = .gray
-        pageControl.currentPageIndicatorTintColor = .black
+        pageControl.pageIndicatorTintColor = .systemGray4
+        pageControl.currentPageIndicatorTintColor = .tintColor
     }
 }
 
@@ -78,17 +78,17 @@ extension PostPageViewController: UICollectionViewDelegateFlowLayout {
 }
 
 extension PostPageViewController: UIScrollViewDelegate {
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        let pageNumber = scrollView.contentOffset.x / scrollView.bounds.width
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//        x軸偏移量(多加半個螢幕寬，可以達到滑超過一半就換下一頁) / 整個螢幕寬
+        let pageNumber = (scrollView.contentOffset.x + scrollView.bounds.width / 2) / scrollView.bounds.width
         pageControl.currentPage = Int(pageNumber)
     }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let offSet = scrollView.contentOffset.x
-        let width = scrollView.frame.width
-        let horizontalCenter = width / 2
-        pageControl.currentPage = Int(offSet + horizontalCenter) / Int(width)
-    }
+//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//        let offSet = scrollView.contentOffset.x
+//        let width = scrollView.frame.width
+//        let horizontalCenter = width / 2
+//        pageControl.currentPage = Int(offSet + horizontalCenter) / Int(width)
+//    }
 }
 
 let postPages = [
