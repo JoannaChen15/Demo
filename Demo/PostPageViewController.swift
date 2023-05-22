@@ -50,6 +50,11 @@ class PostPageViewController: UIViewController {
             make.width.equalTo(200)
             make.height.equalTo(25)
         }
+        
+        pageControl.numberOfPages = postPages.count
+        pageControl.currentPage = 0
+        pageControl.pageIndicatorTintColor = .gray
+        pageControl.currentPageIndicatorTintColor = .black
     }
 }
 
@@ -76,6 +81,13 @@ extension PostPageViewController: UIScrollViewDelegate {
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         let pageNumber = scrollView.contentOffset.x / scrollView.bounds.width
         pageControl.currentPage = Int(pageNumber)
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let offSet = scrollView.contentOffset.x
+        let width = scrollView.frame.width
+        let horizontalCenter = width / 2
+        pageControl.currentPage = Int(offSet + horizontalCenter) / Int(width)
     }
 }
 
