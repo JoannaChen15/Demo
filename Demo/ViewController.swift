@@ -10,6 +10,7 @@ import SnapKit
 
 
 class ViewController: UIViewController {
+    let cities = City.data
     let cityPickView = UIPickerView()
     let area = UILabel()
     let pageTitle = UILabel()
@@ -18,7 +19,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        pageTitle.text = "🏡買房買在哪🥳"
+        pageTitle.text = "要去哪裡玩🥳"
         pageTitle.font = .systemFont(ofSize: 26)
         view.addSubview(pageTitle)
         pageTitle.snp.makeConstraints { make in
@@ -93,39 +94,39 @@ struct District: Decodable {
     let name: String
 }
 
-let cities: [City] = [
-    City(name: "台北市", districts: [
-        District(zip: "100", name: "中正區"),
-        District(zip: "103", name: "大同區"),
-        District(zip: "104", name: "中山區"),
-        District(zip: "110", name: "信義區"),
-        District(zip: "111", name: "松山區"),
-        // 添加更多台北市行政區...
-    ]),
-    City(name: "新北市", districts: [
-        District(zip: "200", name: "板橋區"),
-        District(zip: "220", name: "新莊區"),
-        District(zip: "221", name: "中和區"),
-        District(zip: "223", name: "三峽區"),
-        District(zip: "231", name: "新店區"),
-        // 添加更多新北市行政區...
-    ]),
-    City(name: "桃園市", districts: [
-        District(zip: "320", name: "中壢區"),
-        District(zip: "324", name: "平鎮區"),
-        District(zip: "325", name: "龍潭區"),
-        District(zip: "330", name: "桃園區"),
-        District(zip: "333", name: "八德區"),
-        // 添加更多桃園市行政區...
-    ])
-]
+//let cities: [City] = [
+//    City(name: "台北市", districts: [
+//        District(zip: "100", name: "中正區"),
+//        District(zip: "103", name: "大同區"),
+//        District(zip: "104", name: "中山區"),
+//        District(zip: "110", name: "信義區"),
+//        District(zip: "111", name: "松山區"),
+//        // 添加更多台北市行政區...
+//    ]),
+//    City(name: "新北市", districts: [
+//        District(zip: "200", name: "板橋區"),
+//        District(zip: "220", name: "新莊區"),
+//        District(zip: "221", name: "中和區"),
+//        District(zip: "223", name: "三峽區"),
+//        District(zip: "231", name: "新店區"),
+//        // 添加更多新北市行政區...
+//    ]),
+//    City(name: "桃園市", districts: [
+//        District(zip: "320", name: "中壢區"),
+//        District(zip: "324", name: "平鎮區"),
+//        District(zip: "325", name: "龍潭區"),
+//        District(zip: "330", name: "桃園區"),
+//        District(zip: "333", name: "八德區"),
+//        // 添加更多桃園市行政區...
+//    ])
+//]
 
 //讀取 asset 裡的 JSON，將轉換後的 Decodable 型別資料存在 computed variable
-//extension City {
-//    static var data: [Self] {
-//        guard let data = NSDataAsset(name: "taiwanDistricts")?.data else {
-//            return []
-//        }
-//        return (try? JSONDecoder().decode([Self].self, from: data)) ?? []
-//    }
-//}
+extension City {
+    static var data: [Self] {
+        guard let data = NSDataAsset(name: "taiwan_districts")?.data else {
+            return []
+        }
+        return (try? JSONDecoder().decode([Self].self, from: data)) ?? []
+    }
+}
