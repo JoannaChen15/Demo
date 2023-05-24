@@ -11,28 +11,37 @@ import SnapKit
 
 class ViewController: UIViewController {
     let cityPickView = UIPickerView()
-    let label = UILabel()
+    let area = UILabel()
+    let pageTitle = UILabel()
 
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        pageTitle.text = "🏡買房買在哪🥳"
+        pageTitle.font = .systemFont(ofSize: 26)
+        view.addSubview(pageTitle)
+        pageTitle.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(200)
+            make.centerX.equalToSuperview()
+        }
+        
+        area.text = "台北市中正區"
+        area.font = .systemFont(ofSize: 26)
+        view.addSubview(area)
+        area.snp.makeConstraints { make in
+            make.top.equalTo(pageTitle.snp.bottom).offset(20)
+            make.centerX.equalToSuperview()
+        }
+        
         view.addSubview(cityPickView)
         cityPickView.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(50)
+            make.top.equalTo(area.snp.bottom).offset(20)
             make.centerX.equalToSuperview()
         }
         
         cityPickView.delegate = self
         cityPickView.dataSource = self
-        
-        label.text = "台北市中正區"
-        label.font = .systemFont(ofSize: 26)
-        view.addSubview(label)
-        label.snp.makeConstraints { make in
-            make.top.equalTo(cityPickView.snp.bottom).offset(20)
-            make.centerX.equalToSuperview()
-        }
     }
 }
 
@@ -51,10 +60,10 @@ extension ViewController: UIPickerViewDelegate {
                 pickerView.reloadComponent(1)
                 pickerView.selectRow(0, inComponent: 1, animated: true)
                 let districtsRow = pickerView.selectedRow(inComponent: 1)
-                label.text = "\(cities[row].name)\(cities[row].districts[districtsRow].name)"
+                area.text = "\(cities[row].name)\(cities[row].districts[districtsRow].name)"
             } else {
                 let cityRow = pickerView.selectedRow(inComponent: 0)
-                label.text = "\(cities[cityRow].name)\(cities[cityRow].districts[row].name)"
+                area.text = "\(cities[cityRow].name)\(cities[cityRow].districts[row].name)"
             }
     }
 }
