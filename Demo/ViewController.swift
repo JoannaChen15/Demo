@@ -10,63 +10,82 @@ import SnapKit
 
 
 class ViewController: UIViewController {
+    let cities = City.data
+    let cityPickView = UIPickerView()
+    let label = UILabel()
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let lab = UILabel()
-        lab.text = "XXXX"
-        view.addSubview(lab)
-        lab.snp.makeConstraints {
-            $0.center.equalToSuperview()
+        
+        view.addSubview(cityPickView)
+        cityPickView.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.centerX.equalToSuperview()
+            make.height.equalTo(500)
+            make.width.equalTo(300)
         }
         
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        let tabBar = UITabBarController()
-        let red = RedViewController()
-        let blue = BlueViewController()
-        tabBar.viewControllers = [red, blue]
-        tabBar.view.alpha = 0.3
-        tabBar.modalPresentationStyle = .fullScreen
-        tabBar.tabBar.backgroundColor = .white
-        present(tabBar, animated: true, completion: nil)
+        cityPickView.delegate = self
+        cityPickView.dataSource = self
+        
+        label.text = "test"
+        view.addSubview(label)
+        label.snp.makeConstraints { make in
+            make.top.equalTo(cityPickView.snp.bottom).offset(20)
+            make.centerX.equalToSuperview()
+        }
     }
 }
 
-
-class RedViewController: UIViewController {
-    init() {
-        super.init(nibName: nil, bundle: nil)
-        tabBarItem = UITabBarItem(title: "Red",
-                                  image: UIImage(systemName: "house"),
-                                  selectedImage: UIImage(systemName: "house.fill"))
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = .red
+extension ViewController: UIPickerViewDelegate {
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        if component == 0 {
+            return cities[row].name
+        } else {
+            let cityRow = pickerView.selectedRow(inComponent: 0)
+            return cities[cityRow].districts[row].name
+        }
     }
 }
 
-class BlueViewController: UIViewController {
-    init() {
-        super.init(nibName: nil, bundle: nil)
-        tabBarItem = UITabBarItem(title: "Blue",
-                                  image: UIImage(systemName: "house"),
-                                  selectedImage: UIImage(systemName: "house.fill"))
+extension ViewController: UIPickerViewDataSource {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        2
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        if component == 0 {
+            return cities.count
+        } else {
+            let cityRow = pickerView.selectedRow(inComponent: 0)
+            return cities[cityRow].districts.count
+            #warning("index out of range")
+        }
     }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = .blue
+}
+
+//定義 JSON 對應的 Decodable 型別
+struct City: Decodable {
+    let name: String
+    let districts: [District]
+}
+struct District: Decodable {
+    let zip: String
+    let name: String
+}
+//讀取 asset 裡的 JSON，將轉換後的 Decodable 型別資料存在 computed variable
+extension City {
+    static var data: [Self] {
+        var districtData = [Self]()
+        if let data = NSDataAsset(name: "taiwanDistricts")?.data {
+            do {
+                districtData = try JSONDecoder().decode([Self].self, from: data)
+            } catch {
+                print(error)
+            }
+            
+        }
+        return districtData
     }
 }
