@@ -16,16 +16,17 @@ class TableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
+        contentView.addSubview(name)
+        name.text = "hello world"
+        name.snp.makeConstraints { make in
+            make.centerY.equalTo(contentView.snp.centerY)
+            make.leading.equalToSuperview().inset(50)
+        }
+        
         contentView.addSubview(image)
         image.image = UIImage(named: "")
         image.backgroundColor = .lightGray
         image.snp.makeConstraints { make in
-            make.centerY.equalTo(contentView.snp.centerY)
-            make.leading.equalToSuperview().inset(50)
-        }
-        contentView.addSubview(name)
-        name.text = "hello world"
-        name.snp.makeConstraints { make in
             make.centerY.equalTo(contentView.snp.centerY)
             make.trailing.equalToSuperview().inset(50)
         }
