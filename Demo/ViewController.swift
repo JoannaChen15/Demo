@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import Alamofire
 
 
 class ViewController: UIViewController {
@@ -14,5 +15,17 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let parameters: [String: Any] = [
+            "name": "joanna",
+            "job": "none"
+        ]
+        
+        Alamofire.request("https://reqres.in/api/users", method: .post, parameters: parameters, encoding: JSONEncoding.default).response { response in
+            if let data = response.data,
+               let createUserResponse = try? JSONDecoder().decode(CreateUserResponse.self, from: data) {
+                print("name:\(createUserResponse.name), job:\(createUserResponse.job), id:\(createUserResponse.id)")
+            }
+            print(response.timeline)
+        }
     }
 }
