@@ -7,6 +7,7 @@
 
 import UIKit
 import Moya
+import Result
 
 enum MyService {
     case showUser(id: Int)
@@ -69,7 +70,10 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let provider = MoyaProvider<MyService>()
+        view.backgroundColor = .blue
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        let provider = MoyaProvider<MyService>(plugins: [RequestAlertPlugin(viewController: self)])
         provider.request(.createUser(name: "James", job: "actor")) { result in
             switch result {
             case let .success(moyaResponse):
@@ -86,3 +90,34 @@ class ViewController: UIViewController {
     }
 }
 
+final class RequestAlertPlugin: PluginType {
+
+    private let viewController: UIViewController
+
+    init(viewController: UIViewController) {
+        self.viewController = viewController
+    }
+
+    func willSend(_ request: RequestType, target: TargetType) {
+        //make sure we have a URL string to display
+        guard let requestURLString = request.request?.url?.absoluteString else { return }
+
+        //create alert view controller with a single action
+        let alertViewController = UIAlertController(title: "Sending Request", message: requestURLString, preferredStyle: .alert)
+        alertViewController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+
+        //and present using the view controller we created at initialization
+        viewController.present(alertViewController, animated: true)
+    }
+    func didReceive(_ result: Result<Moya.Response, MoyaError>, target: TargetType) {
+        //only continue if result is a failure
+        guard case Result.failure(_) = result else { return }
+
+        //create alert view controller with a single action and messing displaying status code
+        let alertViewController = UIAlertController(title: "Error", message: "Request failed with status code: \(result.error?.response?.statusCode ?? 0)", preferredStyle: .alert)
+        alertViewController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+
+        //and present using the view controller we created at initialization
+        viewController.present(alertViewController, animated: true)
+    }
+}
