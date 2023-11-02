@@ -80,4 +80,5 @@ struct CreateUserResponse: Decodable {
     let name: String
     let job: String
     let id: String
+    let myData: String
 }

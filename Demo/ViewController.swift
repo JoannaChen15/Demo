@@ -73,7 +73,7 @@ class ViewController: UIViewController {
         view.backgroundColor = .blue
     }
     override func viewDidAppear(_ animated: Bool) {
-        let provider = MoyaProvider<MyService>(plugins: [RequestAlertPlugin(viewController: self)])
+        let provider = MoyaProvider<MyService>(plugins: [ModifyHeaderPlugin(myHeader: "MyheaderValue"), ModifyResultPlugin()])
         provider.request(.createUser(name: "James", job: "actor")) { result in
             switch result {
             case let .success(moyaResponse):
@@ -81,7 +81,7 @@ class ViewController: UIViewController {
                 let statusCode = moyaResponse.statusCode // Int - 200, 401, 500, etc
                 print(statusCode)
                 if let createUserResponse = try? JSONDecoder().decode(CreateUserResponse.self, from: data) {
-                    print("name:\(createUserResponse.name), job:\(createUserResponse.job), id:\(createUserResponse.id)")
+                    print("name:\(createUserResponse.name), job:\(createUserResponse.job), id:\(createUserResponse.id), myData:\(createUserResponse.myData)")
                 }
             case .failure:
                 print("error")
@@ -90,34 +90,39 @@ class ViewController: UIViewController {
     }
 }
 
-final class RequestAlertPlugin: PluginType {
+struct ModifyHeaderPlugin: PluginType {
+    let myHeader: String
 
-    private let viewController: UIViewController
-
-    init(viewController: UIViewController) {
-        self.viewController = viewController
+    func prepare(_ request: URLRequest, target: TargetType) -> URLRequest {
+        var request = request
+        request.addValue(myHeader, forHTTPHeaderField: "MyHeader")
+        return request
     }
+}
 
-    func willSend(_ request: RequestType, target: TargetType) {
-        //make sure we have a URL string to display
-        guard let requestURLString = request.request?.url?.absoluteString else { return }
-
-        //create alert view controller with a single action
-        let alertViewController = UIAlertController(title: "Sending Request", message: requestURLString, preferredStyle: .alert)
-        alertViewController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-
-        //and present using the view controller we created at initialization
-        viewController.present(alertViewController, animated: true)
-    }
-    func didReceive(_ result: Result<Moya.Response, MoyaError>, target: TargetType) {
-        //only continue if result is a failure
-        guard case Result.failure(_) = result else { return }
-
-        //create alert view controller with a single action and messing displaying status code
-        let alertViewController = UIAlertController(title: "Error", message: "Request failed with status code: \(result.error?.response?.statusCode ?? 0)", preferredStyle: .alert)
-        alertViewController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-
-        //and present using the view controller we created at initialization
-        viewController.present(alertViewController, animated: true)
+struct ModifyResultPlugin: PluginType {
+    func process(_ result: Result<Response, MoyaError>, target: TargetType) -> Result<Response, MoyaError> {
+        switch result {
+        case .success(let response):
+            do {
+                // 解析原始數據
+                let jsonData = try response.mapJSON()
+                
+                // 添加自定義數據
+                var customData = jsonData as? [String: Any] ?? [:]
+                customData["myData"] = "myDataValue"
+                
+                // 將修改後的數據轉換為 Data
+                let modifiedData = try JSONSerialization.data(withJSONObject: customData)
+                
+                // 創建包含修改後數據的新 Response
+                let modifiedResponse = Response(statusCode: response.statusCode, data: modifiedData)
+                return .success(modifiedResponse)
+            } catch {
+                return .failure(.underlying(error, response))
+            }
+        case .failure(let error):
+            return .failure(error)
+        }
     }
 }
