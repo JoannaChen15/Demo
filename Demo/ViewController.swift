@@ -47,7 +47,7 @@ extension MyService: TargetType {
     var sampleData: Data {
         switch self {
         case .showUser(let id):
-            return "{\"id\": \(id), \"name\": \"Harry\", \"job\": \"witcher\"}".utf8Encoded
+            return "{\"id\": \(id), \"name\": \"Joanna\", \"job\": \"witcher\"}".utf8Encoded
         case .createUser(let name, let job):
             return "{\"id\": 100, \"name\": \"\(name)\", \"job\": \"\(job)\"}".utf8Encoded
         case .updateUser(let id, let name, let job):
@@ -67,62 +67,27 @@ private extension String {
 }
 
 class ViewController: UIViewController {
+    override func viewDidAppear(_ animated: Bool) {
+        let provider = MoyaProvider<MyService>.init(stubClosure: MoyaProvider<MyService>.immediatelyStub)
+        provider.request(.showUser(id: 1)) { result in
+            switch result {
+            case let .success(response):
+                do {
+                    // 模擬伺服器回應
+                    var responseJSON = try response.mapJSON()
+                    print(responseJSON)
+                } catch {
+                    print("Error parsing response: \(error)")
+                }
+
+            case let .failure(error):
+                print("Network error: \(error)")
+            }
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .blue
-    }
-    override func viewDidAppear(_ animated: Bool) {
-        let provider = MoyaProvider<MyService>(plugins: [ModifyHeaderPlugin(myHeader: "MyheaderValue"), ModifyResultPlugin()])
-        provider.request(.createUser(name: "James", job: "actor")) { result in
-            switch result {
-            case let .success(moyaResponse):
-                let data = moyaResponse.data // Data, your JSON response is probably in here!
-                let statusCode = moyaResponse.statusCode // Int - 200, 401, 500, etc
-                print(statusCode)
-                if let createUserResponse = try? JSONDecoder().decode(CreateUserResponse.self, from: data) {
-                    print("name:\(createUserResponse.name), job:\(createUserResponse.job), id:\(createUserResponse.id), myData:\(createUserResponse.myData)")
-                }
-            case .failure:
-                print("error")
-            }
-        }
-    }
-}
-
-struct ModifyHeaderPlugin: PluginType {
-    let myHeader: String
-
-    func prepare(_ request: URLRequest, target: TargetType) -> URLRequest {
-        var request = request
-        request.addValue(myHeader, forHTTPHeaderField: "MyHeader")
-        return request
-    }
-}
-
-struct ModifyResultPlugin: PluginType {
-    func process(_ result: Result<Response, MoyaError>, target: TargetType) -> Result<Response, MoyaError> {
-        switch result {
-        case .success(let response):
-            do {
-                // 解析原始數據
-                let jsonData = try response.mapJSON()
-                
-                // 添加自定義數據
-                var customData = jsonData as? [String: Any] ?? [:]
-                customData["myData"] = "myDataValue"
-                
-                // 將修改後的數據轉換為 Data
-                let modifiedData = try JSONSerialization.data(withJSONObject: customData)
-                
-                // 創建包含修改後數據的新 Response
-                let modifiedResponse = Response(statusCode: response.statusCode, data: modifiedData)
-                return .success(modifiedResponse)
-            } catch {
-                return .failure(.underlying(error, response))
-            }
-        case .failure(let error):
-            return .failure(error)
-        }
     }
 }
