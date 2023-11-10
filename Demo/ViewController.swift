@@ -13,41 +13,31 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let group = DispatchGroup()
         
-        group.enter()
-        print(Thread.current)
-        let taskA = URLSession.shared.dataTask(with: URL(string: "https://reqres.in/api/users/1")!) { (data, response, error) in
-            print(Thread.current)
-            if let data = data {
-                print("responseA")
-            } else {
-                print("error")
-            }
-            group.leave()
-        }
-        taskA.resume()
-        print("request a")
+        let incrementByTwo = makeIncrementer(incrementAmount: 2)
+        print(incrementByTwo)  // 输出 2
+        print(incrementByTwo)  // 输出 2
         
-        group.wait()
-        
-        group.enter()
-        print(Thread.current)
-        let taskB = URLSession.shared.dataTask(with: URL(string: "https://reqres.in/api/unknown/5")!) { (data, response, error) in
-            print(Thread.current)
-            if let data = data {
-                print("responseB")
-            } else {
-                print("error")
-            }
-            group.leave()
-        }
-        taskB.resume()
-        print("request b")
-        
-        group.notify(queue: DispatchQueue.global()) {
-            print("fetch done")
-        }
-        print("executed")
+        let incrementByFour = makeIncrementerWithReturnClosure(incrementAmount: 4)
+        print(incrementByFour())  // 输出 4
+        print(incrementByFour())  // 输出 8
+
     }
+}
+
+func makeIncrementer(incrementAmount: Int) -> Int {
+    var total = 0
+    total += incrementAmount
+    return total
+}
+
+func makeIncrementerWithReturnClosure(incrementAmount: Int) -> () -> Int {
+    var total = 0
+
+    let incrementer: () -> Int = {
+        total += incrementAmount
+        return total
+    }
+
+    return incrementer
 }
