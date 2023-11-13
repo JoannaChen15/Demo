@@ -13,31 +13,26 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        var demo = Demo()
+        demo.myFunction()
         
-        let incrementByTwo = makeIncrementer(incrementAmount: 2)
-        print(incrementByTwo)  // 输出 2
-        print(incrementByTwo)  // 输出 2
-        
-        let incrementByFour = makeIncrementerWithReturnClosure(incrementAmount: 4)
-        print(incrementByFour())  // 输出 4
-        print(incrementByFour())  // 输出 8
-
+        print("viewDidLoad")
     }
 }
 
-func makeIncrementer(incrementAmount: Int) -> Int {
-    var total = 0
-    total += incrementAmount
-    return total
-}
+class Demo {
+    let world = "World"
 
-func makeIncrementerWithReturnClosure(incrementAmount: Int) -> () -> Int {
-    var total = 0
-
-    let incrementer: () -> Int = {
-        total += incrementAmount
-        return total
+    func myFunction() {
+        sleep(2)
+        print("Hello,")
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: { [weak self] in
+            print(self?.world)
+        })
     }
 
-    return incrementer
+    deinit {
+        print(#function)
+    }
 }
