@@ -7,32 +7,32 @@
 
 import UIKit
 import Foundation
-import Dispatch
 
 class ViewController: UIViewController {
+
+    let numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        var demo = Demo()
-        demo.myFunction()
+        func filterFunc (oldArray:[Int], function: (Int) -> Bool) -> [Int]? {
+            var result: [Int]?
+            
+            for i in oldArray {
+                if function(i) {
+                    if result == nil {
+                        result = [Int]()
+                    }
+                result?.append(i)
+                }
+            }
+            return result
+        }
         
-        print("viewDidLoad")
-    }
-}
-
-class Demo {
-    let world = "World"
-
-    func myFunction() {
-        sleep(2)
-        print("Hello,")
+        let newArray = filterFunc(oldArray: numbers) { i in
+            return i > 5
+        }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: { [weak self] in
-            print(self?.world)
-        })
-    }
-
-    deinit {
-        print(#function)
+        print(newArray ?? [])
     }
 }
