@@ -9,60 +9,70 @@ import UIKit
 import Foundation
 
 class ViewController: UIViewController {
-
-    var person = Person(name: "Joanna", age: 28)
-    //swift 4.0 引入更现代、类型安全的 KVO 机制
-    var observation: NSKeyValueObservation?
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        // 创建观察者对象
+        let observer = MyObserver()
 
-        //kvc (Objective-C)
-        person.setValue("Elijah", forKey: "name")
-        print(person.value(forKey: "name")!)
+        // 注册观察者监听通知
+        NotificationCenter.default.addObserver(observer, selector: #selector(MyObserver.handleNotification(notification:)), name: .myNotification, object: self)
 
-        //kvo (Objective-C)
-        var cat = Animal(type: "cat")
-        person.addObserver(cat, forKeyPath: "name",options: [.old, .new], context: nil)
-        //觸發func observeValue
-        person.name = "Emily"
-        person.removeObserver(cat, forKeyPath: "name")
+//        // 创建发布通知的对象
+//        let notifier = NotificationCenterExample()
+//
+//        // 发布通知
+//        notifier.postNotification()
         
-        //observe (swift 4.0)
-        observation = person.observe(\.name, options: [.old, .new]) { (object, change) in
-            // 处理属性变化
-            print("name change from \(change.oldValue!) to \(change.newValue!)")
-            print(object.name)
-        }
-        person.name = "Joanna"
+        // 创建通知
+        let notification = Notification(name: .myNotification, object: self, userInfo: ["data": "Hello, NotificationCenter!"])
         
-            
-        //keyPath
-        print(person[keyPath: \Person.name])
+        let notificationTest = Notification(name: .myNotification, object: nil, userInfo: ["data": "Hello, Test!"])
+        
+        // NotificationQueue
+        // 将通知加入通知队列，设置延迟时间
+//        let notificationQueue = NotificationQueue.default
+//        notificationQueue.enqueue(notification, postingStyle: .whenIdle, coalesceMask: [.none], forModes: nil)
+//
+//        // 假设执行一些操作
+//
+//        // 执行 runLoop，以便通知能够被处理
+//        RunLoop.current.run(until: Date(timeIntervalSinceNow: 1))
+        
+        // 发布通知
+        NotificationCenter.default.post(notification)
+        NotificationCenter.default.post(notificationTest)
+
+        // 移除观察者（通常在对象销毁时执行）
+        NotificationCenter.default.removeObserver(observer, name: .myNotification, object: nil)//removeObserver的參數object: 是nil時會移除所有name符合的對象
+        
+        NotificationCenter.default.post(notification)
+        NotificationCenter.default.post(notificationTest)
     }
 }
 
-class Person: NSObject {
-    @objc dynamic var name: String
-    @objc dynamic var age: Int
-    init(name: String, age: Int) {
-        self.name = name
-        self.age = age
-    }
+// 定义一个通知的名称
+extension Notification.Name {
+    static let myNotification = Notification.Name("MyNotification")
 }
 
-class Animal: NSObject {
-    var type: String
-    init(type: String) {
-        self.type = type
-    }
-    //實作func observeValue (Objective-C)
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        if keyPath == "name" {
-            if let oldValue = change?[.oldKey] as? String,
-               let newValue = change?[.newKey] as? String {
-                print("name change from \(oldValue) to \(newValue)")
-            }
+// 创建一个观察者类
+class MyObserver {
+    @objc func handleNotification(notification: Notification) {
+        if let data = notification.userInfo?["data"] as? String {
+            print("Received notification with data: \(data)")
         }
     }
 }
+
+// 現實情況下不太會自己創建一個通知的類
+// 创建一个发布通知的类
+//class NotificationCenterExample {
+//    func postNotification() {
+//        // 创建一个通知
+//        let notification = Notification(name: .myNotification, object: nil, userInfo: ["data": "Hello, NotificationCenter!"])
+//
+//        // 发布通知
+//        NotificationCenter.default.post(notification)
+//    }
+//}
