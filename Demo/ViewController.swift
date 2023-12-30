@@ -1,6 +1,6 @@
 //
 //  ViewController.swift
-//  Demo
+//  Demo🏸
 //
 //  Created by 譚培成 on 2023/4/18.
 //
@@ -17,36 +17,27 @@ class ViewController: UIViewController {
     let blueUndoButton = UIButton()
     var redScore = 0
     var blueScore = 0
-    let changeSides = UIButton()
+    let changeSide = UIButton()
     let restart = UIButton()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configUI()
-        
-//        changeSides.backgroundColor = UIColor(red: 50/255, green: 50/255, blue: 50/255, alpha: 0.5)
-//        changeSides.setTitle("", for: .normal)
-//        changeSides.layer.cornerRadius = 12
-//        view.addSubview(changeSides)
-//
-//        changeSides.snp.makeConstraints { make in
-//            make.centerX.equalToSuperview()
-//            make.bottom.equalToSuperview().inset(50)
-//            make.size.equalTo(50)
-//        }
         
         redScoreButton.addTarget(self, action: #selector(redScorePressed(_:)), for: .touchUpInside)
         blueScoreButton.addTarget(self, action: #selector(blueScorePressed(_:)), for: .touchUpInside)
         redUndoButton.addTarget(self, action: #selector(redUndoPressed(_:)), for: .touchUpInside)
         blueUndoButton.addTarget(self, action: #selector(blueUndoPressed(_:)), for: .touchUpInside)
         restart.addTarget(self, action: #selector(restartPressed(_:)), for: .touchUpInside)
+        changeSide.addTarget(self, action: #selector(changeSide(_:)), for: .touchUpInside)
     }
     
     func showRestart() {
         view.addSubview(restart)
         restart.snp.makeConstraints { make in
             make.center.equalToSuperview()
-            make.size.equalTo(220)
+            make.size.equalTo(160)
         }
         restart.isHidden = false
     }
@@ -55,19 +46,32 @@ class ViewController: UIViewController {
         if redScore < 20 {
             redScore += 1
             redScoreButton.setTitle("\(redScore)", for: .normal)
-        } else if redScore == 20 {
+        } else if redScore >= 20 && blueScore >= 20 {
+            redScore += 1
+            redScoreButton.setTitle("\(redScore)", for: .normal)
+            if redScore == blueScore + 2 {
+                redScoreButton.setTitle("Win!", for: .normal)
+                showRestart()
+            }
+        } else {
             redScore += 1
             redScoreButton.setTitle("Win!", for: .normal)
             showRestart()
         }
-        
     }
     
     @objc func blueScorePressed(_ sender: UIButton) {
         if blueScore < 20 {
             blueScore += 1
             blueScoreButton.setTitle("\(blueScore)", for: .normal)
-        } else if blueScore == 20 {
+        } else if blueScore >= 20 && redScore >= 20 {
+            blueScore += 1
+            blueScoreButton.setTitle("\(blueScore)", for: .normal)
+            if blueScore == redScore + 2 {
+                blueScoreButton.setTitle("Win!", for: .normal)
+                showRestart()
+            }
+        } else {
             blueScore += 1
             blueScoreButton.setTitle("Win!", for: .normal)
             showRestart()
@@ -79,6 +83,7 @@ class ViewController: UIViewController {
             redScore -= 1
             redScoreButton.setTitle("\(redScore)", for: .normal)
         }
+        restart.isHidden = true
     }
     
     @objc func blueUndoPressed(_ sender: UIButton) {
@@ -86,6 +91,7 @@ class ViewController: UIViewController {
             blueScore -= 1
             blueScoreButton.setTitle("\(blueScore)", for: .normal)
         }
+        restart.isHidden = true
     }
     
     @objc func restartPressed(_ sender: UIButton) {
@@ -95,6 +101,15 @@ class ViewController: UIViewController {
         blueScoreButton.setTitle("\(blueScore)", for: .normal)
         restart.isHidden = true
     }
+    
+    @objc func changeSide(_ sender: UIButton) {
+        var redScore = redScore
+        var blueScore = blueScore
+        redScoreButton.setTitle("\(blueScore)", for: .normal)
+        blueScoreButton.setTitle("\(redScore)", for: .normal)
+        self.redScore = blueScore
+        self.blueScore = redScore
+    }
 }
 
 // UI
@@ -102,11 +117,12 @@ private extension ViewController {
     func configUI() {
         configRedView()
         configBlueView()
-        configRestart()
         configRedScoreButton()
         configBlueScoreButton()
         configRedUndoButton()
         configBlueUndoButton()
+        configRestart()
+        configChangeSide()
     }
     
     func configRedView() {
@@ -127,15 +143,6 @@ private extension ViewController {
             make.height.equalToSuperview()
             make.width.equalToSuperview().multipliedBy(0.5)
         }
-    }
-    
-    func configRestart() {
-        restart.backgroundColor = UIColor(red: 50/255, green: 50/255, blue: 50/255, alpha: 0.8)
-        restart.setTitle("RESTART", for: .normal)
-        restart.titleLabel?.font = .systemFont(ofSize: 32)
-        restart.layer.cornerRadius = 110
-        restart.layer.borderWidth = 2
-        restart.layer.borderColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1).cgColor
     }
     
     func configRedScoreButton() {
@@ -185,6 +192,29 @@ private extension ViewController {
             make.bottom.equalToSuperview().inset(56)
             make.height.equalTo(35)
             make.width.equalTo(100)
+        }
+    }
+    
+    func configRestart() {
+        restart.backgroundColor = UIColor(red: 50/255, green: 50/255, blue: 50/255, alpha: 0.8)
+        restart.setTitle("RESTART", for: .normal)
+        restart.titleLabel?.font = .systemFont(ofSize: 28)
+        restart.layer.cornerRadius = 80
+        restart.layer.borderWidth = 2
+        restart.layer.borderColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1).cgColor
+    }
+    
+    func configChangeSide() {
+        changeSide.backgroundColor = UIColor(red: 50/255, green: 50/255, blue: 50/255, alpha: 0.5)
+        changeSide.setTitle("Change Side", for: .normal)
+        changeSide.layer.cornerRadius = 12
+        view.addSubview(changeSide)
+
+        changeSide.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.bottom.equalToSuperview().inset(56)
+            make.height.equalTo(35)
+            make.width.equalTo(150)
         }
     }
 }
