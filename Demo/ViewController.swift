@@ -1,6 +1,6 @@
 //
 //  ViewController.swift
-//  Demo🏸
+//  Demo
 //
 //  Created by 譚培成 on 2023/4/18.
 //
@@ -19,7 +19,6 @@ class ViewController: UIViewController {
     var blueScore = 0
     let changeSide = UIButton()
     let restart = UIButton()
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,39 +42,29 @@ class ViewController: UIViewController {
     }
     
     @objc func redScorePressed(_ sender: UIButton) {
-        if redScore < 20 {
-            redScore += 1
-            redScoreButton.setTitle("\(redScore)", for: .normal)
-        } else if redScore >= 20 && blueScore >= 20 {
-            redScore += 1
-            redScoreButton.setTitle("\(redScore)", for: .normal)
-            if redScore == blueScore + 2 {
-                redScoreButton.setTitle("Win!", for: .normal)
-                showRestart()
-            }
-        } else {
-            redScore += 1
+        redScore += 1
+        redScoreButton.setTitle("\(redScore)", for: .normal)
+        if isWiner(senderScore: redScore, otherScore: blueScore) {
             redScoreButton.setTitle("Win!", for: .normal)
             showRestart()
         }
     }
     
     @objc func blueScorePressed(_ sender: UIButton) {
-        if blueScore < 20 {
-            blueScore += 1
-            blueScoreButton.setTitle("\(blueScore)", for: .normal)
-        } else if blueScore >= 20 && redScore >= 20 {
-            blueScore += 1
-            blueScoreButton.setTitle("\(blueScore)", for: .normal)
-            if blueScore == redScore + 2 {
-                blueScoreButton.setTitle("Win!", for: .normal)
-                showRestart()
-            }
-        } else {
-            blueScore += 1
+        blueScore += 1
+        blueScoreButton.setTitle("\(blueScore)", for: .normal)
+        if isWiner(senderScore: blueScore, otherScore: redScore) {
             blueScoreButton.setTitle("Win!", for: .normal)
             showRestart()
         }
+    }
+    
+    private func isWiner(senderScore: Int, otherScore: Int) -> Bool {
+        let winScore = 21
+        guard senderScore >= winScore else {
+            return false
+        }
+        return senderScore - otherScore >= 2
     }
     
     @objc func redUndoPressed(_ sender: UIButton) {
@@ -103,8 +92,8 @@ class ViewController: UIViewController {
     }
     
     @objc func changeSide(_ sender: UIButton) {
-        var redScore = redScore
-        var blueScore = blueScore
+        let redScore = redScore
+        let blueScore = blueScore
         redScoreButton.setTitle("\(blueScore)", for: .normal)
         blueScoreButton.setTitle("\(redScore)", for: .normal)
         self.redScore = blueScore
