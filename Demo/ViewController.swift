@@ -12,10 +12,9 @@ class ViewController: UIViewController {
     
     let musicVideoImage = UIImageView()
     let pageControl = UIPageControl()
-    let segment = UISegmentedControl()
+    let segmentedControl = UISegmentedControl()
     let name = UILabel()
     let lyrics = UITextView()
-    let musicVideos = ["或是一首歌", "無人知曉", "皆可"]
     let names = ["或是一首歌", "無人知曉", "皆可"]
     let songLyrics = [
     """
@@ -187,25 +186,23 @@ class ViewController: UIViewController {
     let swipeGestureRight = UISwipeGestureRecognizer()
     var index = 0
     
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         configUI()
         lastButton.addTarget(self, action: #selector(lastButtonPressed), for: .touchUpInside)
         nextButton.addTarget(self, action: #selector(nextButtonPressed), for: .touchUpInside)
         pageControl.addTarget(self, action: #selector(selectPage), for: .valueChanged)
-        segment.addTarget(self, action: #selector(selectSegment), for: .valueChanged)
+        segmentedControl.addTarget(self, action: #selector(selectSegment), for: .valueChanged)
         swipeGestureLeft.addTarget(self, action: #selector(handleSwipeGesture))
         swipeGestureRight.addTarget(self, action: #selector(handleSwipeGesture))
     }
     
     func updateUI() {
-        musicVideoImage.image = UIImage(named: musicVideos[index])
+        musicVideoImage.image = UIImage(named: names[index])
+        pageControl.currentPage = index
+        segmentedControl.selectedSegmentIndex = index
         name.text = names[index]
         lyrics.text = songLyrics[index]
-        pageControl.currentPage = index
-        segment.selectedSegmentIndex = index
     }
     
     @objc func selectPage(_ sender: UIPageControl) {
@@ -214,30 +211,29 @@ class ViewController: UIViewController {
     }
     
     @objc func selectSegment(_ sender: UISegmentedControl) {
-        index = segment.selectedSegmentIndex
+        index = segmentedControl.selectedSegmentIndex
         updateUI()
     }
     
     @objc func lastButtonPressed(_ sender: UIButton) {
-        index = (index - 1 + musicVideos.count) % musicVideos.count
+        index = (index - 1 + names.count) % names.count
         updateUI()
     }
     
     @objc func nextButtonPressed(_ sender: UIButton) {
-        index = (index + 1) % musicVideos.count
+        index = (index + 1) % names.count
         updateUI()
     }
     
     @objc func handleSwipeGesture(_ gesture: UISwipeGestureRecognizer) {
-        if gesture.direction == .right {
-            index = (index - 1 + musicVideos.count) % musicVideos.count
+        if gesture.direction == .left {
+            index = (index + 1) % names.count
             updateUI()
-        } else if gesture.direction == .left {
-            index = (index + 1) % musicVideos.count
+        } else if gesture.direction == .right {
+            index = (index - 1 + names.count) % names.count
             updateUI()
         }
     }
-    
     
     func configUI() {
         configMusicVideoImage()
@@ -252,7 +248,7 @@ class ViewController: UIViewController {
     
     func configMusicVideoImage() {
         musicVideoImage.backgroundColor = .darkGray
-        musicVideoImage.image = UIImage(named: musicVideos[index])
+        musicVideoImage.image = UIImage(named: names[index])
         view.addSubview(musicVideoImage)
         musicVideoImage.snp.makeConstraints { make in
             make.width.equalToSuperview()
@@ -293,18 +289,17 @@ class ViewController: UIViewController {
         pageControl.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(musicVideoImage.snp.bottom).offset(10)
-            
         }
     }
     
     func configSegment() {
         for index in names.indices {
-            segment.insertSegment(withTitle: musicVideos[index], at: index, animated: true)
+            segmentedControl.insertSegment(withTitle: names[index], at: index, animated: true)
         }
-        segment.selectedSegmentIndex = index
-        segment.backgroundColor = .systemPink
-        view.addSubview(segment)
-        segment.snp.makeConstraints { make in
+        segmentedControl.selectedSegmentIndex = index
+        segmentedControl.backgroundColor = .systemPink
+        view.addSubview(segmentedControl)
+        segmentedControl.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(pageControl.snp.bottom).offset(30)
         }
@@ -317,13 +312,13 @@ class ViewController: UIViewController {
         view.addSubview(name)
         name.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalTo(segment.snp.bottom).offset(40)
+            make.top.equalTo(segmentedControl.snp.bottom).offset(40)
         }
     }
     
     func configLyrics() {
         lyrics.text = songLyrics[index]
-        lyrics.textAlignment = NSTextAlignment.center
+        lyrics.textAlignment = .center
         lyrics.font = .systemFont(ofSize: 20)
         lyrics.backgroundColor = .clear
         lyrics.textColor = .systemBackground
