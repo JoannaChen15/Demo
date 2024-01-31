@@ -59,20 +59,23 @@ extension UIColor {
         }
     }
     class var buttonPrimary: UIColor {
-        return UIColor { (traitCollection) -> UIColor in
-            if traitCollection.userInterfaceStyle == .dark {
-                return UIColor(hex: "#4B5EFC")!
-            } else {
-                return UIColor(hex: "#4B5EFC")!
-            }
-        }
+        return UIColor(hex: "#4B5EFC")!
     }
-    class var text: UIColor {
+    class var textPrimary: UIColor {
         return UIColor { (traitCollection) -> UIColor in
             if traitCollection.userInterfaceStyle == .dark {
                 return UIColor(hex: "#FFFFFF")!
             } else {
                 return UIColor(hex: "#000000")!
+            }
+        }
+    }
+    class var textSecondary: UIColor {
+        return UIColor { (traitCollection) -> UIColor in
+            if traitCollection.userInterfaceStyle == .dark {
+                return UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0.4)
+            } else {
+                return UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.4)
             }
         }
     }
