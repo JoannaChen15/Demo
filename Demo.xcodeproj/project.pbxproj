@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		62D3B16E2B73ABE7000B8A10 /* UIColor+ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D3B16D2B73ABE7000B8A10 /* UIColor+ext.swift */; };
+		62D3B1702B73AF23000B8A10 /* QnaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D3B16F2B73AF23000B8A10 /* QnaViewController.swift */; };
 		F521C05929EE6D2A008A5F7C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F521C05829EE6D2A008A5F7C /* AppDelegate.swift */; };
 		F521C05B29EE6D2A008A5F7C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F521C05A29EE6D2A008A5F7C /* SceneDelegate.swift */; };
 		F521C05D29EE6D2A008A5F7C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F521C05C29EE6D2A008A5F7C /* ViewController.swift */; };
@@ -20,6 +22,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		62D3B16D2B73ABE7000B8A10 /* UIColor+ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+ext.swift"; sourceTree = "<group>"; };
+		62D3B16F2B73AF23000B8A10 /* QnaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QnaViewController.swift; sourceTree = "<group>"; };
 		F521C05529EE6D2A008A5F7C /* Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F521C05829EE6D2A008A5F7C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F521C05A29EE6D2A008A5F7C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -67,8 +71,10 @@
 				F521C05829EE6D2A008A5F7C /* AppDelegate.swift */,
 				F521C05A29EE6D2A008A5F7C /* SceneDelegate.swift */,
 				F521C05C29EE6D2A008A5F7C /* ViewController.swift */,
+				62D3B16F2B73AF23000B8A10 /* QnaViewController.swift */,
 				F575761A2A0363EE00AD8D2F /* ScoreViewController.swift */,
 				F57576182A02A7C600AD8D2F /* Question.swift */,
+				62D3B16D2B73ABE7000B8A10 /* UIColor+ext.swift */,
 				F521C05E29EE6D2A008A5F7C /* Main.storyboard */,
 				F521C06129EE6D2B008A5F7C /* Assets.xcassets */,
 				F521C06329EE6D2B008A5F7C /* LaunchScreen.storyboard */,
@@ -156,11 +162,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				62D3B1702B73AF23000B8A10 /* QnaViewController.swift in Sources */,
 				F521C05D29EE6D2A008A5F7C /* ViewController.swift in Sources */,
 				F57576192A02A7C700AD8D2F /* Question.swift in Sources */,
 				F575761B2A0363EE00AD8D2F /* ScoreViewController.swift in Sources */,
 				F521C05929EE6D2A008A5F7C /* AppDelegate.swift in Sources */,
 				F521C05B29EE6D2A008A5F7C /* SceneDelegate.swift in Sources */,
+				62D3B16E2B73ABE7000B8A10 /* UIColor+ext.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

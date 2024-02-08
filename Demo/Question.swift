@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 struct Question {
     let text: String
     let answerIndex: Int
@@ -16,124 +15,79 @@ struct Question {
 
 let questions: [Question] = [
     Question(
-        text: "「橙香森林」位於台灣哪個縣市？",
+        text: "Abundance",
         answerIndex: 1,
-        options: ["基隆市", "苗栗縣", "台北市", "宜蘭縣"]
+        options: ["放棄", "豐富", "慷慨", "貧困"]
     ),
     Question(
-        text: "「新山夢湖」位於台灣哪個縣市？",
+        text: "Crisis",
         answerIndex: 3,
-        options: ["台南市", "花蓮縣", "台中市", "新北市"]
+        options: ["機會", "成就", "挑戰", "危機"]
     ),
     Question(
-        text: "「望幽谷」位於台灣哪個縣市？",
-        answerIndex: 0,
-        options: ["基隆市", "高雄市", "台南市", "宜蘭縣"]
-    ),
-    Question(
-        text: "「濛濛湖」位於台灣哪個縣市？",
-        answerIndex: 1,
-        options: ["南投縣", "新北市", "台北市", "基隆市"]
-    ),
-    Question(
-        text: "「忘憂森林」位於台灣哪個縣市？",
+        text: "Diligent",
         answerIndex: 2,
-        options: ["花蓮縣", "台東縣", "南投縣", "嘉義縣"]
+        options: ["優雅", "忠誠", "勤奮", "耐心"]
     ),
     Question(
-        text: "「外埔忘憂谷」的起點位於台灣哪個縣市？",
+        text: "Enthusiastic",
+        answerIndex: 1,
+        options: ["舒適", "熱情", "運動", "災難"]
+    ),
+    Question(
+        text: "Generous",
         answerIndex: 3,
-        options: ["嘉義縣", "南投縣", "花蓮縣", "台中市"]
+        options: ["普通的", "天才", "世代", "慷慨"]
     ),
     Question(
-        text: "「龍崎牛埔泥岩農塘」位於台灣哪個縣市？",
-        answerIndex: 1,
-        options: ["屏東縣", "台南市", "高雄市", "宜蘭縣"]
-    ),
-    Question(
-        text: "「柴山秘境海灘」位於台灣哪個縣市？",
-        answerIndex: 2,
-        options: ["台南市", "基隆市", "高雄市", "屏東縣"]
-    ),
-    Question(
-        text: "「壽豐雲山水」位於台灣哪個縣市？",
-        answerIndex: 1,
-        options: ["屏東縣", "花蓮縣", "台東縣", "宜蘭縣"]
-    ),
-    Question(
-        text: "「六十石山」位於台灣哪個縣市？",
-        answerIndex: 1,
-        options: ["屏東縣", "花蓮縣", "台東縣", "宜蘭縣"]
-    ),
-    Question(
-        text: "「太麻里」位於台灣哪個縣市？",
-        answerIndex: 2,
-        options: ["屏東縣", "花蓮縣", "台東縣", "宜蘭縣"]
-    ),
-    Question(
-        text: "「水牛坑」位於台灣哪個縣市？",
-        answerIndex: 2,
-        options: ["屏東縣", "花蓮縣", "新北市", "宜蘭縣"]
-    ),
-    Question(
-        text: "「象鼻岩」位於台灣哪個縣市？",
-        answerIndex: 1,
-        options: ["屏東縣", "新北市", "台東縣", "宜蘭縣"]
-    ),
-    Question(
-        text: "「老梅迷宮」位於台灣哪個縣市？",
+        text: "Honest",
         answerIndex: 0,
-        options: ["新北市", "花蓮縣", "台東縣", "宜蘭縣"]
+        options: ["誠實", "幸運", "樂觀", "甜蜜"]
     ),
     Question(
-        text: "「芹壁村」位於台灣哪個縣市？",
+        text: "Innovative",
         answerIndex: 2,
-        options: ["屏東縣", "花蓮縣", "連江縣", "宜蘭縣"]
+        options: ["科技", "明亮", "創新", "悅耳"]
     ),
     Question(
-        text: "「沙美老街」位於台灣哪個縣市？",
-        answerIndex: 2,
-        options: ["屏東縣", "金門縣", "連江縣", "宜蘭縣"]
-    ),
-    Question(
-        text: "「翡翠谷」位於台灣哪個縣市？",
+        text: "Judicious",
         answerIndex: 1,
-        options: ["屏東縣", "花蓮縣", "連江縣", "宜蘭縣"]
+        options: ["輕率", "明智", "懦弱", "刺激"]
     ),
     Question(
-        text: "「鳩之澤」位於台灣哪個縣市？",
+        text: "Knowledgeable",
+        answerIndex: 0,
+        options: ["博學", "網路", "認識", "故意地"]
+    ),
+    Question(
+        text: "Loyal",
         answerIndex: 3,
-        options: ["屏東縣", "花蓮縣", "連江縣", "宜蘭縣"]
+        options: ["閒混", "在地的", "法律", "忠誠"]
     ),
     Question(
-        text: "「日落大道」位於台灣哪個縣市？",
-        answerIndex: 2,
-        options: ["台中市", "台東縣", "苗栗縣", "台南市"]
+        text: "Modest",
+        answerIndex: 1,
+        options: ["時尚", "謙虛", "自大", "中間"]
     ),
     Question(
-        text: "「龍蝦洞」位於台灣哪個縣市？",
-        answerIndex: 2,
-        options: ["台中市", "台東縣", "屏東縣", "台南市"]
-    ),
-    Question(
-        text: "「鱷魚島」位於台灣哪個縣市？",
+        text: "Noble",
         answerIndex: 0,
-        options: ["新北市", "台東縣", "屏東縣", "宜蘭縣"]
+        options: ["高尚", "詐騙", "興趣", "平衡"]
     ),
     Question(
-        text: "「石梯坪單面山」位於台灣哪個縣市？",
-        answerIndex: 0,
-        options: ["花蓮縣", "台東縣", "屏東縣", "宜蘭縣"]
+        text: "Optimistic",
+        answerIndex: 1,
+        options: ["悲觀", "樂觀", "完美", "堅持"]
     ),
     Question(
-        text: "「正濱漁港」位於台灣哪個縣市？",
+        text: "Passionate",
         answerIndex: 2,
-        options: ["台中市", "台東縣", "屏東縣", "基隆市"]
+        options: ["通行", "耐心", "熱情", "鈍化的"]
     ),
     Question(
-        text: "「水湳洞」位於台灣哪個縣市？",
-        answerIndex: 3,
-        options: ["台中市", "台東縣", "屏東縣", "新北市"]
+        text: "Resourceful",
+        answerIndex: 0,
+        options: ["足智多謀", "回響地", "使分解的", "斷然地"]
     )
+    // 添加更多题目...
 ]
-
