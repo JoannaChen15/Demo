@@ -14,20 +14,16 @@ class FollowButton: UIButton {
             updateUI()
         }
     }
+    
     override init(frame: CGRect) {
         super.init(frame: .zero)
         updateUI()
         self.layer.cornerRadius = 8
         self.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-        self.addTarget(self, action: #selector(clicked), for: .touchUpInside)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    @objc func clicked(_ sender: UIButton) {
-        
     }
     
     func updateUI() {

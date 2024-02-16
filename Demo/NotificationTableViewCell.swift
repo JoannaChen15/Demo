@@ -20,7 +20,7 @@ class NotificationTableViewCell: UITableViewCell {
     weak var delegate: NotificationTableViewCellDelegate?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        super.init(style: .default, reuseIdentifier: "notificationTableViewCell")
         configUI()
         followButton.addTarget(self, action: #selector(tabFollowButton), for: .touchUpInside)
     }
@@ -35,7 +35,6 @@ class NotificationTableViewCell: UITableViewCell {
         followButton.status = account.followStatus
 //        邊畫資料時（account資料傳進來時）逐個取得account資料存起來
         self.account = account
-//        print(self.account!)
     }
     
     @objc func tabFollowButton() {
@@ -50,6 +49,7 @@ extension NotificationTableViewCell {
     func configUI() {
         mainStackView.axis = .horizontal
         mainStackView.alignment = .center
+        mainStackView.spacing = 10
         
         contentView.addSubview(mainStackView)
         mainStackView.snp.makeConstraints { make in
@@ -70,19 +70,7 @@ extension NotificationTableViewCell {
         
         followButton.status = .unfollow
         followButton.snp.makeConstraints { make in
-            make.width.equalTo(100)
+            make.width.equalTo(100).priority(UILayoutPriority(rawValue: 750))
         }
-    }
-}
-
-struct Account: Equatable {
-    var avatar: UIImage?
-    var name: String
-    var followStatus: FollowStatus
-    
-    init(avatar: UIImage? = nil, name: String, followStatus: FollowStatus = .unfollow) {
-        self.avatar = avatar
-        self.name = name
-        self.followStatus = followStatus
     }
 }

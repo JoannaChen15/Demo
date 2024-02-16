@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		62D3B1722B762C68000B8A10 /* AccountModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D3B1712B762C68000B8A10 /* AccountModel.swift */; };
 		F521C05929EE6D2A008A5F7C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F521C05829EE6D2A008A5F7C /* AppDelegate.swift */; };
 		F521C05B29EE6D2A008A5F7C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F521C05A29EE6D2A008A5F7C /* SceneDelegate.swift */; };
 		F521C05D29EE6D2A008A5F7C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F521C05C29EE6D2A008A5F7C /* ViewController.swift */; };
@@ -15,18 +16,16 @@
 		F521C06529EE6D2B008A5F7C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F521C06329EE6D2B008A5F7C /* LaunchScreen.storyboard */; };
 		F521C06E29EE6E65008A5F7C /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = F521C06D29EE6E65008A5F7C /* SnapKit */; };
 		F5532C7129F96BFF006B98A5 /* SwifterSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F5532C7029F96BFF006B98A5 /* SwifterSwift */; };
-		F575761F2A0A229C00AD8D2F /* AnimalDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F575761E2A0A229C00AD8D2F /* AnimalDetailViewController.swift */; };
 		F57576232A0B705E00AD8D2F /* NotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57576222A0B705E00AD8D2F /* NotificationTableViewCell.swift */; };
 		F5E95E462A1216A200C88D31 /* PostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E95E452A1216A200C88D31 /* PostCell.swift */; };
-		F5E95E482A123E3200C88D31 /* PostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E95E472A123E3200C88D31 /* PostModel.swift */; };
 		F5E95E4A2A12406A00C88D31 /* PostPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E95E492A12406A00C88D31 /* PostPageViewController.swift */; };
-		F5E95E4C2A12441100C88D31 /* postPageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E95E4B2A12441100C88D31 /* postPageCell.swift */; };
 		F5FB2ACE2A0B83360068F045 /* FollowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5FB2ACD2A0B83360068F045 /* FollowButton.swift */; };
 		F5FB2AD02A11F9A90068F045 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5FB2ACF2A11F9A90068F045 /* HomeViewController.swift */; };
 		F5FB2AD22A11FA2D0068F045 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5FB2AD12A11FA2D0068F045 /* ProfileViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		62D3B1712B762C68000B8A10 /* AccountModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountModel.swift; sourceTree = "<group>"; };
 		F521C05529EE6D2A008A5F7C /* Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F521C05829EE6D2A008A5F7C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F521C05A29EE6D2A008A5F7C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -35,12 +34,9 @@
 		F521C06129EE6D2B008A5F7C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F521C06429EE6D2B008A5F7C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F521C06629EE6D2B008A5F7C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F575761E2A0A229C00AD8D2F /* AnimalDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimalDetailViewController.swift; sourceTree = "<group>"; };
 		F57576222A0B705E00AD8D2F /* NotificationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTableViewCell.swift; sourceTree = "<group>"; };
 		F5E95E452A1216A200C88D31 /* PostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCell.swift; sourceTree = "<group>"; };
-		F5E95E472A123E3200C88D31 /* PostModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostModel.swift; sourceTree = "<group>"; };
 		F5E95E492A12406A00C88D31 /* PostPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostPageViewController.swift; sourceTree = "<group>"; };
-		F5E95E4B2A12441100C88D31 /* postPageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = postPageCell.swift; sourceTree = "<group>"; };
 		F5FB2ACD2A0B83360068F045 /* FollowButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowButton.swift; sourceTree = "<group>"; };
 		F5FB2ACF2A11F9A90068F045 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		F5FB2AD12A11FA2D0068F045 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
@@ -84,12 +80,10 @@
 				F5FB2ACF2A11F9A90068F045 /* HomeViewController.swift */,
 				F5FB2AD12A11FA2D0068F045 /* ProfileViewController.swift */,
 				F5E95E492A12406A00C88D31 /* PostPageViewController.swift */,
-				F5E95E472A123E3200C88D31 /* PostModel.swift */,
-				F5E95E452A1216A200C88D31 /* PostCell.swift */,
-				F5E95E4B2A12441100C88D31 /* postPageCell.swift */,
 				F57576222A0B705E00AD8D2F /* NotificationTableViewCell.swift */,
 				F5FB2ACD2A0B83360068F045 /* FollowButton.swift */,
-				F575761E2A0A229C00AD8D2F /* AnimalDetailViewController.swift */,
+				F5E95E452A1216A200C88D31 /* PostCell.swift */,
+				62D3B1712B762C68000B8A10 /* AccountModel.swift */,
 				F521C05E29EE6D2A008A5F7C /* Main.storyboard */,
 				F521C06129EE6D2B008A5F7C /* Assets.xcassets */,
 				F521C06329EE6D2B008A5F7C /* LaunchScreen.storyboard */,
@@ -177,13 +171,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F5E95E4C2A12441100C88D31 /* postPageCell.swift in Sources */,
 				F57576232A0B705E00AD8D2F /* NotificationTableViewCell.swift in Sources */,
-				F5E95E482A123E3200C88D31 /* PostModel.swift in Sources */,
 				F521C05D29EE6D2A008A5F7C /* ViewController.swift in Sources */,
 				F5FB2ACE2A0B83360068F045 /* FollowButton.swift in Sources */,
+				62D3B1722B762C68000B8A10 /* AccountModel.swift in Sources */,
 				F521C05929EE6D2A008A5F7C /* AppDelegate.swift in Sources */,
-				F575761F2A0A229C00AD8D2F /* AnimalDetailViewController.swift in Sources */,
 				F5E95E462A1216A200C88D31 /* PostCell.swift in Sources */,
 				F5FB2AD02A11F9A90068F045 /* HomeViewController.swift in Sources */,
 				F5FB2AD22A11FA2D0068F045 /* ProfileViewController.swift in Sources */,

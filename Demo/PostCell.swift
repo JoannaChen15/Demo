@@ -23,7 +23,6 @@ class PostCell: UICollectionViewCell {
     
     func configureCell() {
         postImageView.contentMode = .scaleAspectFill
-//        postImageView.clipsToBounds = true
         contentView.addSubview(postImageView)
         postImageView.snp.makeConstraints { make in
             make.edges.equalToSuperview()

@@ -23,23 +23,27 @@ class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemBackground
+        configUI()
         
+        notificationTableView.delegate = self
+        notificationTableView.dataSource = self
+
+        notificationTableView.register(NotificationTableViewCell.self, forCellReuseIdentifier: "notificationTableViewCell")
+    }
+    
+    func configUI() {
+        view.backgroundColor = .systemBackground
         view.addSubview(notificationTableView)
         notificationTableView.snp.makeConstraints { make in
             make.left.right.equalToSuperview()
             make.top.bottom.equalTo(view.safeAreaLayoutGuide)
         }
-        
-        notificationTableView.delegate = self
-        notificationTableView.dataSource = self
-        
-        notificationTableView.register(NotificationTableViewCell.self, forCellReuseIdentifier: "notificationTableViewCell")
     }
     
 }
 
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
+    //UITableViewDataSource
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "notificationTableViewCell", for: indexPath) as! NotificationTableViewCell
 //        cell找ViewController當delegate幫忙
@@ -49,28 +53,21 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return accounts.count
     }
     
+    //UITableViewDelegate
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 80
     }
     
     // 點選 cell 後執行的動作
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
         let account = accounts[indexPath.row]
         print("選擇的是 \(account.name)")
-//        let detailController = AnimalDetailViewController()
-//        detailController.fact.text = animal.facts
-//        self.present(detailController, animated: true)
-//        self.navigationController?.pushViewController(detailController, animated: true)
     }
+    
 }
 
 extension HomeViewController: NotificationTableViewCellDelegate {
@@ -88,24 +85,3 @@ extension HomeViewController: NotificationTableViewCellDelegate {
         notificationTableView.reloadData()
     }
 }
-
-var accounts: [Account] = [
-    Account(avatar: UIImage(named: "Upstream"), name: "account0"),
-    Account(avatar: UIImage(named: "Upstream-1"), name: "account1"),
-    Account(avatar: UIImage(named: "Upstream-2"), name: "account2"),
-    Account(avatar: UIImage(named: "Upstream-3"), name: "account3"),
-    Account(avatar: UIImage(named: "Upstream-4"), name: "account4"),
-    Account(avatar: UIImage(named: "Upstream-5"), name: "account5"),
-    Account(avatar: UIImage(named: "Upstream-6"), name: "account6"),
-    Account(avatar: UIImage(named: "Upstream-7"), name: "account7"),
-    Account(avatar: UIImage(named: "Upstream-8"), name: "account8"),
-    Account(avatar: UIImage(named: "Upstream-9"), name: "account9"),
-    Account(avatar: UIImage(named: "Upstream-10"), name: "account10"),
-    Account(avatar: UIImage(named: "Upstream-11"), name: "account11"),
-    Account(avatar: UIImage(named: "Upstream-12"), name: "account12"),
-    Account(avatar: UIImage(named: "Upstream-13"), name: "account13"),
-    Account(avatar: UIImage(named: "Upstream-14"), name: "account14"),
-    Account(avatar: UIImage(named: "Upstream-15"), name: "account15"),
-    Account(avatar: UIImage(named: "Upstream-16"), name: "account16"),
-    Account(avatar: UIImage(named: "Upstream-17"), name: "account17")
-]
