@@ -14,6 +14,11 @@ class ViewController: UIViewController {
     let cityPickView = UIPickerView()
     let area = UILabel()
     let pageTitle = UILabel()
+    
+    let picture = UIImageView()
+    let text = UILabel()
+    
+    var imageUrls = [URL]()
 
     
     override func viewDidLoad() {
@@ -27,7 +32,7 @@ class ViewController: UIViewController {
             make.centerX.equalToSuperview()
         }
         
-        area.text = "台北市中正區"
+        area.text = "臺北市中正區"
         area.font = .systemFont(ofSize: 26)
         view.addSubview(area)
         area.snp.makeConstraints { make in
@@ -40,6 +45,8 @@ class ViewController: UIViewController {
             make.top.equalTo(area.snp.bottom).offset(20)
             make.centerX.equalToSuperview()
         }
+        
+        configUI()
         
         cityPickView.delegate = self
         cityPickView.dataSource = self
@@ -128,5 +135,59 @@ extension City {
             return []
         }
         return (try? JSONDecoder().decode([Self].self, from: data)) ?? []
+    }
+}
+
+extension ViewController {
+    func configUI() {
+        view.addSubview(picture)
+        picture.backgroundColor = .tintColor
+        picture.contentMode = .scaleAspectFit
+        
+        
+        if let requestUrlString = URL(string: "https://itunes.apple.com/search?term=田馥甄&media=music&country=tw") {
+            var request = URLRequest(url: requestUrlString)
+            request.httpMethod = "POST"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            //request.httpBody
+        }
+        
+        if let urlString = "https://itunes.apple.com/search?term=田馥甄&media=music&country=tw".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+           let url = URL(string: urlString) {
+            URLSession.shared.dataTask(with: url) { data, response, error in
+                if let data,
+                   let response = response as? HTTPURLResponse,
+                   response.statusCode == 200,
+                   error == nil {
+                    let decoder = JSONDecoder()
+                    decoder.dateDecodingStrategy = .iso8601
+                    do {
+                        let song = try decoder.decode(Song.self, from: data)
+                        for song in song.results {
+                            self.imageUrls.append(song.artworkUrl100)
+                        }
+                        print(song.results[0].releaseDate)
+                    } catch {
+                        print(error)
+                    }
+                }
+                
+                URLSession.shared.dataTask(with: self.imageUrls[0]) { data, response, error in
+                    if let data,
+                       let image = UIImage(data: data) {
+                        DispatchQueue.main.async {
+                            self.picture.image = image
+                        }
+                    }
+                }.resume()
+                
+            }.resume()
+        }
+    
+        picture.snp.makeConstraints { make in
+            make.size.equalTo(200)
+            make.centerX.equalToSuperview()
+            make.top.equalTo(cityPickView.snp.bottom).offset(30)
+        }
     }
 }
