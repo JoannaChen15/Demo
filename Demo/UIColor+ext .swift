@@ -44,6 +44,10 @@ extension UIColor {
         return UIColor(hex: "#6a7579")!
     }
     
+    class var gray: UIColor {
+        return UIColor(hex: "#a7a8a9")!
+    }
+    
     class var textSecondary: UIColor {
         return UIColor { (traitCollection) -> UIColor in
             if traitCollection.userInterfaceStyle == .dark {

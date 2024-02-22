@@ -9,8 +9,6 @@ import UIKit
 
 class MenuViewController: UIViewController {
     
-    
-    
     let menuTableView = UITableView()
     
     init() {
@@ -51,20 +49,28 @@ class MenuViewController: UIViewController {
     
     func configUI() {
         view.backgroundColor = .primary
+        configMenuTableView()
     }
     
-    func config() {
-        
+    func configMenuTableView() {
+        view.addSubview(menuTableView)
+        menuTableView.backgroundColor = .primary
+        menuTableView.snp.makeConstraints { make in
+            make.edges.equalTo(view.safeAreaLayoutGuide)
+        }
     }
     
 }
 
 extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        <#code#>
+        return 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        <#code#>
+        
+        let cell = menuTableView.dequeueReusableCell(withIdentifier: "drinkCell", for: indexPath) as! DrinkCell
+
+        return cell
     }
 }
