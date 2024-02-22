@@ -11,9 +11,27 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        UITabBar.appearance().tintColor = UIColor.secondary
+        UITabBar.appearance().unselectedItemTintColor = UIColor.unselected
+        UITabBar.appearance().barTintColor = .primary
+        
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        let tabBar = UITabBarController()
+        let menuNavigation = UINavigationController(rootViewController: MenuViewController())
+//        let menu = MenuViewController()
+//        menuNavigation.pushViewController(menu, animated: false)
 
+        let order = OrderViewController()
+        
+        tabBar.viewControllers = [menuNavigation, order]
+        tabBar.modalPresentationStyle = .fullScreen
+        present(tabBar, animated: true)
+    }
 
 }
 

@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		62D3B17E2B873E8B000B8A10 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D3B17D2B873E8B000B8A10 /* MenuViewController.swift */; };
+		62D3B1802B8740C8000B8A10 /* OrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D3B17F2B8740C8000B8A10 /* OrderViewController.swift */; };
+		62D3B1822B8742C0000B8A10 /* UIColor+ext .swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D3B1812B8742C0000B8A10 /* UIColor+ext .swift */; };
+		62D3B1862B87744B000B8A10 /* DrinkCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D3B1852B87744B000B8A10 /* DrinkCell.swift */; };
 		F521C05929EE6D2A008A5F7C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F521C05829EE6D2A008A5F7C /* AppDelegate.swift */; };
 		F521C05B29EE6D2A008A5F7C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F521C05A29EE6D2A008A5F7C /* SceneDelegate.swift */; };
 		F521C05D29EE6D2A008A5F7C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F521C05C29EE6D2A008A5F7C /* ViewController.swift */; };
@@ -16,6 +20,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		62D3B17D2B873E8B000B8A10 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
+		62D3B17F2B8740C8000B8A10 /* OrderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderViewController.swift; sourceTree = "<group>"; };
+		62D3B1812B8742C0000B8A10 /* UIColor+ext .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+ext .swift"; sourceTree = "<group>"; };
+		62D3B1852B87744B000B8A10 /* DrinkCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkCell.swift; sourceTree = "<group>"; };
 		F521C05529EE6D2A008A5F7C /* Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F521C05829EE6D2A008A5F7C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F521C05A29EE6D2A008A5F7C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -59,6 +67,10 @@
 				F521C05829EE6D2A008A5F7C /* AppDelegate.swift */,
 				F521C05A29EE6D2A008A5F7C /* SceneDelegate.swift */,
 				F521C05C29EE6D2A008A5F7C /* ViewController.swift */,
+				62D3B17D2B873E8B000B8A10 /* MenuViewController.swift */,
+				62D3B1852B87744B000B8A10 /* DrinkCell.swift */,
+				62D3B17F2B8740C8000B8A10 /* OrderViewController.swift */,
+				62D3B1812B8742C0000B8A10 /* UIColor+ext .swift */,
 				F521C05E29EE6D2A008A5F7C /* Main.storyboard */,
 				F521C06129EE6D2B008A5F7C /* Assets.xcassets */,
 				F521C06329EE6D2B008A5F7C /* LaunchScreen.storyboard */,
@@ -99,6 +111,7 @@
 				TargetAttributes = {
 					F521C05429EE6D2A008A5F7C = {
 						CreatedOnToolsVersion = 14.2;
+						LastSwiftMigration = 1520;
 					};
 				};
 			};
@@ -138,9 +151,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				62D3B1822B8742C0000B8A10 /* UIColor+ext .swift in Sources */,
 				F521C05D29EE6D2A008A5F7C /* ViewController.swift in Sources */,
+				62D3B1862B87744B000B8A10 /* DrinkCell.swift in Sources */,
+				62D3B1802B8740C8000B8A10 /* OrderViewController.swift in Sources */,
 				F521C05929EE6D2A008A5F7C /* AppDelegate.swift in Sources */,
 				F521C05B29EE6D2A008A5F7C /* SceneDelegate.swift in Sources */,
+				62D3B17E2B873E8B000B8A10 /* MenuViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -285,6 +302,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = H684NQZS4N;
@@ -303,6 +321,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.joanna.Demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -313,6 +333,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = H684NQZS4N;
@@ -331,6 +352,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.joanna.Demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
