@@ -23,9 +23,6 @@ class ViewController: UIViewController {
         
         let tabBar = UITabBarController()
         let menuNavigation = UINavigationController(rootViewController: MenuViewController())
-//        let menu = MenuViewController()
-//        menuNavigation.pushViewController(menu, animated: false)
-
         let order = OrderViewController()
         
         tabBar.viewControllers = [menuNavigation, order]

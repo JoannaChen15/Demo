@@ -21,11 +21,6 @@ class DrinkCell: UITableViewCell {
         super.init(style: .default, reuseIdentifier: "drinkCell")
         
         configUI()
-        drinkName.text = "草莓檸果"
-        drinkDescription.text = "草莓紅茶與鮮切檸檬酸甜滋味搭配Q軟菓玉滿足嚼慾"
-        drinkPrice.text = "M : $65  /  L : $75"
-        drinkImageView.image = UIImage(named: "logo")
-        
     }
     
     required init?(coder: NSCoder) {
@@ -37,12 +32,12 @@ class DrinkCell: UITableViewCell {
         contentView.backgroundColor = .primary
         
         mainStackView.axis = .horizontal
-        mainStackView.alignment = .center
+        mainStackView.alignment = .fill
         mainStackView.distribution = .fillProportionally
-        mainStackView.spacing = 20
+        mainStackView.spacing = 16
         mainStackView.snp.makeConstraints { make in
-            make.top.bottom.equalToSuperview().inset(10)
-            make.left.right.equalToSuperview().inset(20)
+            make.top.bottom.equalToSuperview().inset(14)
+            make.left.right.equalToSuperview().inset(16)
         }
         mainStackView.addArrangedSubview(subStackView)
         mainStackView.addArrangedSubview(drinkImageView)
@@ -55,23 +50,20 @@ class DrinkCell: UITableViewCell {
         subStackView.addArrangedSubview(drinkDescription)
         subStackView.addArrangedSubview(drinkPrice)
         
-        drinkName.font = UIFont.systemFont(ofSize: 18)
+        drinkName.font = UIFont.systemFont(ofSize: 17)
         drinkName.textColor = .white
-        drinkDescription.font = UIFont.systemFont(ofSize: 15)
-        drinkDescription.textColor = .gray
+        drinkDescription.font = UIFont.systemFont(ofSize: 14)
+        drinkDescription.textColor = .secondary
         drinkDescription.numberOfLines = 2
-        drinkPrice.font = UIFont.systemFont(ofSize: 15)
+        drinkPrice.font = UIFont.systemFont(ofSize: 14)
         drinkPrice.textColor = .white
         
         drinkImageView.contentMode = .scaleAspectFill
-        drinkImageView.layer.cornerRadius = 16
+        drinkImageView.layer.cornerRadius = 8
         drinkImageView.clipsToBounds = true // 這一行用於確保超出邊界的部分被裁剪掉
         drinkImageView.snp.makeConstraints { make in
-            make.size.equalTo((contentView.frame.width) / 3)
+            make.size.equalTo((contentView.frame.width) / 3.2)
         }
-        
-        
-        
     }
    
 }

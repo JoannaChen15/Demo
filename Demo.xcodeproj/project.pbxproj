@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		62A1615B2B87A6D8009457BD /* Drink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62A1615A2B87A6D8009457BD /* Drink.swift */; };
 		62D3B17E2B873E8B000B8A10 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D3B17D2B873E8B000B8A10 /* MenuViewController.swift */; };
 		62D3B1802B8740C8000B8A10 /* OrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D3B17F2B8740C8000B8A10 /* OrderViewController.swift */; };
 		62D3B1822B8742C0000B8A10 /* UIColor+ext .swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D3B1812B8742C0000B8A10 /* UIColor+ext .swift */; };
@@ -22,6 +23,7 @@
 
 /* Begin PBXFileReference section */
 		479B6EC5C5CEE13A07E793E2 /* Pods-Demo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Demo.release.xcconfig"; path = "Target Support Files/Pods-Demo/Pods-Demo.release.xcconfig"; sourceTree = "<group>"; };
+		62A1615A2B87A6D8009457BD /* Drink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Drink.swift; sourceTree = "<group>"; };
 		62D3B17D2B873E8B000B8A10 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		62D3B17F2B8740C8000B8A10 /* OrderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderViewController.swift; sourceTree = "<group>"; };
 		62D3B1812B8742C0000B8A10 /* UIColor+ext .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+ext .swift"; sourceTree = "<group>"; };
@@ -93,6 +95,7 @@
 				F521C05C29EE6D2A008A5F7C /* ViewController.swift */,
 				62D3B17D2B873E8B000B8A10 /* MenuViewController.swift */,
 				62D3B1852B87744B000B8A10 /* DrinkCell.swift */,
+				62A1615A2B87A6D8009457BD /* Drink.swift */,
 				62D3B17F2B8740C8000B8A10 /* OrderViewController.swift */,
 				62D3B1812B8742C0000B8A10 /* UIColor+ext .swift */,
 				F521C05E29EE6D2A008A5F7C /* Main.storyboard */,
@@ -225,6 +228,7 @@
 				62D3B1802B8740C8000B8A10 /* OrderViewController.swift in Sources */,
 				F521C05929EE6D2A008A5F7C /* AppDelegate.swift in Sources */,
 				F521C05B29EE6D2A008A5F7C /* SceneDelegate.swift in Sources */,
+				62A1615B2B87A6D8009457BD /* Drink.swift in Sources */,
 				62D3B17E2B873E8B000B8A10 /* MenuViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
