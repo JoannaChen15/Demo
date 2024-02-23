@@ -12,6 +12,7 @@
 		62D3B1802B8740C8000B8A10 /* OrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D3B17F2B8740C8000B8A10 /* OrderViewController.swift */; };
 		62D3B1822B8742C0000B8A10 /* UIColor+ext .swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D3B1812B8742C0000B8A10 /* UIColor+ext .swift */; };
 		62D3B1862B87744B000B8A10 /* DrinkCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D3B1852B87744B000B8A10 /* DrinkCell.swift */; };
+		62F206482B885830001F0091 /* MenuHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62F206472B885830001F0091 /* MenuHeaderView.swift */; };
 		D9FAFC9CCD48C87BFBD2EA77 /* Pods_Demo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B03AE7121EFE5BA1FE4E8F3 /* Pods_Demo.framework */; };
 		F521C05929EE6D2A008A5F7C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F521C05829EE6D2A008A5F7C /* AppDelegate.swift */; };
 		F521C05B29EE6D2A008A5F7C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F521C05A29EE6D2A008A5F7C /* SceneDelegate.swift */; };
@@ -28,6 +29,7 @@
 		62D3B17F2B8740C8000B8A10 /* OrderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderViewController.swift; sourceTree = "<group>"; };
 		62D3B1812B8742C0000B8A10 /* UIColor+ext .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+ext .swift"; sourceTree = "<group>"; };
 		62D3B1852B87744B000B8A10 /* DrinkCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkCell.swift; sourceTree = "<group>"; };
+		62F206472B885830001F0091 /* MenuHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuHeaderView.swift; sourceTree = "<group>"; };
 		64AA8ED4AD31619F8F001C67 /* Pods-Demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Demo.debug.xcconfig"; path = "Target Support Files/Pods-Demo/Pods-Demo.debug.xcconfig"; sourceTree = "<group>"; };
 		6B03AE7121EFE5BA1FE4E8F3 /* Pods_Demo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Demo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F521C05529EE6D2A008A5F7C /* Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -94,9 +96,10 @@
 				F521C05A29EE6D2A008A5F7C /* SceneDelegate.swift */,
 				F521C05C29EE6D2A008A5F7C /* ViewController.swift */,
 				62D3B17D2B873E8B000B8A10 /* MenuViewController.swift */,
+				62F206472B885830001F0091 /* MenuHeaderView.swift */,
 				62D3B1852B87744B000B8A10 /* DrinkCell.swift */,
-				62A1615A2B87A6D8009457BD /* Drink.swift */,
 				62D3B17F2B8740C8000B8A10 /* OrderViewController.swift */,
+				62A1615A2B87A6D8009457BD /* Drink.swift */,
 				62D3B1812B8742C0000B8A10 /* UIColor+ext .swift */,
 				F521C05E29EE6D2A008A5F7C /* Main.storyboard */,
 				F521C06129EE6D2B008A5F7C /* Assets.xcassets */,
@@ -230,6 +233,7 @@
 				F521C05B29EE6D2A008A5F7C /* SceneDelegate.swift in Sources */,
 				62A1615B2B87A6D8009457BD /* Drink.swift in Sources */,
 				62D3B17E2B873E8B000B8A10 /* MenuViewController.swift in Sources */,
+				62F206482B885830001F0091 /* MenuHeaderView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

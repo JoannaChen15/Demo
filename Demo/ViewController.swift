@@ -15,7 +15,7 @@ class ViewController: UIViewController {
         UITabBar.appearance().tintColor = UIColor.secondary
         UITabBar.appearance().unselectedItemTintColor = UIColor.unselected
         UITabBar.appearance().barTintColor = .primary
-        
+//        UITabBar.appearance().isTranslucent = false
     }
     
     override func viewDidAppear(_ animated: Bool) {

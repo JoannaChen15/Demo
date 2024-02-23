@@ -12,7 +12,7 @@ class MenuViewController: UIViewController {
     
     let menuTableView = UITableView()
     var drinks = [Record]()
-    var drinkImages = [Image]()
+    var drinksOfselectedCategory = [Record]()
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -31,6 +31,7 @@ class MenuViewController: UIViewController {
         navigationItem.titleView = imageView
         // 設置導航欄背景色
         navigationController?.navigationBar.barTintColor = .primary
+//        navigationController?.navigationBar.isTranslucent = false
         
         configUI()
         
@@ -38,6 +39,8 @@ class MenuViewController: UIViewController {
         menuTableView.delegate = self
         menuTableView.register(DrinkCell.self, forCellReuseIdentifier: "drinkCell")
         
+        // 註冊自定義的 table header
+        menuTableView.register(MenuHeaderView.self, forHeaderFooterViewReuseIdentifier: "menuHeader")
         fetchDrinkData()
     }
     
@@ -61,7 +64,9 @@ class MenuViewController: UIViewController {
                 let drink = try decoder.decode(Drink.self, from: data)
                 self.drinks = drink.records ?? []
                 for drink in self.drinks {
-                    self.drinkImages.append(contentsOf: drink.fields.image)
+                    if drink.fields.category == Category.seasonal {
+                        self.drinksOfselectedCategory.append(drink)
+                    }
                 }
                 DispatchQueue.main.async {
                     self.menuTableView.reloadData()
@@ -73,36 +78,62 @@ class MenuViewController: UIViewController {
     }
     
     func configUI() {
-        view.backgroundColor = .primary
+        view.backgroundColor = .darkPrimary
         configMenuTableView()
     }
     
     func configMenuTableView() {
         view.addSubview(menuTableView)
-        menuTableView.backgroundColor = .primary
+        menuTableView.backgroundColor = .darkPrimary
         menuTableView.separatorColor = .gray
         menuTableView.separatorInset.right = 16
         menuTableView.snp.makeConstraints { make in
             make.edges.equalTo(view.safeAreaLayoutGuide)
         }
     }
-    
 }
 
 extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return drinks.count
+        return drinksOfselectedCategory.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = menuTableView.dequeueReusableCell(withIdentifier: "drinkCell", for: indexPath) as! DrinkCell
-        let drink = drinks[indexPath.row]
+        let drink = drinksOfselectedCategory[indexPath.row]
+        
         cell.drinkName.text = drink.fields.name
         cell.drinkDescription.text = drink.fields.description
         cell.drinkPrice.text = "中：\(drink.fields.medium) / 大：\(drink.fields.large)"
-        cell.drinkImageView.kf.setImage(with: drinkImages[indexPath.row].url)
+        cell.drinkImageView.kf.setImage(with: drink.fields.image.first?.url)
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = menuTableView.dequeueReusableHeaderFooterView(withIdentifier: "menuHeader") as! MenuHeaderView
+        headerView.delegate = self
+        return headerView
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 46
+    }
+}
+
+extension MenuViewController: CategoryButtonDelegate {
+    func changeMenuTo(category: String) {
+        drinksOfselectedCategory.removeAll()
+        for drink in drinks {
+            if drink.fields.category.rawValue == category {
+                drinksOfselectedCategory.append(drink)
+            }
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            self.menuTableView.reloadData()
+        }
     }
 }

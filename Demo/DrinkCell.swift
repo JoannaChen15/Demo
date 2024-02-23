@@ -29,10 +29,10 @@ class DrinkCell: UITableViewCell {
     
     func configUI() {
         contentView.addSubview(mainStackView)
-        contentView.backgroundColor = .primary
+        contentView.backgroundColor = .darkPrimary
         
         mainStackView.axis = .horizontal
-        mainStackView.alignment = .fill
+        mainStackView.alignment = .center
         mainStackView.distribution = .fillProportionally
         mainStackView.spacing = 16
         mainStackView.snp.makeConstraints { make in
@@ -50,13 +50,13 @@ class DrinkCell: UITableViewCell {
         subStackView.addArrangedSubview(drinkDescription)
         subStackView.addArrangedSubview(drinkPrice)
         
-        drinkName.font = UIFont.systemFont(ofSize: 17)
+        drinkName.font = UIFont.systemFont(ofSize: 16)
         drinkName.textColor = .white
         drinkDescription.font = UIFont.systemFont(ofSize: 14)
         drinkDescription.textColor = .secondary
         drinkDescription.numberOfLines = 2
         drinkPrice.font = UIFont.systemFont(ofSize: 14)
-        drinkPrice.textColor = .white
+        drinkPrice.textColor = .gray
         
         drinkImageView.contentMode = .scaleAspectFill
         drinkImageView.layer.cornerRadius = 8
