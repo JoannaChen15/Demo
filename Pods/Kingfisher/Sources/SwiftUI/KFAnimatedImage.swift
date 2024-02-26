@@ -97,8 +97,8 @@ public struct KFAnimatedImageViewRepresenter: KFCrossPlatformViewRepresentable, 
         return view
     }
     
-    private func updateImageView(_ imageView: AnimatedImageView) {
-        imageView.image = image
+    private func updateImageView(_ bannerCollectionView: AnimatedImageView) {
+        bannerCollectionView.image = image
     }
 }
 

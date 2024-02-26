@@ -39,25 +39,27 @@ class DrinkCell: UITableViewCell {
             make.top.bottom.equalToSuperview().inset(14)
             make.left.right.equalToSuperview().inset(16)
         }
-        mainStackView.addArrangedSubview(subStackView)
-        mainStackView.addArrangedSubview(drinkImageView)
         
+        mainStackView.addArrangedSubview(subStackView)
         subStackView.axis = .vertical
         subStackView.alignment = .leading
         subStackView.distribution = .fillProportionally
         subStackView.spacing = 8
-        subStackView.addArrangedSubview(drinkName)
-        subStackView.addArrangedSubview(drinkDescription)
-        subStackView.addArrangedSubview(drinkPrice)
         
+        subStackView.addArrangedSubview(drinkName)
         drinkName.font = UIFont.systemFont(ofSize: 16)
         drinkName.textColor = .white
+        
+        subStackView.addArrangedSubview(drinkDescription)
         drinkDescription.font = UIFont.systemFont(ofSize: 14)
         drinkDescription.textColor = .secondary
         drinkDescription.numberOfLines = 2
-        drinkPrice.font = UIFont.systemFont(ofSize: 14)
-        drinkPrice.textColor = .gray
         
+        subStackView.addArrangedSubview(drinkPrice)
+        drinkPrice.font = UIFont.systemFont(ofSize: 14)
+        drinkPrice.textColor = .white
+        
+        mainStackView.addArrangedSubview(drinkImageView)
         drinkImageView.contentMode = .scaleAspectFill
         drinkImageView.layer.cornerRadius = 8
         drinkImageView.clipsToBounds = true // 這一行用於確保超出邊界的部分被裁剪掉

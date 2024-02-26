@@ -10,6 +10,13 @@ import Kingfisher
 
 class MenuViewController: UIViewController {
     
+    let mainScrollView = UIScrollView()
+    
+    let bannerView = UIView()
+    let bannerCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+    var bannerImages = [UIImage]()
+    let bannerPageControl = UIPageControl()
+    
     let menuTableView = UITableView()
     var drinks = [Record]()
     var drinksOfselectedCategory = [Record]()
@@ -31,9 +38,17 @@ class MenuViewController: UIViewController {
         navigationItem.titleView = imageView
         // 設置導航欄背景色
         navigationController?.navigationBar.barTintColor = .primary
-//        navigationController?.navigationBar.isTranslucent = false
         
         configUI()
+        
+        bannerCollectionView.delegate = self
+        bannerCollectionView.dataSource = self
+        bannerCollectionView.register(BannerImageCell.self, forCellWithReuseIdentifier: "bannerImageCell")
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 0
+        bannerCollectionView.collectionViewLayout = layout
         
         menuTableView.dataSource = self
         menuTableView.delegate = self
@@ -46,10 +61,6 @@ class MenuViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        // 設置導航欄返回按鈕的文字
-        navigationController?.navigationBar.tintColor = .secondary
-        // 設置導航欄返回按鈕的顏色
-        navigationController?.navigationItem.backBarButtonItem = UIBarButtonItem(title: "返回", style: .plain, target: nil, action: nil)
     }
     
     func fetchDrinkData() {
@@ -79,29 +90,106 @@ class MenuViewController: UIViewController {
     
     func configUI() {
         view.backgroundColor = .darkPrimary
+  
+        for index in 0...5 {
+            bannerImages.append(UIImage(named: "banner_\(index)")!)
+        }
+        
+        configMainScrollView()
+        configBannerView()
+        configBannerCollectionView()
+        configBannerPageControl()
         configMenuTableView()
     }
     
-    func configMenuTableView() {
-        view.addSubview(menuTableView)
-        menuTableView.backgroundColor = .darkPrimary
-        menuTableView.separatorColor = .gray
-        menuTableView.separatorInset.right = 16
-        menuTableView.snp.makeConstraints { make in
+    func configMainScrollView() {
+        view.addSubview(mainScrollView)
+        mainScrollView.snp.makeConstraints { make in
             make.edges.equalTo(view.safeAreaLayoutGuide)
+        }
+    }
+    
+    func configBannerView() {
+        mainScrollView.addSubview(bannerView)
+        bannerView.snp.makeConstraints { make in
+            make.top.equalTo(mainScrollView.contentLayoutGuide)
+            make.left.right.equalTo(mainScrollView.frameLayoutGuide)
+            make.height.equalTo(280)
+        }
+    }
+   
+    func configBannerCollectionView() {
+        bannerView.addSubview(bannerCollectionView)
+        bannerCollectionView.backgroundColor = .clear
+        bannerCollectionView.isPagingEnabled = true // 啓用分頁效果
+        bannerCollectionView.showsHorizontalScrollIndicator = false
+        bannerCollectionView.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(10)
+            make.left.right.equalToSuperview()
+            make.height.equalTo(230)
+        }
+    }
+    
+    func configBannerPageControl() {
+        bannerView.addSubview(bannerPageControl)
+        bannerPageControl.numberOfPages = bannerImages.count
+        bannerPageControl.currentPage = 0
+        bannerPageControl.pageIndicatorTintColor = .unselected
+        bannerPageControl.currentPageIndicatorTintColor = .secondary
+        bannerPageControl.snp.makeConstraints { make in
+            make.top.equalTo(bannerCollectionView.snp.bottom).offset(6)
+            make.centerX.equalToSuperview()
+            make.width.equalTo(200)
+            make.height.equalTo(25)
+        }
+    }
+    
+    func configMenuTableView() {
+        mainScrollView.addSubview(menuTableView)
+        menuTableView.backgroundColor = .darkPrimary
+        menuTableView.separatorColor = .unselected
+        menuTableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        menuTableView.snp.makeConstraints { make in
+            make.top.equalTo(bannerView.snp.bottom)
+            make.left.right.equalTo(mainScrollView.frameLayoutGuide)
+            make.bottom.equalTo(mainScrollView.frameLayoutGuide)
         }
     }
 }
 
-extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
+extension MenuViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return bannerImages.count
+    }
     
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = bannerCollectionView.dequeueReusableCell(withReuseIdentifier: "bannerImageCell", for: indexPath) as! BannerImageCell
+        cell.bannerImageView.image = bannerImages[indexPath.row]
+        return cell
+    }
+}
+
+extension MenuViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let itemSize = bannerCollectionView.frame.width
+        return CGSize(width: itemSize, height: itemSize)
+    }
+}
+
+extension MenuViewController: UIScrollViewDelegate {
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        let pageNumber = scrollView.contentOffset.x / scrollView.bounds.width
+        bannerPageControl.currentPage = Int(pageNumber)
+    }
+}
+
+extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return drinksOfselectedCategory.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let cell = menuTableView.dequeueReusableCell(withIdentifier: "drinkCell", for: indexPath) as! DrinkCell
         let drink = drinksOfselectedCategory[indexPath.row]
         
