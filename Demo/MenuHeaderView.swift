@@ -20,6 +20,7 @@ class MenuHeaderView: UITableViewHeaderFooterView {
     let creamButton = UIButton()
     let milkButton = UIButton()
     let underline = UIView()
+    let underlineBackground = UIView()
     
     weak var delegate: CategoryButtonDelegate?
     
@@ -55,16 +56,18 @@ class MenuHeaderView: UITableViewHeaderFooterView {
     }
     
     func configUI() {
+        
         contentView.backgroundColor = .darkPrimary
         contentView.addSubview(categoryButtonStackView)
         contentView.addSubview(underline)
-        
+        contentView.addSubview(underlineBackground)
+       
         categoryButtonStackView.axis = .horizontal
         categoryButtonStackView.alignment = .fill
         categoryButtonStackView.distribution = .fillEqually
         categoryButtonStackView.spacing = 0
         categoryButtonStackView.snp.makeConstraints { make in
-            make.left.right.equalToSuperview().inset(16)
+            make.left.right.equalToSuperview().inset(8)
             make.top.equalToSuperview()
             make.height.equalTo(46)
         }
@@ -77,7 +80,7 @@ class MenuHeaderView: UITableViewHeaderFooterView {
         // 設置 stackView 中所有 Button
         for case let button as UIButton in categoryButtonStackView.arrangedSubviews {
             button.titleLabel?.font = UIFont.systemFont(ofSize: 15)
-            button.setTitleColor(.gray, for: .normal)
+            button.setTitleColor(.unselected, for: .normal)
             button.setTitleColor(.white, for: .selected)
             button.addTarget(self, action: #selector(changeCategory), for: .touchUpInside)
         }
@@ -94,6 +97,14 @@ class MenuHeaderView: UITableViewHeaderFooterView {
             make.width.equalTo(seasonalButton).offset(16)
             make.centerX.equalTo(seasonalButton)
             make.height.equalTo(2)
+        }
+        
+        underlineBackground.backgroundColor = .unselected
+        underlineBackground.snp.makeConstraints { make in
+            make.bottom.equalTo(categoryButtonStackView.snp.bottom)
+            make.centerX.equalToSuperview()
+            make.width.equalToSuperview().offset(8)
+            make.height.equalTo(0.5)
         }
     }
 

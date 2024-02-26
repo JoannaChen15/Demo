@@ -149,6 +149,7 @@ class MenuViewController: UIViewController {
         menuTableView.backgroundColor = .darkPrimary
         menuTableView.separatorColor = .unselected
         menuTableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        menuTableView.sectionHeaderTopPadding = 0.0
         menuTableView.snp.makeConstraints { make in
             make.top.equalTo(bannerView.snp.bottom)
             make.left.right.equalTo(mainScrollView.frameLayoutGuide)
