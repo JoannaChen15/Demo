@@ -209,6 +209,12 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let drinkDetailVC = DrinkDetailViewController()
+        drinkDetailVC.drink = drinksOfselectedCategory[indexPath.row]
+        present(drinkDetailVC, animated: true)
+    }
+    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = menuTableView.dequeueReusableHeaderFooterView(withIdentifier: "menuHeader") as! MenuHeaderView
         headerView.delegate = self
