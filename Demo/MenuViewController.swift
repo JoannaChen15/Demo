@@ -41,6 +41,8 @@ class MenuViewController: UIViewController {
         
         configUI()
         
+        mainScrollView.delegate = self
+        
         bannerCollectionView.delegate = self
         bannerCollectionView.dataSource = self
         bannerCollectionView.register(BannerImageCell.self, forCellWithReuseIdentifier: "bannerImageCell")
@@ -61,6 +63,10 @@ class MenuViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
+        let contentHeight = menuTableView.frame.height + (bannerView.frame.height * 2)
+        mainScrollView.contentSize = CGSize(width: view.bounds.width, height: contentHeight)
+        menuTableView.isScrollEnabled = false
     }
     
     func fetchDrinkData() {
@@ -107,6 +113,7 @@ class MenuViewController: UIViewController {
         mainScrollView.snp.makeConstraints { make in
             make.edges.equalTo(view.safeAreaLayoutGuide)
         }
+        mainScrollView.bounces = false
     }
     
     func configBannerView() {
@@ -209,7 +216,35 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 46
+        return 46 //+250
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+
+        let mainOffsetY = mainScrollView.contentOffset.y
+        if mainOffsetY >= bannerView.frame.height {
+            menuTableView.isScrollEnabled = true
+        } else {
+            menuTableView.isScrollEnabled = false
+        }
+        
+        let tableOffsetY = menuTableView.contentOffset.y
+        if tableOffsetY <= 0 {
+            menuTableView.bounces = false
+        } else {
+            menuTableView.bounces = true
+        }
+
+//        根據滾動偏移量來調整頭部視圖的位置
+//        let offsetY = scrollView.contentOffset.y
+//        print(offsetY)
+//        if offsetY < 100 {
+//            menuTableView.contentInset = UIEdgeInsets(top: -250, left: 0, bottom: 0, right: 0)
+//            
+//        } else {
+//            menuTableView.contentInset = UIEdgeInsets.zero
+//        }
+        
     }
 }
 
