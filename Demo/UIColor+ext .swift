@@ -40,6 +40,10 @@ extension UIColor {
         return UIColor(hex: "#bc955c")!
     }
     
+    class var lightSecondary: UIColor {
+        return UIColor(hex: "#FDC982")!
+    }
+
     class var darkPrimary: UIColor {
         return UIColor(hex: "#002F3F")!
     }

@@ -1,24 +1,24 @@
 //
-//  RadioButton.swift
+//  CheckBox.swift
 //  Demo
 //
-//  Created by 陳柔夆 on 2024/2/25.
+//  Created by 陳柔夆 on 2024/2/27.
 //
 
 import UIKit
 
-protocol RadioButtonDelegate {
-    func optionButtonTapped(_ sender: RadioButton)
+protocol CheckBoxDelegate {
+    func checkBoxTapped(_ sender: CheckBox)
 }
 
-class RadioButton: UIButton {
+class CheckBox: UIButton {
     
     let titleLable = UILabel()
     let checkImageView = UIImageView()
     var checkoutName: String = ""
     var type: TypeOfOption?
-    var delegate: RadioButtonDelegate?
-    var status: RadioButtonStatus = .unchecked {
+    var delegate: CheckBoxDelegate?
+    var status: CheckBoxStatus = .unchecked {
         didSet {
             updateUI()
         }
@@ -32,7 +32,7 @@ class RadioButton: UIButton {
             make.centerY.equalToSuperview()
         }
         titleLable.text = "test"
-        titleLable.textColor = .darkPrimary        
+        titleLable.textColor = .darkPrimary
         titleLable.font = UIFont.systemFont(ofSize: 18)
         
         addSubview(checkImageView)
@@ -44,7 +44,7 @@ class RadioButton: UIButton {
         checkImageView.tintColor = .darkPrimary
         checkImageView.image = status.image
         
-        addTarget(self, action: #selector(onClick), for: .touchUpInside)
+        addTarget(self, action: #selector(didChecked), for: .touchUpInside)
     }
 
     required init?(coder: NSCoder) {
@@ -55,28 +55,27 @@ class RadioButton: UIButton {
         self.checkImageView.image = status.image
     }
     
-    @objc func onClick(sender: UIButton) {
-        self.status = .checked
-        self.delegate?.optionButtonTapped(sender as! RadioButton)
+    @objc func didChecked(sender: UIButton) {
+        switch self.status {
+        case .unchecked:
+            self.status = .checked
+        case .checked:
+            self.status = .unchecked
+        }
+        self.delegate?.checkBoxTapped(sender as! CheckBox)
     }
 }
 
-enum RadioButtonStatus {
+enum CheckBoxStatus {
     case checked
     case unchecked
     
     var image: UIImage {
         switch self {
         case .unchecked:
-            return UIImage(systemName: "circle")!
+            return UIImage(systemName: "square")!
         case .checked:
-            return UIImage(systemName: "checkmark.circle.fill")!
+            return UIImage(systemName: "checkmark.square.fill")!
         }
     }
-}
-
-enum TypeOfOption {
-    case size
-    case temperature
-    case sugar
 }

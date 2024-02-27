@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		6249771D2B8A349D0059B9C9 /* BannerImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6249771C2B8A349D0059B9C9 /* BannerImageCell.swift */; };
+		627D15C62B8E1D27003C3FF5 /* CheckBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 627D15C52B8E1D27003C3FF5 /* CheckBox.swift */; };
 		62A1615B2B87A6D8009457BD /* Drink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62A1615A2B87A6D8009457BD /* Drink.swift */; };
 		62D3B17E2B873E8B000B8A10 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D3B17D2B873E8B000B8A10 /* MenuViewController.swift */; };
 		62D3B1802B8740C8000B8A10 /* OrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D3B17F2B8740C8000B8A10 /* OrderViewController.swift */; };
@@ -28,6 +29,7 @@
 /* Begin PBXFileReference section */
 		479B6EC5C5CEE13A07E793E2 /* Pods-Demo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Demo.release.xcconfig"; path = "Target Support Files/Pods-Demo/Pods-Demo.release.xcconfig"; sourceTree = "<group>"; };
 		6249771C2B8A349D0059B9C9 /* BannerImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerImageCell.swift; sourceTree = "<group>"; };
+		627D15C52B8E1D27003C3FF5 /* CheckBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBox.swift; sourceTree = "<group>"; };
 		62A1615A2B87A6D8009457BD /* Drink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Drink.swift; sourceTree = "<group>"; };
 		62D3B17D2B873E8B000B8A10 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		62D3B17F2B8740C8000B8A10 /* OrderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderViewController.swift; sourceTree = "<group>"; };
@@ -109,6 +111,7 @@
 				62D3B17F2B8740C8000B8A10 /* OrderViewController.swift */,
 				62A1615A2B87A6D8009457BD /* Drink.swift */,
 				62F491DC2B8B976300CA3E31 /* RadioButton.swift */,
+				627D15C52B8E1D27003C3FF5 /* CheckBox.swift */,
 				62D3B1812B8742C0000B8A10 /* UIColor+ext .swift */,
 				F521C05E29EE6D2A008A5F7C /* Main.storyboard */,
 				F521C06129EE6D2B008A5F7C /* Assets.xcassets */,
@@ -245,6 +248,7 @@
 				F521C05B29EE6D2A008A5F7C /* SceneDelegate.swift in Sources */,
 				62A1615B2B87A6D8009457BD /* Drink.swift in Sources */,
 				62D3B17E2B873E8B000B8A10 /* MenuViewController.swift in Sources */,
+				627D15C62B8E1D27003C3FF5 /* CheckBox.swift in Sources */,
 				62F206482B885830001F0091 /* MenuHeaderView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
