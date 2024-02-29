@@ -37,21 +37,23 @@ class DrinkDetailViewController: UIViewController {
     
     var priceDifference = 0
     
+    var priceDifference = 0
+    var totalPrice = 0
+
     // 用於保存當前選中的按鈕
     var selectedSize: RadioButton?
     var selectedTemperature: RadioButton?
     var selectedSugar: RadioButton?
     var selectedAddOns: CheckBox?
+    var totalAddOns = [String]()
     
-    var drink: Record?
+    var drink: Record!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemGray6
-        // 計算大杯價差
-        let mediumPrice = Int(drink?.fields.medium ?? "") ?? 0
-        let largePrice = Int(drink?.fields.large ?? "") ?? 0
-        priceDifference = largePrice - mediumPrice
+        getOriginalPrice()
+        calculateLargeCupPriceDifference()
         
         configScrollView()
         configDrinkView()
@@ -61,6 +63,17 @@ class DrinkDetailViewController: UIViewController {
         configAddOnsView()
         configBackButton()
         configBottomCheckoutView()
+    }
+    
+    func getOriginalPrice() {
+        totalPrice = drink.fields.medium
+    }
+    
+    func calculateLargeCupPriceDifference() {
+        // 計算大杯價差
+        let mediumPrice = drink.fields.medium
+        let largePrice = drink.fields.large
+        priceDifference = largePrice - mediumPrice
     }
     
     func createRadioButton(title: String, checkoutName: String, type: TypeOfOption) -> RadioButton {
@@ -149,10 +162,10 @@ class DrinkDetailViewController: UIViewController {
             make.width.equalToSuperview()
             make.height.equalTo(view.frame.width * 720 / 960)
         }
-        drinkImageView.kf.setImage(with: drink?.fields.image.first?.url)
+        drinkImageView.kf.setImage(with: drink.fields.image.first?.url)
         
         drinkView.addSubview(drinkName)
-        drinkName.text = drink?.fields.name
+        drinkName.text = drink.fields.name
         drinkName.font = UIFont.systemFont(ofSize: 24, weight: .black)
         drinkName.textColor = .darkPrimary
         drinkName.snp.makeConstraints { make in
@@ -161,7 +174,7 @@ class DrinkDetailViewController: UIViewController {
         }
         
         drinkView.addSubview(drinkDescription)
-        drinkDescription.text = drink?.fields.description
+        drinkDescription.text = drink.fields.description
         drinkDescription.font = UIFont.systemFont(ofSize: 14)
         drinkDescription.textColor = .secondary
         drinkDescription.snp.makeConstraints { make in
@@ -366,7 +379,7 @@ class DrinkDetailViewController: UIViewController {
         checkoutItem.alignment = .leading
         checkoutItem.distribution = .equalSpacing
         checkoutItem.addArrangedSubview(checkoutPrice)
-        checkoutPrice.text = "$\(drink?.fields.medium ?? "")"
+        checkoutPrice.text = "$\(totalPrice)"
         checkoutPrice.font = UIFont.systemFont(ofSize: 24, weight: .bold)
         checkoutPrice.textColor = .secondary
         
@@ -383,6 +396,15 @@ class DrinkDetailViewController: UIViewController {
         addToCartButton.tintColor = .darkPrimary
         addToCartButton.backgroundColor = .secondary
         addToCartButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)
+//        var configuration = UIButton.Configuration.filled()
+//        var title = AttributedString("加入購物車")
+//        title.font = UIFont.systemFont(ofSize: 16)
+//        configuration.attributedTitle = title
+//        configuration.baseBackgroundColor = .secondary
+//        configuration.baseForegroundColor = .darkPrimary
+//        configuration.image = UIImage(systemName: "cart")
+//        configuration.imagePadding = 2 // 設置圖像的內邊距
+//        addToCartButton.configuration = configuration
         addToCartButton.layer.cornerRadius = 8
         addToCartButton.addTarget(self, action: #selector(addToCart), for: .touchUpInside)
     }
@@ -392,7 +414,20 @@ class DrinkDetailViewController: UIViewController {
     }
     
     @objc func addToCart() {
-        Swift.print("add")
+        let createOrderFields = CreateOrderFields(drinkName: drink.fields.name, size: selectedSize?.checkoutName ?? "", temperature: selectedTemperature?.checkoutName ?? "", sugar: selectedSugar?.checkoutName ?? "", addOns: totalAddOns, price: totalPrice, orderName: "Joanna", numberOfCups: 1, imageUrl: (drink.fields.image.first?.url)!)
+        
+        let createOrderRecord = CreateOrderRecord(fields: createOrderFields)
+        let createOrderDrink = CreateOrderDrink(records: [createOrderRecord])
+        
+        MenuViewController.shared.postOrder(orderData: createOrderDrink) { result in
+            switch result {
+            case .success(let createOrderResponse):
+                print(createOrderResponse)
+            case .failure(let error):
+                print(error)
+            }
+        }
+        self.dismiss(animated: true)
     }
     
     func removeCheckoutTitle() {
@@ -420,7 +455,7 @@ extension DrinkDetailViewController: RadioButtonDelegate {
         case .sugar:
             changeCheckoutOptions(type: selectedSugar)
             didSelected(type: &selectedSugar)
-        default: 
+        default:
             break
         }
         
@@ -457,22 +492,21 @@ extension DrinkDetailViewController: RadioButtonDelegate {
     }
     
     func addSizeDifference(selectedButton: RadioButton?) {
-        var price = Int(checkoutPrice.text?.replacingOccurrences(of: "$", with: "") ?? "") ?? 0
         if selectedButton?.checkoutName == "大杯" {
             if selectedSize?.checkoutName == "大杯" {
                 return
             } else {
-                price += priceDifference
+                totalPrice += priceDifference
             }
             
         } else {
             if selectedSize?.checkoutName == "大杯" {
-                price -= priceDifference
+                totalPrice -= priceDifference
             } else {
                 return
             }
         }
-        checkoutPrice.text? = "$\(price)"
+        checkoutPrice.text? = "$\(totalPrice)"
     }
     
 }
@@ -483,19 +517,23 @@ extension DrinkDetailViewController: CheckBoxDelegate {
         removeCheckoutTitle()
         selectedAddOns = sender
         
-        var price = Int(checkoutPrice.text?.replacingOccurrences(of: "$", with: "") ?? "") ?? 0
         switch sender.status {
         case .checked:
-            price += 10
+            totalPrice += 10
             checkoutOptions.text?.append("•\(sender.checkoutName)")
+            totalAddOns.append(sender.checkoutName)
         case .unchecked:
-            price -= 10
+            totalPrice -= 10
             let originalString = checkoutOptions.text!
             let stringToRemove = "•\(sender.checkoutName)"
             let modifiedString = originalString.replacingOccurrences(of: stringToRemove, with: "")
             checkoutOptions.text? = modifiedString
+            let objectToRemove = sender.checkoutName
+            if let index = totalAddOns.firstIndex(of: objectToRemove) {
+                totalAddOns.remove(at: index)
+            }
         }
-        checkoutPrice.text = "$\(price)"
+        checkoutPrice.text = "$\(totalPrice)"
     }
 
 }

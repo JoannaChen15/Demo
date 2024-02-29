@@ -10,6 +10,8 @@ import Kingfisher
 
 class MenuViewController: UIViewController {
     
+    static let shared = MenuViewController()
+    
     let mainScrollView = UIScrollView()
     
     let bannerView = UIView()
@@ -20,6 +22,9 @@ class MenuViewController: UIViewController {
     let menuTableView = UITableView()
     var drinks = [Record]()
     var drinksOfselectedCategory = [Record]()
+    
+    let baseURL = URL(string: "https://api.airtable.com/v0/appxrciNhGMQw3sSj")!
+    let apiKey = "patvAhzcinGLGQMUH.8c087e2edef8ee9df4e4a594218efbd6b3662092407055e81ed85e4aac1c2f9e"
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -70,10 +75,9 @@ class MenuViewController: UIViewController {
     }
     
     func fetchDrinkData() {
-        let urlString = "https://api.airtable.com/v0/appxrciNhGMQw3sSj/drink"
-        guard let url = URL(string: urlString) else { return }
-        var request = URLRequest(url: url)
-        request.setValue("Bearer patvAhzcinGLGQMUH.8c087e2edef8ee9df4e4a594218efbd6b3662092407055e81ed85e4aac1c2f9e", forHTTPHeaderField: "Authorization")
+        let drinkURL = baseURL.appendingPathComponent("Drink")
+        var request = URLRequest(url: drinkURL)
+        request.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
         URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data else { return }
             let decoder = JSONDecoder()
@@ -94,6 +98,32 @@ class MenuViewController: UIViewController {
         }.resume()
     }
     
+    func postOrder(orderData: CreateOrderDrink, completion: @escaping (Result<String,Error>) -> Void) {
+        let orderURL = baseURL.appendingPathComponent("OrderDrink")
+        guard let components = URLComponents(url: orderURL, resolvingAgainstBaseURL: true) else { return }
+        guard let orderURL = components.url else { return }
+        
+        var request = URLRequest(url: orderURL)
+        request.httpMethod = "POST"
+        request.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let encoder = JSONEncoder()
+        do {
+            request.httpBody = try encoder.encode(orderData)
+            URLSession.shared.dataTask(with: request) { data, response, resError in
+                if let data = data,
+                   let content = String(data: data, encoding: .utf8) {
+                    completion(.success(content))
+                } else if let resError = resError {
+                    completion(.failure(resError))
+                }
+            }.resume()
+        } catch {
+            completion(.failure(error))
+        }
+    }
+
     func configUI() {
         view.backgroundColor = .darkPrimary
   
@@ -222,7 +252,7 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 46 //+250
+        return 46
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -240,17 +270,6 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
         } else {
             menuTableView.bounces = true
         }
-
-//        根據滾動偏移量來調整頭部視圖的位置
-//        let offsetY = scrollView.contentOffset.y
-//        print(offsetY)
-//        if offsetY < 100 {
-//            menuTableView.contentInset = UIEdgeInsets(top: -250, left: 0, bottom: 0, right: 0)
-//            
-//        } else {
-//            menuTableView.contentInset = UIEdgeInsets.zero
-//        }
-        
     }
 }
 

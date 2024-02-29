@@ -8,28 +8,24 @@
 import Foundation
 
 // MARK: - Drink
-struct Drink: Codable {
+struct Drink: Decodable {
     let records: [Record]?
 }
 
 // MARK: - Record
-struct Record: Codable {
-//    let id: String
+struct Record: Decodable {
     let fields: Fields
 }
 
 // MARK: - Fields
-struct Fields: Codable {
-    let medium, large, description, name: String
+struct Fields: Decodable {
+    let name, description: String
+    let medium, large: Int
     let image: [Image]
     let category: Category
-
-//    enum CodingKeys: String, CodingKey {
-//        case medium, large, description, name, image, category
-//    }
 }
 
-enum Category: String, Codable {
+enum Category: String, Decodable {
     case classic = "單品茶"
     case seasonal = "季節限定"
     case milk = "歐蕾"
@@ -38,26 +34,6 @@ enum Category: String, Codable {
 }
 
 // MARK: - Image
-struct Image: Codable {
-//    let id: String
-//    let width, height: Int
+struct Image: Decodable {
     let url: URL?
-//    let filename: String
-//    let size: Int
-//    let type: TypeEnum
 }
-
-//// MARK: - Thumbnails
-//struct Thumbnails: Codable {
-//    let small, large, full: Full
-//}
-//
-//// MARK: - Full
-//struct Full: Codable {
-//    let url: String
-//    let width, height: Int
-//}
-//
-//enum TypeEnum: String, Codable {
-//    case imageJPEG = "image/jpeg"
-//}
