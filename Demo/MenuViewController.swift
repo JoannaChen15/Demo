@@ -256,6 +256,8 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
         cell.drinkPrice.text = "中：\(drink.fields.medium) / 大：\(drink.fields.large)"
         cell.drinkImageView.kf.setImage(with: drink.fields.image.first?.url)
         
+        cell.selectionStyle = .none
+        
         return cell
     }
     

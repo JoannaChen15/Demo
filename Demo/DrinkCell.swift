@@ -27,6 +27,17 @@ class DrinkCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func setHighlighted(_ highlighted: Bool, animated: Bool) {
+        super.setHighlighted(highlighted, animated: animated)
+        if highlighted {
+            // 在按住時修改 cell 的樣式
+            contentView.backgroundColor = .primary
+        } else {
+            // 在放開時恢復 cell 的正常樣式
+            contentView.backgroundColor = .darkPrimary
+        }
+    }
+    
     func configUI() {
         contentView.addSubview(mainStackView)
         contentView.backgroundColor = .darkPrimary
