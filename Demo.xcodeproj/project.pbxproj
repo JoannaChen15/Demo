@@ -19,6 +19,7 @@
 		62D8E9502B88CBE10014F392 /* DrinkDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D8E94F2B88CBE10014F392 /* DrinkDetailViewController.swift */; };
 		62F206482B885830001F0091 /* MenuHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62F206472B885830001F0091 /* MenuHeaderView.swift */; };
 		62F491DD2B8B976300CA3E31 /* RadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62F491DC2B8B976300CA3E31 /* RadioButton.swift */; };
+		C0A1CA4C2B96168D00D424C5 /* BannerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A1CA4B2B96168D00D424C5 /* BannerCell.swift */; };
 		D9FAFC9CCD48C87BFBD2EA77 /* Pods_Demo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B03AE7121EFE5BA1FE4E8F3 /* Pods_Demo.framework */; };
 		F521C05929EE6D2A008A5F7C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F521C05829EE6D2A008A5F7C /* AppDelegate.swift */; };
 		F521C05B29EE6D2A008A5F7C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F521C05A29EE6D2A008A5F7C /* SceneDelegate.swift */; };
@@ -44,6 +45,7 @@
 		62F491DC2B8B976300CA3E31 /* RadioButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioButton.swift; sourceTree = "<group>"; };
 		64AA8ED4AD31619F8F001C67 /* Pods-Demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Demo.debug.xcconfig"; path = "Target Support Files/Pods-Demo/Pods-Demo.debug.xcconfig"; sourceTree = "<group>"; };
 		6B03AE7121EFE5BA1FE4E8F3 /* Pods_Demo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Demo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C0A1CA4B2B96168D00D424C5 /* BannerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerCell.swift; sourceTree = "<group>"; };
 		F521C05529EE6D2A008A5F7C /* Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F521C05829EE6D2A008A5F7C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F521C05A29EE6D2A008A5F7C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -113,6 +115,7 @@
 				62D8E94F2B88CBE10014F392 /* DrinkDetailViewController.swift */,
 				62D3B17F2B8740C8000B8A10 /* OrderViewController.swift */,
 				62D3B1852B87744B000B8A10 /* DrinkCell.swift */,
+				C0A1CA4B2B96168D00D424C5 /* BannerCell.swift */,
 				628B79D62B919A62007EDB91 /* OrderCell.swift */,
 				62A1615A2B87A6D8009457BD /* Drink.swift */,
 				628B79D42B8E2DB1007EDB91 /* OrderDrink.swift */,
@@ -244,6 +247,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				62D3B1822B8742C0000B8A10 /* UIColor+ext .swift in Sources */,
+				C0A1CA4C2B96168D00D424C5 /* BannerCell.swift in Sources */,
 				6249771D2B8A349D0059B9C9 /* BannerImageCell.swift in Sources */,
 				F521C05D29EE6D2A008A5F7C /* ViewController.swift in Sources */,
 				62F491DD2B8B976300CA3E31 /* RadioButton.swift in Sources */,
@@ -406,7 +410,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = H684NQZS4N;
+				DEVELOPMENT_TEAM = 473T6T639P;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Demo/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -438,7 +442,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = H684NQZS4N;
+				DEVELOPMENT_TEAM = 473T6T639P;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Demo/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
