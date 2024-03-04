@@ -58,7 +58,7 @@ class DrinkCell: UITableViewCell {
         subStackView.spacing = 8
         
         subStackView.addArrangedSubview(drinkName)
-        drinkName.font = UIFont.systemFont(ofSize: 16)
+        drinkName.font = UIFont.systemFont(ofSize: 17)
         drinkName.textColor = .white
         
         subStackView.addArrangedSubview(drinkDescription)

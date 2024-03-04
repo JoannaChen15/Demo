@@ -42,7 +42,7 @@ class MenuViewController: UIViewController {
         imageView.contentMode = .scaleAspectFit
         navigationItem.titleView = imageView
         // 設置導航欄背景色
-        navigationController?.navigationBar.barTintColor = .primary
+        navigationController?.navigationBar.barTintColor = .darkPrimary
         
         configUI()
         
@@ -230,7 +230,7 @@ class MenuViewController: UIViewController {
         menuTableView.backgroundColor = .darkPrimary
         menuTableView.separatorColor = .unselected
         menuTableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-        menuTableView.sectionHeaderTopPadding = 0.0
+        menuTableView.sectionHeaderTopPadding = 0
         menuTableView.snp.makeConstraints { make in
             make.top.equalTo(bannerView.snp.bottom)
             make.left.right.equalTo(mainScrollView.frameLayoutGuide)
@@ -249,19 +249,17 @@ extension MenuViewController: UICollectionViewDelegate, UICollectionViewDataSour
         cell.bannerImageView.image = bannerImages[indexPath.row]
         return cell
     }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        let pageNumber = scrollView.contentOffset.x / scrollView.bounds.width
+        bannerPageControl.currentPage = Int(pageNumber)
+    }
 }
 
 extension MenuViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let itemSize = bannerCollectionView.frame.width
         return CGSize(width: itemSize, height: itemSize)
-    }
-}
-
-extension MenuViewController: UIScrollViewDelegate {
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        let pageNumber = scrollView.contentOffset.x / scrollView.bounds.width
-        bannerPageControl.currentPage = Int(pageNumber)
     }
 }
 
