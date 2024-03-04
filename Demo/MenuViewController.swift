@@ -64,6 +64,7 @@ class MenuViewController: UIViewController {
         // 註冊自定義的 table header
         menuTableView.register(MenuHeaderView.self, forHeaderFooterViewReuseIdentifier: "menuHeader")
         fetchDrinkData()
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -80,8 +81,8 @@ class MenuViewController: UIViewController {
         request.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
         URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data else { return }
-            let decoder = JSONDecoder()
             do {
+                let decoder = JSONDecoder()
                 let drink = try decoder.decode(Drink.self, from: data)
                 self.drinks = drink.records ?? []
                 for drink in self.drinks {
@@ -98,6 +99,25 @@ class MenuViewController: UIViewController {
         }.resume()
     }
     
+    func fetchOrderList(completion: @escaping (Result<CreateOrderDrinkResponse, Error>) -> Void) {
+        let OrderListURL = baseURL.appendingPathComponent("OrderDrink")
+        var request = URLRequest(url: OrderListURL)
+        request.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let data {
+                do {
+                    let jsonDecoder = JSONDecoder()
+                    let orderListResponse = try jsonDecoder.decode(CreateOrderDrinkResponse.self, from: data)
+                    completion(.success(orderListResponse))
+                } catch {
+                    completion(.failure(error))
+                }
+            } else if let error = error {
+                completion(.failure(error))
+            }
+        }.resume()
+    }
+    
     func postOrder(orderData: CreateOrderDrink, completion: @escaping (Result<String,Error>) -> Void) {
         let orderURL = baseURL.appendingPathComponent("OrderDrink")
         guard let components = URLComponents(url: orderURL, resolvingAgainstBaseURL: true) else { return }
@@ -108,8 +128,8 @@ class MenuViewController: UIViewController {
         request.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        let encoder = JSONEncoder()
         do {
+            let encoder = JSONEncoder()
             request.httpBody = try encoder.encode(orderData)
             URLSession.shared.dataTask(with: request) { data, response, resError in
                 if let data = data,

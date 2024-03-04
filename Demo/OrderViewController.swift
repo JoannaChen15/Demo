@@ -6,13 +6,39 @@
 //
 
 import UIKit
+import SnapKit
+import Kingfisher
 
 class OrderViewController: UIViewController {
     
+    let scrollView = UIScrollView()
+    let orderTableView = UITableView()
+        
+    let bottomCheckoutView = UIView()
+    let checkoutStackView = UIStackView()
+    let checkoutPrice = UILabel()
+    let checkoutTitle = UILabel()
+    let checkoutNumberOfCups = UILabel()
+    
+    var totalPrice = 0
+    
+    var orders = [CreateOrderDrinkResponseRecord]()
+
     init() {
         super.init(nibName: nil, bundle: nil)
         tabBarItem = UITabBarItem(title: "Order", image: UIImage(systemName: "cart"), selectedImage: UIImage(systemName: "cart"))
         tabBarItem.badgeColor = .secondary
+        NotificationCenter.default.addObserver(self, selector: #selector(updateOrder), name: .orderUpdateNotification, object: nil)
+        MenuViewController.shared.fetchOrderList { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let orderListResponse):
+                self.orders = orderListResponse.records
+                self.updateUI()
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -20,6 +46,141 @@ class OrderViewController: UIViewController {
     }
     
     override func viewDidLoad() {
+        super.viewDidLoad()
         
+        configUI()
+        configBottomCheckoutView()
+        
+        scrollView.delegate = self
+        orderTableView.dataSource = self
+        orderTableView.delegate = self
+        orderTableView.register(OrderCell.self, forCellReuseIdentifier: "orderCell")
+     
+    }
+    func updateUI() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.orderTableView.reloadData()
+            self.checkoutNumberOfCups.text = "共計 \(orders.count)杯"
+            calculateTotalPrice()
+            self.checkoutPrice.text = "$\(totalPrice)"
+            if self.orders.count > 0 {
+                self.tabBarItem.badgeValue = "\(self.orders.count)"
+            } else {
+                self.tabBarItem.badgeValue = nil
+            }
+        }
+    }
+    
+    func calculateTotalPrice() {
+        totalPrice = 0
+        for order in orders {
+            totalPrice += order.fields.price * order.fields.numberOfCups
+        }
+    }
+    
+    @objc func updateOrder() {
+        MenuViewController.shared.fetchOrderList { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let orderListResponse):
+                self.orders = orderListResponse.records
+                self.updateUI()
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+        
+    func configUI() {
+        view.backgroundColor = .primary
+
+        view.addSubview(scrollView)
+        scrollView.snp.makeConstraints { make in
+            make.edges.equalTo(view.safeAreaLayoutGuide)
+        }
+        
+        scrollView.addSubview(orderTableView)
+        orderTableView.snp.makeConstraints { make in
+            make.top.left.right.equalTo(scrollView.frameLayoutGuide)
+            make.bottom.equalTo(scrollView.frameLayoutGuide).inset(60)
+        }
+        orderTableView.backgroundColor = .primary
+        orderTableView.separatorColor = .unselected
+        orderTableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+    }
+    
+    func configBottomCheckoutView() {
+        scrollView.addSubview(bottomCheckoutView)
+        bottomCheckoutView.backgroundColor = .darkPrimary
+        bottomCheckoutView.snp.makeConstraints { make in
+            make.left.right.bottom.equalTo(scrollView.frameLayoutGuide)
+            make.height.equalTo(60)
+        }
+
+        bottomCheckoutView.addSubview(checkoutStackView)
+        checkoutStackView.axis = .horizontal
+        checkoutStackView.spacing = 20
+        checkoutStackView.alignment = .center
+        checkoutStackView.distribution = .fill
+        checkoutStackView.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.left.right.equalToSuperview().inset(20)
+        }
+        
+        checkoutStackView.addArrangedSubview(checkoutTitle)
+        checkoutTitle.text = "總金額"
+        checkoutTitle.textColor = .secondary
+        checkoutTitle.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+        
+        checkoutStackView.addArrangedSubview(checkoutNumberOfCups)
+        checkoutNumberOfCups.text = "共計 \(orders.count)杯"
+        checkoutNumberOfCups.textColor = .gray
+        checkoutNumberOfCups.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+        
+        checkoutStackView.addArrangedSubview(checkoutPrice)
+        checkoutPrice.text = "$\(totalPrice)"
+        checkoutPrice.textColor = .secondary
+        checkoutPrice.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        
+        bottomCheckoutView.layer.shadowColor = UIColor.black.cgColor
+        bottomCheckoutView.layer.shadowOffset = CGSize(width: 0, height: -1) // 陰影偏移量
+        bottomCheckoutView.layer.shadowOpacity = 0.2 // 陰影透明度
+        bottomCheckoutView.layer.shadowRadius = 4 // 陰影半徑
+    }
+    
+    deinit {
+        // 在視圖控制器被銷毀時移除通知觀察者
+        NotificationCenter.default.removeObserver(self, name: .orderUpdateNotification, object: nil)
+    }
+    
+}
+
+extension OrderViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return orders.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = orderTableView.dequeueReusableCell(withIdentifier: "orderCell", for: indexPath) as! OrderCell
+           
+        let order = orders[indexPath.row]
+        cell.drinkImageView.kf.setImage(with: order.fields.imageURL)
+        cell.drinkName.text = order.fields.drinkName
+        cell.orderDescription.text = "\(order.fields.size)•\(order.fields.ice)•\(order.fields.sugar)"
+        if order.fields.addOns != nil {
+            cell.orderDescription.text?.append("•\(order.fields.addOns?.joined(separator: "•") ?? "")")
+        }
+        cell.orderName.text = order.fields.orderName
+        cell.orderPrice.text = "$\(order.fields.price)"
+        
+        cell.selectionStyle = .none
+        
+        return cell
+    }
+    
+    
+}
     }
 }

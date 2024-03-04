@@ -35,7 +35,7 @@ class DrinkDetailViewController: UIViewController {
     let checkoutOptions = UILabel()
     let addToCartButton = UIButton()
     
-    var priceDifference = 0
+    static let orderUpdateNotification = Notification.Name("orderUpdate")
     
     var priceDifference = 0
     var totalPrice = 0
@@ -415,18 +415,29 @@ class DrinkDetailViewController: UIViewController {
     
     @objc func addToCart() {
         let createOrderFields = CreateOrderFields(drinkName: drink.fields.name, size: selectedSize?.checkoutName ?? "", temperature: selectedTemperature?.checkoutName ?? "", sugar: selectedSugar?.checkoutName ?? "", addOns: totalAddOns, price: totalPrice, orderName: "Joanna", numberOfCups: 1, imageUrl: (drink.fields.image.first?.url)!)
+        // 設置訂單內容
+        let createOrderFields = CreateOrderFields(
+            drinkName: drink.fields.name,
+            size: selectedSize?.checkoutName ?? "",
+            ice: selectedIce?.checkoutName ?? "",
+            sugar: selectedSugar?.checkoutName ?? "",
+            addOns: totalAddOns, price: totalPrice,
+            orderName: "Joanna", numberOfCups: 1,
+            imageUrl: (drink.fields.image.first?.url)!)
         
         let createOrderRecord = CreateOrderRecord(fields: createOrderFields)
         let createOrderDrink = CreateOrderDrink(records: [createOrderRecord])
-        
+        // POST
         MenuViewController.shared.postOrder(orderData: createOrderDrink) { result in
             switch result {
             case .success(let createOrderResponse):
                 print(createOrderResponse)
+                NotificationCenter.default.post(name: .orderUpdateNotification, object: nil)
             case .failure(let error):
                 print(error)
             }
         }
+        // 關閉當前視圖
         self.dismiss(animated: true)
     }
     
@@ -536,4 +547,8 @@ extension DrinkDetailViewController: CheckBoxDelegate {
         checkoutPrice.text = "$\(totalPrice)"
     }
 
+}
+
+extension Notification.Name {
+    static let orderUpdateNotification = Notification.Name("OrderUpdateNotification")
 }

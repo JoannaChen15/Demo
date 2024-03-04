@@ -44,6 +44,11 @@ struct CreateOrderDrinkResponseFields: Decodable {
     let orderName, drinkName, size, temperature, sugar : String
     let addOns: [String]?
     let price, numberOfCups: Int
-    let imageURL: String
+    let imageURL: URL
+    
+    enum CodingKeys: String, CodingKey {
+        case price, size, addOns
+        case imageURL = "imageUrl"
+        case orderName, drinkName, sugar, numberOfCups, ice
+    }
 }
-
