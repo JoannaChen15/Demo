@@ -46,6 +46,7 @@ class DrinkDetailViewController: UIViewController {
     var selectedSugar: RadioButton?
     var selectedAddOns: CheckBox?
     var totalAddOns = [String]()
+    var selectedOptions = [String]()
     
     var drink: Record!
     
@@ -414,7 +415,6 @@ class DrinkDetailViewController: UIViewController {
     }
     
     @objc func addToCart() {
-        let createOrderFields = CreateOrderFields(drinkName: drink.fields.name, size: selectedSize?.checkoutName ?? "", temperature: selectedTemperature?.checkoutName ?? "", sugar: selectedSugar?.checkoutName ?? "", addOns: totalAddOns, price: totalPrice, orderName: "Joanna", numberOfCups: 1, imageUrl: (drink.fields.image.first?.url)!)
         // 設置訂單內容
         let createOrderFields = CreateOrderFields(
             drinkName: drink.fields.name,
@@ -441,6 +441,23 @@ class DrinkDetailViewController: UIViewController {
         self.dismiss(animated: true)
     }
     
+    func updateCheckoutOptions() {
+        selectedOptions = []
+        if selectedSize != nil {
+            selectedOptions.append(selectedSize?.checkoutName ?? "")
+        }
+        if selectedIce != nil {
+            selectedOptions.append(selectedIce?.checkoutName ?? "")
+        }
+        if selectedSugar != nil {
+            selectedOptions.append(selectedSugar?.checkoutName ?? "")
+        }
+        if totalAddOns != [] {
+            selectedOptions.append(contentsOf: totalAddOns)
+        }
+        checkoutOptions.text = selectedOptions.joined(separator: "•")
+    }
+    
     func removeCheckoutTitle() {
         if selectedSize == nil && selectedTemperature == nil && selectedSugar == nil && selectedAddOns == nil {
             checkoutOptions.text? = ""
@@ -458,39 +475,15 @@ extension DrinkDetailViewController: RadioButtonDelegate {
         switch sender.type {
         case .size:
             addSizeDifference(selectedButton: sender)
-            changeCheckoutSize(selectedButton: selectedSize)
             didSelected(type: &selectedSize)
         case .temperature:
-            changeCheckoutOptions(type: selectedTemperature)
             didSelected(type: &selectedTemperature)
         case .sugar:
-            changeCheckoutOptions(type: selectedSugar)
             didSelected(type: &selectedSugar)
         default:
             break
         }
-        
-        func changeCheckoutSize(selectedButton: RadioButton?) {
-            if selectedButton == nil {
-                checkoutOptions.text?.append("\(sender.checkoutName)")
-            } else {
-                let originalString = checkoutOptions.text!
-                let stringToRemove = "\(selectedButton?.checkoutName ?? "")"
-                let modifiedString = originalString.replacingOccurrences(of: stringToRemove, with: "\(sender.checkoutName)")
-                checkoutOptions.text? = modifiedString
-            }
-        }
-        
-        func changeCheckoutOptions(type selectedButton: RadioButton?) {
-            if selectedButton == nil {
-                checkoutOptions.text?.append("•\(sender.checkoutName)")
-            } else {
-                let originalString = checkoutOptions.text!
-                let stringToRemove = "•\(selectedButton?.checkoutName ?? "")"
-                let modifiedString = originalString.replacingOccurrences(of: stringToRemove, with: "•\(sender.checkoutName)")
-                checkoutOptions.text? = modifiedString
-            }
-        }
+        updateCheckoutOptions()
         
         func didSelected(type selectedButton: inout RadioButton?) {
             // 取消先前選中的按鈕
@@ -531,20 +524,16 @@ extension DrinkDetailViewController: CheckBoxDelegate {
         switch sender.status {
         case .checked:
             totalPrice += 10
-            checkoutOptions.text?.append("•\(sender.checkoutName)")
             totalAddOns.append(sender.checkoutName)
         case .unchecked:
             totalPrice -= 10
-            let originalString = checkoutOptions.text!
-            let stringToRemove = "•\(sender.checkoutName)"
-            let modifiedString = originalString.replacingOccurrences(of: stringToRemove, with: "")
-            checkoutOptions.text? = modifiedString
             let objectToRemove = sender.checkoutName
             if let index = totalAddOns.firstIndex(of: objectToRemove) {
                 totalAddOns.remove(at: index)
             }
         }
         checkoutPrice.text = "$\(totalPrice)"
+        updateCheckoutOptions()
     }
 
 }
