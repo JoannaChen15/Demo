@@ -20,6 +20,9 @@ class OrderViewController: UIViewController {
     let checkoutTitle = UILabel()
     let checkoutNumberOfCups = UILabel()
     
+    let imageView = UIImageView(image: UIImage(named: "logo-m"))
+    var separatorView = UIView()
+    
     var totalPrice = 0
     
     var orders = [CreateOrderDrinkResponseRecord]()
@@ -47,6 +50,11 @@ class OrderViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        // 設置 navigationItem 圖像
+        imageView.contentMode = .scaleAspectFit
+        navigationItem.titleView = imageView
+        // 設置標題顏色為白色
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         
         configUI()
         configBottomCheckoutView()
@@ -57,6 +65,16 @@ class OrderViewController: UIViewController {
         orderTableView.register(OrderCell.self, forCellReuseIdentifier: "orderCell")
      
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        separatorView = UIView(frame: CGRect(x: 0, y: navigationController?.navigationBar.frame.maxY ?? 0, width: view.bounds.width, height: 0.5))
+        separatorView.backgroundColor = UIColor.unselected // 設置分隔線顏色
+        // 添加分隔線視圖到導航欄
+        navigationController?.view.addSubview(separatorView)
+        separatorView.isHidden = true
+    }
+    
     func updateUI() {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
@@ -182,5 +200,19 @@ extension OrderViewController: UITableViewDelegate, UITableViewDataSource {
     
     
 }
+
+extension OrderViewController: UIScrollViewDelegate {
+    // 滾動時調整標題
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let offsetY = scrollView.contentOffset.y
+        if offsetY > 10 { // 根據需要調整值
+            navigationItem.title = "訂購清單"
+            separatorView.isHidden = false
+            navigationItem.titleView = nil
+        } else {
+            navigationItem.title = ""
+            separatorView.isHidden = true
+            navigationItem.titleView = imageView
+        }
     }
 }

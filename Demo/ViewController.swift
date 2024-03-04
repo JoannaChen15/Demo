@@ -23,9 +23,9 @@ class ViewController: UIViewController {
         
         let tabBar = UITabBarController()
         let menuNavigation = UINavigationController(rootViewController: MenuViewController())
-        let order = OrderViewController()
+        let orderNavigation = UINavigationController(rootViewController: OrderViewController())
         
-        tabBar.viewControllers = [menuNavigation, order]
+        tabBar.viewControllers = [menuNavigation, orderNavigation]
         tabBar.modalPresentationStyle = .fullScreen
         present(tabBar, animated: true)
     }
