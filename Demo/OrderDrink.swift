@@ -19,7 +19,7 @@ struct CreateOrderRecord: Encodable {
 
 // MARK: - Fields
 struct CreateOrderFields: Encodable {
-    let drinkName, size, temperature, sugar: String
+    let drinkName, size, ice, sugar: String
     let addOns: [String]
     let price: Int
     let orderName: String
@@ -41,7 +41,7 @@ struct CreateOrderDrinkResponseRecord: Decodable {
 
 // MARK: - Fields
 struct CreateOrderDrinkResponseFields: Decodable {
-    let orderName, drinkName, size, temperature, sugar : String
+    let orderName, drinkName, size, ice, sugar : String
     let addOns: [String]?
     let price, numberOfCups: Int
     let imageURL: URL

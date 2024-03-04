@@ -56,14 +56,20 @@ extension UIColor {
         return UIColor(hex: "#a7a8a9")!
     }
     
-    class var textSecondary: UIColor {
-        return UIColor { (traitCollection) -> UIColor in
-            if traitCollection.userInterfaceStyle == .dark {
-                return UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0.4)
-            } else {
-                return UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.4)
-            }
-        }
+    class var wrongRed: UIColor {
+        return UIColor(hex: "#B13647")!
+    }
+    
+    class var wrongRedBackground: UIColor {
+        return UIColor(hex: "#FBF1EF")!
+    }
+    
+    class var correctGreen: UIColor {
+        return UIColor(hex: "#24764D")!
+    }
+    
+    class var correctGreenBackground: UIColor {
+        return UIColor(hex: "#EAF6ED")!
     }
     
 }

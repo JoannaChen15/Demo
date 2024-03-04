@@ -19,12 +19,20 @@ class DrinkDetailViewController: UIViewController {
     
     let sizeView = UIView()
     let sizeTitle = UILabel()
-    let addOnsView = UIView()
-    let addOnsTitle = UILabel()
-    let temperatureView = UIView()
-    let temperatureTitle = UILabel()
+    let sizeRequiredView = UIView()
+    let sizeRequiredLabel = UILabel()
+    let iceView = UIView()
+    let iceTitle = UILabel()
+    let iceRequiredView = UIView()
+    let iceRequiredLabel = UILabel()
     let sugarView = UIView()
     let sugarTitle = UILabel()
+    let sugarRequiredView = UIView()
+    let sugarRequiredLabel = UILabel()
+    let addOnsView = UIView()
+    let addOnsTitle = UILabel()
+    let addOnsRequiredView = UIView()
+    let addOnsRequiredLabel = UILabel()
     let optionTitleFontSize: CGFloat = 20
     let viewGap: CGFloat = 8
     
@@ -42,7 +50,7 @@ class DrinkDetailViewController: UIViewController {
 
     // 用於保存當前選中的按鈕
     var selectedSize: RadioButton?
-    var selectedTemperature: RadioButton?
+    var selectedIce: RadioButton?
     var selectedSugar: RadioButton?
     var selectedAddOns: CheckBox?
     var totalAddOns = [String]()
@@ -52,18 +60,9 @@ class DrinkDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemGray6
         getOriginalPrice()
         calculateLargeCupPriceDifference()
-        
-        configScrollView()
-        configDrinkView()
-        configSizeView()
-        configTemperatureView()
-        configSugarView()
-        configAddOnsView()
-        configBackButton()
-        configBottomCheckoutView()
+        configUI()
     }
     
     func getOriginalPrice() {
@@ -75,6 +74,37 @@ class DrinkDetailViewController: UIViewController {
         let mediumPrice = drink.fields.medium
         let largePrice = drink.fields.large
         priceDifference = largePrice - mediumPrice
+    }
+    
+    func configUI() {
+        view.backgroundColor = .systemGray6
+        configScrollView()
+        configDrinkView()
+        configSizeView()
+        configIceView()
+        configSugarView()
+        configAddOnsView()
+        configBackButton()
+        configBottomCheckoutView()
+    }
+    
+    func layoutRequiredLabel(layout requiredView: UIView, and requiredLabel: UILabel, in superView: UIView, alignTo alignView: UIView){
+        superView.addSubview(requiredView)
+        requiredView.backgroundColor = .systemGray6
+        requiredView.layer.cornerRadius = 4
+        requiredView.snp.makeConstraints { make in
+            make.centerY.equalTo(alignView)
+            make.right.equalToSuperview().inset(16)
+            make.width.equalTo(44)
+            make.height.equalTo(26)
+        }
+        requiredView.addSubview(requiredLabel)
+        requiredLabel.text = "必填"
+        requiredLabel.font = UIFont.systemFont(ofSize: 15, weight: .medium)
+        requiredLabel.textColor = .darkPrimary
+        requiredLabel.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
     }
     
     func createRadioButton(title: String, checkoutName: String, type: TypeOfOption) -> RadioButton {
@@ -204,6 +234,8 @@ class DrinkDetailViewController: UIViewController {
             make.top.equalToSuperview().inset(16)
             make.left.equalToSuperview().inset(16)
         }
+        
+        layoutRequiredLabel(layout: sizeRequiredView, and: sizeRequiredLabel, in: sizeView, alignTo: sizeTitle)
           
         // 創建單選按鈕
         let mediumButton = createRadioButton(title: "中杯 Medium", checkoutName: "中杯", type: .size)
@@ -218,44 +250,47 @@ class DrinkDetailViewController: UIViewController {
         }
     }
     
-    func configTemperatureView() {
-        scrollView.addSubview(temperatureView)
-        temperatureView.backgroundColor = .white
-        temperatureView.snp.makeConstraints { make in
+    func configIceView() {
+        scrollView.addSubview(iceView)
+     iceView.backgroundColor = .white
+     iceView.snp.makeConstraints { make in
             make.top.equalTo(sizeView.snp.bottom).offset(viewGap)
             make.left.right.equalToSuperview()
         }
         
-        temperatureView.addSubview(temperatureTitle)
-        temperatureTitle.text = "飲品溫度 Beverage Temperature"
-        temperatureTitle.font = UIFont.systemFont(ofSize: optionTitleFontSize, weight: .bold)
-        temperatureTitle.textColor = .darkPrimary
-        temperatureTitle.snp.makeConstraints { make in
+     iceView.addSubview(iceTitle)
+     iceTitle.text = "溫度選擇 Ice Level"
+     iceTitle.font = UIFont.systemFont(ofSize: optionTitleFontSize, weight: .bold)
+     iceTitle.textColor = .darkPrimary
+     iceTitle.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(16)
             make.left.equalToSuperview().inset(16)
         }
+        
+        layoutRequiredLabel(layout: iceRequiredView, and: iceRequiredLabel, in: iceView, alignTo: iceTitle)
+
         // 創建單選按鈕
-        let regularIce = createRadioButton(title: "正常冰 Regular Ice", checkoutName: "正常冰", type: .temperature)
-        let lessIce = createRadioButton(title: "少冰 Less Ice", checkoutName: "少冰", type: .temperature)
-        let halfIce = createRadioButton(title: "微冰 Half Ice", checkoutName: "微冰", type: .temperature)
-        let iceFree = createRadioButton(title: "去冰 Ice-Free", checkoutName: "去冰", type: .temperature)
-        let withoutIce = createRadioButton(title: "完全去冰 Without Ice", checkoutName: "完全去冰", type: .temperature)
-        let roomTemperature = createRadioButton(title: "常溫 Room Temperature", checkoutName: "常溫", type: .temperature)
-        let warm = createRadioButton(title: "溫 Warm", checkoutName: "溫", type: .temperature)
-        let hot = createRadioButton(title: "熱 Hot", checkoutName: "熱", type: .temperature)
+        let regularIce = createRadioButton(title: "正常冰 Regular Ice", checkoutName: "正常冰", type: .ice)
+        let lessIce = createRadioButton(title: "少冰 Less Ice", checkoutName: "少冰", type: .ice)
+        let halfIce = createRadioButton(title: "微冰 Half Ice", checkoutName: "微冰", type: .ice)
+        let iceFree = createRadioButton(title: "去冰 Ice-Free", checkoutName: "去冰", type: .ice)
+        let withoutIce = createRadioButton(title: "完全去冰 Without Ice", checkoutName: "完全去冰", type: .ice)
+        let roomTemperature = createRadioButton(title: "常溫 Room Temperature", checkoutName: "常溫", type: .ice)
+        let warm = createRadioButton(title: "溫 Warm", checkoutName: "溫", type: .ice)
+        let hot = createRadioButton(title: "熱 Hot", checkoutName: "熱", type: .ice)
 
-        temperatureView.addSubview(regularIce)
-        temperatureView.addSubview(lessIce)
-        temperatureView.addSubview(halfIce)
-        temperatureView.addSubview(iceFree)
-        temperatureView.addSubview(withoutIce)
-        temperatureView.addSubview(roomTemperature)
-        temperatureView.addSubview(warm)
-        temperatureView.addSubview(hot)
+     iceView.addSubview(regularIce)
+     iceView.addSubview(lessIce)
+     iceView.addSubview(halfIce)
+     iceView.addSubview(iceFree)
+     iceView.addSubview(withoutIce)
+     iceView.addSubview(roomTemperature)
+     iceView.addSubview(warm)
+     iceView.addSubview(hot)
 
-        layoutRadioButton(view: temperatureView, title: temperatureTitle)
-        temperatureView.snp.makeConstraints { make in
-            if let lastSubview = temperatureView.subviews.last {
+        layoutRadioButton(view: iceView, title: iceTitle)
+     iceView.snp.makeConstraints { make in
+            if let lastSubview = iceView.subviews.last {
                 make.bottom.equalTo(lastSubview.snp.bottom).offset(10)
             }
         }
@@ -265,18 +300,21 @@ class DrinkDetailViewController: UIViewController {
         scrollView.addSubview(sugarView)
         sugarView.backgroundColor = .white
         sugarView.snp.makeConstraints { make in
-            make.top.equalTo(temperatureView.snp.bottom).offset(viewGap)
+            make.top.equalTo(iceView.snp.bottom).offset(viewGap)
             make.left.right.equalToSuperview()
         }
         
         sugarView.addSubview(sugarTitle)
-        sugarTitle.text = "甜度選擇 Choose Sweetness Level"
+        sugarTitle.text = "甜度選擇 Sugar Level"
         sugarTitle.font = UIFont.systemFont(ofSize: optionTitleFontSize, weight: .bold)
         sugarTitle.textColor = .darkPrimary
         sugarTitle.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(16)
             make.left.equalToSuperview().inset(16)
         }
+        
+        layoutRequiredLabel(layout: sugarRequiredView, and: sugarRequiredLabel, in: sugarView, alignTo: sugarTitle)
+        
         // 創建單選按鈕
         let regularSugar = createRadioButton(title: "正常糖 100% Sugar", checkoutName: "正常糖", type: .sugar)
         let lowSugar = createRadioButton(title: "少糖 70% Sugar", checkoutName: "少糖", type: .sugar)
@@ -415,6 +453,11 @@ class DrinkDetailViewController: UIViewController {
     }
     
     @objc func addToCart() {
+        // 檢查是否有必填選項未選擇
+        if selectedSize == nil || selectedIce == nil || selectedSugar == nil {
+            checkRequiredOptions()
+            return
+        }
         // 設置訂單內容
         let createOrderFields = CreateOrderFields(
             drinkName: drink.fields.name,
@@ -441,6 +484,27 @@ class DrinkDetailViewController: UIViewController {
         self.dismiss(animated: true)
     }
     
+    func checkRequiredOptions() {
+        if selectedSize == nil {
+            showAlertWith(optionName: "尺寸", requiredLabel: sizeRequiredLabel, requiredView: sizeRequiredView)
+        }
+        if selectedIce == nil {
+            showAlertWith(optionName: "溫度", requiredLabel: iceRequiredLabel, requiredView: iceRequiredView)
+        }
+        if selectedSugar == nil {
+            showAlertWith(optionName: "甜度", requiredLabel: sugarRequiredLabel, requiredView: sugarRequiredView)
+        }
+    }
+    
+    func showAlertWith(optionName: String, requiredLabel: UILabel, requiredView: UIView) {
+        let alertController = UIAlertController(title: "請選擇\(optionName)", message: "\(optionName)為必填！", preferredStyle: .alert)
+        let continueAction = UIAlertAction(title: "確定", style: .default, handler: nil)
+        alertController.addAction(continueAction)
+        present(alertController, animated: true)
+        requiredLabel.textColor = .wrongRed
+        requiredView.backgroundColor = .wrongRedBackground
+    }
+    
     func updateCheckoutOptions() {
         selectedOptions = []
         if selectedSize != nil {
@@ -459,7 +523,7 @@ class DrinkDetailViewController: UIViewController {
     }
     
     func removeCheckoutTitle() {
-        if selectedSize == nil && selectedTemperature == nil && selectedSugar == nil && selectedAddOns == nil {
+        if selectedSize == nil && selectedIce == nil && selectedSugar == nil && selectedAddOns == nil {
             checkoutOptions.text? = ""
         }
     }
@@ -476,10 +540,16 @@ extension DrinkDetailViewController: RadioButtonDelegate {
         case .size:
             addSizeDifference(selectedButton: sender)
             didSelected(type: &selectedSize)
-        case .temperature:
-            didSelected(type: &selectedTemperature)
+            sizeRequiredLabel.textColor = .correctGreen
+            sizeRequiredView.backgroundColor = .correctGreenBackground
+        case .ice:
+            didSelected(type: &selectedIce)
+            iceRequiredLabel.textColor = .correctGreen
+            iceRequiredView.backgroundColor = .correctGreenBackground
         case .sugar:
             didSelected(type: &selectedSugar)
+            sugarRequiredLabel.textColor = .correctGreen
+            sugarRequiredView.backgroundColor = .correctGreenBackground
         default:
             break
         }

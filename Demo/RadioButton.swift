@@ -77,6 +77,6 @@ enum RadioButtonStatus {
 
 enum TypeOfOption {
     case size
-    case temperature
+    case ice
     case sugar
 }
