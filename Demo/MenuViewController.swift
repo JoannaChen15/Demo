@@ -143,6 +143,30 @@ class MenuViewController: UIViewController {
             completion(.failure(error))
         }
     }
+    
+    // MARK: - DELETE Order
+    func deleteOrder(orderID: String, completion: @escaping(Result<String,Error>) -> Void) {
+        var orderURL = baseURL.appendingPathComponent("OrderDrink")
+        orderURL = orderURL.appendingPathComponent(orderID)
+        guard let components = URLComponents(url: orderURL, resolvingAgainstBaseURL: true) else { return }
+        guard let orderURL = components.url else { return }
+        
+        var request = URLRequest(url: orderURL)
+        request.httpMethod = "DELETE"
+        request.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        URLSession.shared.dataTask(with: request) { data, response, resError in
+            if let response = response as? HTTPURLResponse,
+               response.statusCode == 200,
+               resError == nil,
+               let data = data,
+               let content = String(data: data, encoding: .utf8) {
+                completion(.success(content))
+            } else if let resError = resError {
+                completion(.failure(resError))
+            }
+        }.resume()
+    }
 
     func configUI() {
         view.backgroundColor = .darkPrimary

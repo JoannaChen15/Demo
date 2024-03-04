@@ -198,6 +198,24 @@ extension OrderViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let order = self.orders[indexPath.row]
+            MenuViewController.shared.deleteOrder(orderID: order.id) { result in
+                switch result {
+                case .success(let message):
+                    print(message)
+                    DispatchQueue.main.async {
+                        self.orders.remove(at: indexPath.row)
+                        self.orderTableView.deleteRows(at: [indexPath], with: .fade)
+                        self.updateUI()
+                    }
+                case .failure(let error):
+                    print(error)
+                }
+            }
+        }
+    }
     
 }
 
