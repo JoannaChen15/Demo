@@ -26,7 +26,7 @@ class OrderViewController: UIViewController {
     var totalPrice = 0
     
     var orders = [CreateOrderDrinkResponseRecord]()
-
+    
     init() {
         super.init(nibName: nil, bundle: nil)
         tabBarItem = UITabBarItem(title: "Order", image: UIImage(systemName: "cart"), selectedImage: UIImage(systemName: "cart"))
@@ -63,7 +63,6 @@ class OrderViewController: UIViewController {
         orderTableView.dataSource = self
         orderTableView.delegate = self
         orderTableView.register(OrderCell.self, forCellReuseIdentifier: "orderCell")
-     
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -184,12 +183,16 @@ extension OrderViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = orderTableView.dequeueReusableCell(withIdentifier: "orderCell", for: indexPath) as! OrderCell
            
         let order = orders[indexPath.row]
-        cell.drinkImageView.kf.setImage(with: order.fields.imageURL)
+        cell.drinkImageView.kf.setImage(with: order.fields.imageUrl)
         cell.drinkName.text = order.fields.drinkName
-        cell.orderDescription.text = "\(order.fields.size)•\(order.fields.ice)•\(order.fields.sugar)"
-        if order.fields.addOns != nil {
-            cell.orderDescription.text?.append("•\(order.fields.addOns?.joined(separator: "•") ?? "")")
-        }
+
+        var selectedOptions = [String]()
+        selectedOptions.append(order.fields.size)
+        selectedOptions.append(order.fields.ice)
+        selectedOptions.append(order.fields.sugar)
+        selectedOptions += order.fields.addOns ?? []
+        cell.orderDescription.text = selectedOptions.joined(separator: "•")
+        
         cell.orderName.text = order.fields.orderName
         cell.orderPrice.text = "$\(order.fields.price)"
         
@@ -207,7 +210,7 @@ extension OrderViewController: UITableViewDelegate, UITableViewDataSource {
                     print(message)
                     DispatchQueue.main.async {
                         self.orders.remove(at: indexPath.row)
-                        self.orderTableView.deleteRows(at: [indexPath], with: .fade)
+                        self.orderTableView.deleteRows(at: [indexPath], with: .left)
                         self.updateUI()
                     }
                 case .failure(let error):
@@ -215,6 +218,13 @@ extension OrderViewController: UITableViewDelegate, UITableViewDataSource {
                 }
             }
         }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let order = orders[indexPath.row]
+        let drinkDetailViewController = DrinkDetailViewController()
+        drinkDetailViewController.editOrder(data: order.fields, id: order.id)
+        present(drinkDetailViewController, animated: true)
     }
     
 }

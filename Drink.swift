@@ -19,8 +19,10 @@ struct Record: Decodable {
 
 // MARK: - Fields
 struct Fields: Decodable {
-    let name, description: String
-    let medium, large: Int
+    let name: String
+    let description: String
+    let medium: Int
+    let large: Int
     let image: [Image]
     let category: Category
 }

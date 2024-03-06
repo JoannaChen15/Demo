@@ -57,7 +57,8 @@ class OrderCell: UITableViewCell {
         drinkImageView.layer.cornerRadius = 8
         drinkImageView.clipsToBounds = true
         drinkImageView.snp.makeConstraints { make in
-            make.size.equalTo((contentView.frame.width) / 3.2)
+            make.width.equalTo((contentView.frame.width) / 3.2) // 设置宽度约束
+            make.height.equalTo((contentView.frame.width) / 3.2) // 设置高度约束
         }
         
         mainStackView.addArrangedSubview(subStackView)
@@ -68,7 +69,7 @@ class OrderCell: UITableViewCell {
         
         mainStackView.addArrangedSubview(orderPrice)
         orderPrice.font = UIFont.systemFont(ofSize: 20, weight: .bold)
-        orderPrice.textColor = .white
+        orderPrice.textColor = .secondary
         
         subStackView.addArrangedSubview(drinkName)
         drinkName.font = UIFont.systemFont(ofSize: 17)

@@ -15,14 +15,13 @@ class ViewController: UIViewController {
         UITabBar.appearance().tintColor = UIColor.secondary
         UITabBar.appearance().unselectedItemTintColor = UIColor.unselected
         UITabBar.appearance().barTintColor = .primary
-//        UITabBar.appearance().isTranslucent = false
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         let tabBar = UITabBarController()
-        let menuNavigation = UINavigationController(rootViewController: MenuViewController())
+        let menuNavigation = UINavigationController(rootViewController: MenuViewController.shared)
         let orderNavigation = UINavigationController(rootViewController: OrderViewController())
         
         tabBar.viewControllers = [menuNavigation, orderNavigation]

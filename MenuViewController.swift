@@ -64,17 +64,8 @@ class MenuViewController: UIViewController {
         // 註冊自定義的 table header
         menuTableView.register(MenuHeaderView.self, forHeaderFooterViewReuseIdentifier: "menuHeader")
         fetchDrinkData()
-        
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        let contentHeight = menuTableView.frame.height + (bannerView.frame.height * 2)
-        mainScrollView.contentSize = CGSize(width: view.bounds.width, height: contentHeight)
-        menuTableView.isScrollEnabled = false
-    }
-    
+    // MARK: - GET Drink
     func fetchDrinkData() {
         let drinkURL = baseURL.appendingPathComponent("Drink")
         var request = URLRequest(url: drinkURL)
@@ -92,13 +83,15 @@ class MenuViewController: UIViewController {
                 }
                 DispatchQueue.main.async {
                     self.menuTableView.reloadData()
+                    let contentHeight = self.menuTableView.bounds.height + (self.bannerView.bounds.height * 2)
+                    self.mainScrollView.contentSize = CGSize(width: self.view.bounds.width, height: contentHeight)
                 }
             } catch {
                 print(error)
             }
         }.resume()
     }
-    
+    // MARK: - GET Order
     func fetchOrderList(completion: @escaping (Result<CreateOrderDrinkResponse, Error>) -> Void) {
         let OrderListURL = baseURL.appendingPathComponent("OrderDrink")
         var request = URLRequest(url: OrderListURL)
@@ -117,7 +110,7 @@ class MenuViewController: UIViewController {
             }
         }.resume()
     }
-    
+    // MARK: - POST Order
     func postOrder(orderData: CreateOrderDrink, completion: @escaping (Result<String,Error>) -> Void) {
         let orderURL = baseURL.appendingPathComponent("OrderDrink")
         guard let components = URLComponents(url: orderURL, resolvingAgainstBaseURL: true) else { return }
@@ -168,6 +161,32 @@ class MenuViewController: UIViewController {
         }.resume()
     }
 
+    // MARK: - PATCH Order
+    func updateOrder(orderData: UpdateOrderDrink, completion: @escaping (Result<String, Error>) -> Void) {
+        let orderURL = baseURL.appendingPathComponent("OrderDrink")
+        guard let components = URLComponents(url: orderURL, resolvingAgainstBaseURL: true) else { return }
+        guard let orderURL = components.url else { return }
+
+        var request = URLRequest(url: orderURL)
+        request.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
+        request.httpMethod = "PATCH"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        do {
+            let encoder = JSONEncoder()
+            request.httpBody = try encoder.encode(orderData)
+            URLSession.shared.dataTask(with: request) { data, response, resError in
+                if let data = data,
+                   let content = String(data: data, encoding: .utf8) {
+                    completion(.success(content))
+                } else if let resError = resError {
+                    completion(.failure(resError))
+                }
+            }.resume()
+        } catch {
+            completion(.failure(error))
+        }
+    }
+    
     func configUI() {
         view.backgroundColor = .darkPrimary
   
@@ -195,7 +214,6 @@ class MenuViewController: UIViewController {
         bannerView.snp.makeConstraints { make in
             make.top.equalTo(mainScrollView.contentLayoutGuide)
             make.left.right.equalTo(mainScrollView.frameLayoutGuide)
-            make.height.equalTo(280)
         }
     }
    
@@ -222,6 +240,7 @@ class MenuViewController: UIViewController {
             make.centerX.equalToSuperview()
             make.width.equalTo(200)
             make.height.equalTo(25)
+            make.bottom.equalToSuperview().inset(10)
         }
     }
     
@@ -284,9 +303,9 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let drinkDetailVC = DrinkDetailViewController()
-        drinkDetailVC.drink = drinksOfselectedCategory[indexPath.row]
-        present(drinkDetailVC, animated: true)
+        let drinkDetailViewController = DrinkDetailViewController()
+        drinkDetailViewController.drink = drinksOfselectedCategory[indexPath.row]
+        present(drinkDetailViewController, animated: true)
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -315,6 +334,7 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
             menuTableView.bounces = true
         }
     }
+    
 }
 
 extension MenuViewController: CategoryButtonDelegate {

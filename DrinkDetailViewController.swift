@@ -9,7 +9,7 @@ import UIKit
 import Kingfisher
 
 class DrinkDetailViewController: UIViewController {
-    
+
     let scrollView = UIScrollView()
     let drinkView = UIView()
     let drinkImageView = UIImageView()
@@ -52,17 +52,19 @@ class DrinkDetailViewController: UIViewController {
     var selectedSize: RadioButton?
     var selectedIce: RadioButton?
     var selectedSugar: RadioButton?
-    var selectedAddOns: CheckBox?
     var totalAddOns = [String]()
     var selectedOptions = [String]()
     
     var drink: Record!
+    private var orderData: CreateOrderFields?
+    private var orderId: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         getOriginalPrice()
         calculateLargeCupPriceDifference()
         configUI()
+        updateOptionsOfOrder()
     }
     
     func getOriginalPrice() {
@@ -96,11 +98,11 @@ class DrinkDetailViewController: UIViewController {
             make.centerY.equalTo(alignView)
             make.right.equalToSuperview().inset(16)
             make.width.equalTo(44)
-            make.height.equalTo(26)
+            make.height.equalTo(24)
         }
         requiredView.addSubview(requiredLabel)
         requiredLabel.text = "必填"
-        requiredLabel.font = UIFont.systemFont(ofSize: 15, weight: .medium)
+        requiredLabel.font = UIFont.systemFont(ofSize: 14, weight: .medium)
         requiredLabel.textColor = .darkPrimary
         requiredLabel.snp.makeConstraints { make in
             make.center.equalToSuperview()
@@ -484,6 +486,37 @@ class DrinkDetailViewController: UIViewController {
         self.dismiss(animated: true)
     }
     
+    @objc func updateOrder() {
+        // 設置訂單更新內容
+        let updateOrderFields = UpdateOrderFields(
+            size: selectedSize?.checkoutName ?? "",
+            ice: selectedIce?.checkoutName ?? "",
+            sugar: selectedSugar?.checkoutName ?? "",
+            addOns: totalAddOns, price: totalPrice,
+            numberOfCups: 1)
+        
+        let updateOrderRecord = UpdateOrderRecord(id: orderId!, fields: updateOrderFields)
+        let updateOrderDrink = UpdateOrderDrink(records: [updateOrderRecord])
+        // PATCH
+        MenuViewController.shared.updateOrder(orderData: updateOrderDrink) { result in
+            switch result {
+            case .success(let updateOrderResponse):
+                print(updateOrderResponse)
+                NotificationCenter.default.post(name: .orderUpdateNotification, object: nil)
+            case .failure(let error):
+                print(error)
+            }
+        }
+        // 關閉當前視圖
+        self.dismiss(animated: true)
+    }
+    
+    func editOrder(data: CreateOrderFields, id: String) {
+        self.drink = MenuViewController.shared.drinks.first(where: { $0.fields.name == data.drinkName })
+        self.orderData = data
+        self.orderId = id
+    }
+    
     func checkRequiredOptions() {
         if selectedSize == nil {
             showAlertWith(optionName: "尺寸", requiredLabel: sizeRequiredLabel, requiredView: sizeRequiredView)
@@ -523,11 +556,43 @@ class DrinkDetailViewController: UIViewController {
     }
     
     func removeCheckoutTitle() {
-        if selectedSize == nil && selectedIce == nil && selectedSugar == nil && selectedAddOns == nil {
+        if selectedSize == nil && selectedIce == nil && selectedSugar == nil && totalAddOns == [] {
             checkoutOptions.text? = ""
         }
     }
-
+    
+    func updateOptionsOfOrder() {
+        guard let orderData else { return }
+        handleRadioButtonSelect(checkoutName: orderData.size, in: sizeView, didSelectedOption: &selectedSize)
+        handleRadioButtonSelect(checkoutName: orderData.ice, in: iceView, didSelectedOption: &selectedIce)
+        handleRadioButtonSelect(checkoutName: orderData.sugar, in: sugarView, didSelectedOption: &selectedSugar)
+        handleCheckBox(totalAddOns: orderData.addOns ?? [])
+        updateCheckoutOptions()
+        totalPrice = orderData.price
+        checkoutPrice.text = "\(orderData.price)"
+        addToCartButton.removeTarget(self, action: #selector(addToCart), for: .touchUpInside)
+        addToCartButton.addTarget(self, action: #selector(updateOrder), for: .touchUpInside)
+    }
+    
+    func handleRadioButtonSelect(checkoutName: String, in view: UIView, didSelectedOption: inout RadioButton?) {
+        let selectedRadioButton = view.subviews.compactMap { $0 as? RadioButton }.first(where: { $0.checkoutName == checkoutName })
+        selectedRadioButton?.status = .checked
+        let requiredView = view.subviews.filter { $0.backgroundColor == .systemGray6 }.first
+        requiredView?.backgroundColor = .correctGreenBackground
+        if let requiredLabel = requiredView?.subviews.first(where: { $0 is UILabel }) as? UILabel {
+            requiredLabel.textColor = .correctGreen
+        }
+        didSelectedOption = selectedRadioButton
+    }
+    
+    func handleCheckBox(totalAddOns: [String]) {
+        for addonName in totalAddOns {
+            if let selectedCheckBox = addOnsView.subviews.compactMap({ $0 as? CheckBox }).first(where: { $0.checkoutName == addonName }) {
+                selectedCheckBox.status = .checked
+                self.totalAddOns.append(selectedCheckBox.checkoutName)
+            }
+        }
+    }
 }
 
 extension DrinkDetailViewController: RadioButtonDelegate {
@@ -589,8 +654,6 @@ extension DrinkDetailViewController: CheckBoxDelegate {
     
     func checkBoxTapped(_ sender: CheckBox) {
         removeCheckoutTitle()
-        selectedAddOns = sender
-        
         switch sender.status {
         case .checked:
             totalPrice += 10
@@ -610,4 +673,16 @@ extension DrinkDetailViewController: CheckBoxDelegate {
 
 extension Notification.Name {
     static let orderUpdateNotification = Notification.Name("OrderUpdateNotification")
+}
+
+extension DrinkDetailViewController {
+    func findButtonWithCheckoutName(_ checkoutName: String) -> UIButton? {
+        for subview in scrollView.subviews {
+            if let radioButton = subview as? RadioButton,
+               radioButton.checkoutName == checkoutName {
+                return radioButton
+            }
+        }
+        return nil
+    }
 }

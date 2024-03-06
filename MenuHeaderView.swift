@@ -56,7 +56,6 @@ class MenuHeaderView: UITableViewHeaderFooterView {
     }
     
     func configUI() {
-        
         contentView.backgroundColor = .darkPrimary
         contentView.addSubview(categoryButtonStackView)
         contentView.addSubview(underline)
