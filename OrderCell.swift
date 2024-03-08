@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol OrderCellDelegate: AnyObject {
+    func updateQuantityAndPrice(sender: UIButton, numberOfCups: Int, orderPrice: Int)
+}
+
 class OrderCell: UITableViewCell {
     
     let mainStackView = UIStackView()
@@ -15,7 +19,19 @@ class OrderCell: UITableViewCell {
     let drinkName = UILabel()
     let orderDescription = UILabel()
     let orderName = UILabel()
-    let orderPrice = UILabel()
+    let orderPriceLabel = UILabel()
+    
+    let numberOfCupsView = UIView()
+    let minusButton = UIButton()
+    let plusButton = UIButton()
+    let numberOfCupsLabel = UILabel()
+    
+    var numberOfCups = 1
+    var orderPrice = 0
+    
+    var order: CreateOrderDrinkResponseRecord?
+    
+    weak var delegate: OrderCellDelegate?
         
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .default, reuseIdentifier: "orderCell")
@@ -39,6 +55,39 @@ class OrderCell: UITableViewCell {
         }
     }
     
+    func set(order: CreateOrderDrinkResponseRecord) {
+        self.order = order
+        self.drinkImageView.kf.setImage(with: order.fields.imageUrl)
+        self.drinkName.text = order.fields.drinkName
+
+        var selectedOptions = [String]()
+        selectedOptions.append(order.fields.size)
+        selectedOptions.append(order.fields.ice)
+        selectedOptions.append(order.fields.sugar)
+        selectedOptions += order.fields.addOns ?? []
+        self.orderDescription.text = selectedOptions.joined(separator: "•")
+        
+        self.orderName.text = order.fields.orderName
+        numberOfCups = order.fields.numberOfCups
+        self.numberOfCupsLabel.text = "\(numberOfCups)"
+        self.orderPriceLabel.text = "$\(order.fields.price)"
+        orderPrice = order.fields.price / numberOfCups
+    }
+    
+    @objc func minusCup() {
+        if numberOfCups > 1 {
+            numberOfCups -= 1
+        }
+        let orderPrice = orderPrice * numberOfCups
+        delegate?.updateQuantityAndPrice(sender: self.minusButton, numberOfCups: numberOfCups, orderPrice: orderPrice)
+    }
+    
+    @objc func plusCup() {
+        numberOfCups += 1
+        let orderPrice = orderPrice * numberOfCups
+        delegate?.updateQuantityAndPrice(sender: self.plusButton, numberOfCups: numberOfCups, orderPrice: orderPrice)
+    }
+    
     func configUI() {
         contentView.addSubview(mainStackView)
         contentView.backgroundColor = .primary
@@ -48,7 +97,7 @@ class OrderCell: UITableViewCell {
         mainStackView.distribution = .fill
         mainStackView.spacing = 16
         mainStackView.snp.makeConstraints { make in
-            make.top.bottom.equalToSuperview().inset(14)
+            make.centerY.equalToSuperview()
             make.left.right.equalToSuperview().inset(16)
         }
         
@@ -67,9 +116,9 @@ class OrderCell: UITableViewCell {
         subStackView.distribution = .fillProportionally
         subStackView.spacing = 8
         
-        mainStackView.addArrangedSubview(orderPrice)
-        orderPrice.font = UIFont.systemFont(ofSize: 20, weight: .bold)
-        orderPrice.textColor = .secondary
+        mainStackView.addArrangedSubview(orderPriceLabel)
+        orderPriceLabel.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        orderPriceLabel.textColor = .secondary
         
         subStackView.addArrangedSubview(drinkName)
         drinkName.font = UIFont.systemFont(ofSize: 17)
@@ -83,6 +132,44 @@ class OrderCell: UITableViewCell {
         subStackView.addArrangedSubview(orderName)
         orderName.font = UIFont.systemFont(ofSize: 14)
         orderName.textColor = .gray
+        
+        subStackView.addArrangedSubview(numberOfCupsView)
+        
+        numberOfCupsView.addSubview(minusButton)
+        minusButton.snp.makeConstraints { make in
+            make.top.bottom.left.equalToSuperview()
+            make.size.equalTo(36)
+        }
+        minusButton.setImage(UIImage(systemName: "minus"), for: .normal)
+        minusButton.backgroundColor = .darkPrimary
+        minusButton.tintColor = .white
+        minusButton.layer.cornerRadius = 18
+        minusButton.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner] // 指定要設置圓角的角落
+        minusButton.addTarget(self, action: #selector(minusCup), for: .touchUpInside)
+        
+        numberOfCupsView.addSubview(numberOfCupsLabel)
+        numberOfCupsLabel.backgroundColor = .darkPrimary
+        numberOfCupsLabel.textAlignment = .center
+        numberOfCupsLabel.textColor = .white
+        numberOfCupsLabel.font = UIFont.systemFont(ofSize: 14)
+        numberOfCupsLabel.snp.makeConstraints { make in
+            make.left.equalTo(minusButton.snp.right)
+            make.top.bottom.equalToSuperview()
+            make.size.equalTo(36)
+        }
+        
+        numberOfCupsView.addSubview(plusButton)
+        plusButton.snp.makeConstraints { make in
+            make.left.equalTo(numberOfCupsLabel.snp.right)
+            make.top.bottom.right.equalToSuperview()
+            make.size.equalTo(36)
+        }
+        plusButton.setImage(UIImage(systemName: "plus"), for: .normal)
+        plusButton.backgroundColor = .darkPrimary
+        plusButton.tintColor = .white
+        plusButton.layer.cornerRadius = 18
+        plusButton.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner] // 指定要設置圓角的角落
+        plusButton.addTarget(self, action: #selector(plusCup), for: .touchUpInside)
     }
     
 }

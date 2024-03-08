@@ -23,6 +23,7 @@ class OrderViewController: UIViewController {
     let imageView = UIImageView(image: UIImage(named: "logo-m"))
     var separatorView = UIView()
     
+    var numberOfCups = 0
     var totalPrice = 0
     
     var orders = [CreateOrderDrinkResponseRecord]()
@@ -55,14 +56,9 @@ class OrderViewController: UIViewController {
         navigationItem.titleView = imageView
         // 設置標題顏色為白色
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-        
+         
         configUI()
-        configBottomCheckoutView()
-        
-        scrollView.delegate = self
-        orderTableView.dataSource = self
-        orderTableView.delegate = self
-        orderTableView.register(OrderCell.self, forCellReuseIdentifier: "orderCell")
+        updateUI()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -78,21 +74,23 @@ class OrderViewController: UIViewController {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             self.orderTableView.reloadData()
-            self.checkoutNumberOfCups.text = "共計 \(orders.count)杯"
-            calculateTotalPrice()
+            calculateQuantityAndPrice()
+            self.checkoutNumberOfCups.text = "共計 \(numberOfCups)杯"
             self.checkoutPrice.text = "$\(totalPrice)"
             if self.orders.count > 0 {
-                self.tabBarItem.badgeValue = "\(self.orders.count)"
+                self.tabBarItem.badgeValue = "\(numberOfCups)"
             } else {
                 self.tabBarItem.badgeValue = nil
             }
         }
     }
     
-    func calculateTotalPrice() {
+    func calculateQuantityAndPrice() {
         totalPrice = 0
+        numberOfCups = 0
         for order in orders {
-            totalPrice += order.fields.price * order.fields.numberOfCups
+            totalPrice += order.fields.price
+            numberOfCups += order.fields.numberOfCups
         }
     }
     
@@ -116,6 +114,7 @@ class OrderViewController: UIViewController {
         scrollView.snp.makeConstraints { make in
             make.edges.equalTo(view.safeAreaLayoutGuide)
         }
+        scrollView.delegate = self
         
         scrollView.addSubview(orderTableView)
         orderTableView.snp.makeConstraints { make in
@@ -125,6 +124,11 @@ class OrderViewController: UIViewController {
         orderTableView.backgroundColor = .primary
         orderTableView.separatorColor = .unselected
         orderTableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        orderTableView.delegate = self
+        orderTableView.dataSource = self
+        orderTableView.register(OrderCell.self, forCellReuseIdentifier: "orderCell")
+        
+        configBottomCheckoutView()
     }
     
     func configBottomCheckoutView() {
@@ -181,24 +185,19 @@ extension OrderViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = orderTableView.dequeueReusableCell(withIdentifier: "orderCell", for: indexPath) as! OrderCell
-           
-        let order = orders[indexPath.row]
-        cell.drinkImageView.kf.setImage(with: order.fields.imageUrl)
-        cell.drinkName.text = order.fields.drinkName
-
-        var selectedOptions = [String]()
-        selectedOptions.append(order.fields.size)
-        selectedOptions.append(order.fields.ice)
-        selectedOptions.append(order.fields.sugar)
-        selectedOptions += order.fields.addOns ?? []
-        cell.orderDescription.text = selectedOptions.joined(separator: "•")
-        
-        cell.orderName.text = order.fields.orderName
-        cell.orderPrice.text = "$\(order.fields.price)"
-        
         cell.selectionStyle = .none
-        
+        // 傳order的資料給cell
+        cell.set(order: orders[indexPath.row])
+        // cell找delegate幫忙
+        cell.delegate = self
+        // 設置按鈕的 tag 為 indexPath.row
+        cell.minusButton.tag = indexPath.row
+        cell.plusButton.tag = indexPath.row
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 160
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
@@ -243,4 +242,33 @@ extension OrderViewController: UIScrollViewDelegate {
             navigationItem.titleView = imageView
         }
     }
+}
+
+extension OrderViewController: OrderCellDelegate {
+    // 變更飲料杯數時，資料同步至Airtable再載回來
+    func updateQuantityAndPrice(sender: UIButton, numberOfCups: Int, orderPrice: Int) {
+        // 獲取按鈕的 tag 屬性，即對應的 indexPath.row
+        let rowIndex = sender.tag
+        // 設置訂單更新內容
+        let updateOrderFields = UpdateOrderFields(
+            size: orders[rowIndex].fields.size,
+            ice: orders[rowIndex].fields.ice,
+            sugar: orders[rowIndex].fields.sugar,
+            addOns: orders[rowIndex].fields.addOns ?? [], price: orderPrice,
+            numberOfCups: numberOfCups)
+        
+        let updateOrderRecord = UpdateOrderRecord(id: orders[rowIndex].id, fields: updateOrderFields)
+        let updateOrderDrink = UpdateOrderDrink(records: [updateOrderRecord])
+        // PATCH
+        MenuViewController.shared.updateOrder(orderData: updateOrderDrink) { result in
+            switch result {
+            case .success(let updateOrderResponse):
+                print(updateOrderResponse)
+                NotificationCenter.default.post(name: .orderUpdateNotification, object: nil)
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+    
 }
