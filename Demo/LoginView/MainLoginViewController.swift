@@ -42,6 +42,11 @@ class MainLoginViewController: UIViewController {
         self.dismiss(animated: true)
     }
     
+    @objc func loginButtonTapped() {
+        let loginViewController = LoginViewController()
+        present(loginViewController, animated: true)
+    }
+    
     func configUI() {
         view.backgroundColor = .darkPrimary
         
@@ -102,6 +107,7 @@ class MainLoginViewController: UIViewController {
             make.left.right.equalToSuperview().inset(40)
             make.height.equalTo(guestLoginView.snp.height)
         }
+        loginButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
         
         view.addSubview(registerButton)
         registerButton.setTitle("註冊", for: .normal)
