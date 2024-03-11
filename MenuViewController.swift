@@ -12,6 +12,8 @@ class MenuViewController: UIViewController {
     
     static let shared = MenuViewController()
     
+    let mainLoginViewController = MainLoginViewController()
+    
     let mainScrollView = UIScrollView()
     
     let bannerView = UIView()
@@ -25,6 +27,9 @@ class MenuViewController: UIViewController {
     
     let baseURL = URL(string: "https://api.airtable.com/v0/appxrciNhGMQw3sSj")!
     let apiKey = "patvAhzcinGLGQMUH.8c087e2edef8ee9df4e4a594218efbd6b3662092407055e81ed85e4aac1c2f9e"
+    
+    var hasDisplayedLogin = false // 用來標記是否已經顯示過 MainLoginViewController
+    var userName: String?
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -65,6 +70,22 @@ class MenuViewController: UIViewController {
         menuTableView.register(MenuHeaderView.self, forHeaderFooterViewReuseIdentifier: "menuHeader")
         fetchDrinkData()
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if !hasDisplayedLogin { // 如果還沒有顯示過 MainLoginViewController
+            
+            let mainLoginViewController = MainLoginViewController()
+            mainLoginViewController.onLoginSuccess = { [weak self] userName in
+                self?.userName = userName
+            }
+            mainLoginViewController.modalPresentationStyle = .fullScreen
+            present(mainLoginViewController, animated: true)
+            
+            hasDisplayedLogin = true // 設置為已經顯示過
+        }
+    }
     // MARK: - GET Drink
     func fetchDrinkData() {
         let drinkURL = baseURL.appendingPathComponent("Drink")
@@ -91,6 +112,7 @@ class MenuViewController: UIViewController {
             }
         }.resume()
     }
+    
     // MARK: - GET Order
     func fetchOrderList(completion: @escaping (Result<CreateOrderDrinkResponse, Error>) -> Void) {
         let OrderListURL = baseURL.appendingPathComponent("OrderDrink")
@@ -110,6 +132,7 @@ class MenuViewController: UIViewController {
             }
         }.resume()
     }
+    
     // MARK: - POST Order
     func postOrder(orderData: CreateOrderDrink, completion: @escaping (Result<String,Error>) -> Void) {
         let orderURL = baseURL.appendingPathComponent("OrderDrink")
@@ -305,6 +328,7 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let drinkDetailViewController = DrinkDetailViewController()
         drinkDetailViewController.drink = drinksOfselectedCategory[indexPath.row]
+        drinkDetailViewController.userName = userName
         present(drinkDetailViewController, animated: true)
     }
     

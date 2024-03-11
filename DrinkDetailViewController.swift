@@ -65,6 +65,8 @@ class DrinkDetailViewController: UIViewController {
     private var orderData: CreateOrderFields?
     private var orderId: String?
     
+    var userName: String?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         getOriginalPrice()
@@ -545,7 +547,7 @@ class DrinkDetailViewController: UIViewController {
             ice: selectedIce?.checkoutName ?? "",
             sugar: selectedSugar?.checkoutName ?? "",
             addOns: totalAddOns, price: drinkPrice * numberOfCups,
-            orderName: "Joanna", numberOfCups: numberOfCups,
+            orderName: userName ?? "guest", numberOfCups: numberOfCups,
             imageUrl: (drink.fields.image.first?.url)!)
         
         let createOrderRecord = CreateOrderRecord(fields: createOrderFields)
