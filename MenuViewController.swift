@@ -42,13 +42,7 @@ class MenuViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // 設置 navigationItem 圖像
-        let imageView = UIImageView(image: UIImage(named: "logo-m"))
-        imageView.contentMode = .scaleAspectFit
-        navigationItem.titleView = imageView
-        // 設置導航欄背景色
-        navigationController?.navigationBar.barTintColor = .darkPrimary
-        
+
         configUI()
         
         mainScrollView.delegate = self
@@ -86,6 +80,19 @@ class MenuViewController: UIViewController {
             hasDisplayedLogin = true // 設置為已經顯示過
         }
     }
+    
+    @objc func logout() {
+        // 自定義按鈕點擊事件處理
+        let mainLoginViewController = MainLoginViewController()
+        mainLoginViewController.onLoginSuccess = { [weak self] userName in
+            self?.userName = userName
+        }
+        mainLoginViewController.modalPresentationStyle = .fullScreen
+        present(mainLoginViewController, animated: true)
+        
+        hasDisplayedLogin = true // 設置為已經顯示過
+    }
+    
     // MARK: - GET Drink
     func fetchDrinkData() {
         let drinkURL = baseURL.appendingPathComponent("Drink")
@@ -216,12 +223,51 @@ class MenuViewController: UIViewController {
         for index in 0...5 {
             bannerImages.append(UIImage(named: "banner_\(index)")!)
         }
-        
+
+        configNavigationBar()
         configMainScrollView()
         configBannerView()
         configBannerCollectionView()
         configBannerPageControl()
         configMenuTableView()
+    }
+    
+    func configNavigationBar() {
+        // 設置navigationBar背景色
+        navigationController?.navigationBar.barTintColor = .darkPrimary
+        // 自訂navigationItem
+        let navigationItemTitleView = UIView()
+        navigationItemTitleView.snp.makeConstraints { make in
+            make.height.equalTo(navigationController?.navigationBar.bounds.height ?? 0)
+            make.width.equalTo(navigationController?.navigationBar.bounds.width ?? 0)
+        }
+        
+        let imageView = UIImageView(image: UIImage(named: "logo-m"))
+        navigationItemTitleView.addSubview(imageView)
+        imageView.contentMode = .scaleAspectFit
+        imageView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.height.equalToSuperview()
+        }
+        
+        let logoutButton = UIButton()
+        navigationItemTitleView.addSubview(logoutButton)
+        logoutButton.setTitle("登出", for: .normal)
+        logoutButton.layer.borderColor = UIColor.white.cgColor
+        logoutButton.layer.borderWidth = 1
+        logoutButton.setTitleColor(.white, for: .normal)
+        logoutButton.addTarget(self, action: #selector(logout), for: .touchUpInside)
+        logoutButton.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+        logoutButton.layer.cornerRadius = 16
+        logoutButton.snp.makeConstraints { make in
+            make.width.equalTo(64)
+            make.height.equalTo(32)
+            make.right.equalToSuperview()
+            make.centerY.equalToSuperview()
+        }
+        logoutButton.addTarget(self, action: #selector(logout), for: .touchUpInside)
+        
+        navigationItem.titleView = navigationItemTitleView
     }
     
     func configMainScrollView() {
