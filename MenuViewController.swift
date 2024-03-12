@@ -7,6 +7,7 @@
 
 import UIKit
 import Kingfisher
+import Firebase
 
 class MenuViewController: UIViewController {
     
@@ -89,8 +90,13 @@ class MenuViewController: UIViewController {
         }
         mainLoginViewController.modalPresentationStyle = .fullScreen
         present(mainLoginViewController, animated: true)
-        
         hasDisplayedLogin = true // 設置為已經顯示過
+        // Firebase登出
+        do {
+           try Auth.auth().signOut()
+        } catch {
+           print(error)
+        }
     }
     
     // MARK: - GET Drink

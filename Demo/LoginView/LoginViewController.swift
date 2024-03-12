@@ -66,10 +66,13 @@ class LoginViewController: UIViewController {
         Auth.auth().signIn(withEmail: email, password: password) { result, error in
             guard error == nil else {
                 print(error?.localizedDescription as Any)
-                self.errorMessage.text = "\(error?.localizedDescription as Any)"
+                self.errorMessage.text = "\(error!.localizedDescription)"
                 return
             }
             print("success")
+            self.dismiss(animated: true) {
+                NotificationCenter.default.post(name: Notification.Name("dismissMainLoginView"), object: nil)
+            }
         }
     }
         

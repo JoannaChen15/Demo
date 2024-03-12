@@ -30,6 +30,11 @@ class MainLoginViewController: UIViewController {
         // 添加點擊手勢
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         view.addGestureRecognizer(tapGesture)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleDismissed), name: Notification.Name("dismissMainLoginView"), object: nil)
+    }
+    
+    @objc func handleDismissed() {
+        self.dismiss(animated: true)
     }
     
     @objc func hideKeyboard() {
