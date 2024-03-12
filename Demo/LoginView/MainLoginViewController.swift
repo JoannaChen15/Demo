@@ -52,6 +52,11 @@ class MainLoginViewController: UIViewController {
         present(loginViewController, animated: true)
     }
     
+    @objc func registerButtonTapped() {
+        let registerViewController = RegisterViewController()
+        present(registerViewController, animated: true)
+    }
+    
     func configUI() {
         view.backgroundColor = .darkPrimary
         
@@ -59,9 +64,10 @@ class MainLoginViewController: UIViewController {
         logoImageView.image = UIImage(named: "login")
         logoImageView.contentMode = .scaleAspectFit
         logoImageView.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(30)
+            make.top.equalTo(view.safeAreaLayoutGuide).inset(60)
             make.centerX.equalToSuperview()
-            make.size.equalTo(350)
+            make.width.equalToSuperview()
+            make.height.equalTo(logoImageView.snp.width).multipliedBy(0.5)
         }
         
         view.addSubview(guestLoginLabel)
@@ -69,14 +75,14 @@ class MainLoginViewController: UIViewController {
         guestLoginLabel.textColor = .white
         guestLoginLabel.font = UIFont.systemFont(ofSize: 16)
         guestLoginLabel.snp.makeConstraints { make in
-            make.top.equalTo(logoImageView.snp.bottom).offset(10)
+            make.top.equalTo(logoImageView.snp.bottom).offset(30)
             make.left.equalToSuperview().inset(40)
         }
         
         view.addSubview(guestLoginView)
         guestLoginView.backgroundColor = .white
         guestLoginView.snp.makeConstraints { make in
-            make.top.equalTo(guestLoginLabel.snp.bottom).offset(8)
+            make.top.equalTo(guestLoginLabel.snp.bottom).offset(6)
             make.left.right.equalToSuperview().inset(40)
             make.height.equalTo(50)
         }
@@ -121,11 +127,12 @@ class MainLoginViewController: UIViewController {
         registerButton.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .medium)
         registerButton.layer.cornerRadius = 6
         registerButton.snp.makeConstraints { make in
-            make.bottom.equalTo(view.safeAreaLayoutGuide).inset(50)
+            make.bottom.equalTo(view.safeAreaLayoutGuide).inset(60)
             make.centerX.equalToSuperview()
             make.left.right.equalToSuperview().inset(40)
             make.height.equalTo(guestLoginView.snp.height)
         }
+        registerButton.addTarget(self, action: #selector(registerButtonTapped), for: .touchUpInside)
         
         loginButton.snp.makeConstraints { make in
             make.bottom.equalTo(registerButton.snp.top).offset(-20)
