@@ -20,8 +20,8 @@ class MainLoginViewController: UIViewController {
     let loginButton = UIButton()
     let registerButton = UIButton()
     
-    var userName: String = ""
-    
+    let errorMessage = UILabel()
+        
     var onLoginSuccess: ((String) -> Void)?
 
     override func viewDidLoad() {
@@ -42,17 +42,24 @@ class MainLoginViewController: UIViewController {
     }
     
     @objc func guestLogin() {
-        let userName = guestLoginTextField.text ?? "guest"
-        onLoginSuccess?(userName)
-        self.dismiss(animated: true)
+        let userName = guestLoginTextField.text ?? ""
+        if userName == "" {
+            errorMessage.text = "請輸入訪客名稱"
+        } else {
+            onLoginSuccess?(userName)
+            print(userName)
+            self.dismiss(animated: true)
+        }
     }
     
     @objc func loginButtonTapped() {
+        errorMessage.text = ""
         let loginViewController = LoginViewController()
         present(loginViewController, animated: true)
     }
     
     @objc func registerButtonTapped() {
+        errorMessage.text = ""
         let registerViewController = RegisterViewController()
         present(registerViewController, animated: true)
     }
@@ -106,6 +113,17 @@ class MainLoginViewController: UIViewController {
             make.size.equalTo(guestLoginView.snp.height)
         }
         guestLoginButton.addTarget(self, action: #selector(guestLogin), for: .touchUpInside)
+        
+        view.addSubview(errorMessage)
+        errorMessage.text = ""
+        errorMessage.textColor = .wrongRed
+        errorMessage.numberOfLines = 2
+        errorMessage.font = UIFont.systemFont(ofSize: 16)
+        errorMessage.snp.makeConstraints { make in
+            make.top.equalTo(guestLoginView.snp.bottom).offset(6)
+            make.centerX.equalToSuperview()
+            make.left.right.equalToSuperview().inset(40)
+        }
         
         view.addSubview(loginButton)
         loginButton.setTitle("帳密登入", for: .normal)

@@ -547,9 +547,8 @@ class DrinkDetailViewController: UIViewController {
             ice: selectedIce?.checkoutName ?? "",
             sugar: selectedSugar?.checkoutName ?? "",
             addOns: totalAddOns, price: drinkPrice * numberOfCups,
-            orderName: userName ?? "guest", numberOfCups: numberOfCups,
+            orderName: userName ?? "", numberOfCups: numberOfCups,
             imageUrl: (drink.fields.image.first?.url)!)
-        
         let createOrderRecord = CreateOrderRecord(fields: createOrderFields)
         let createOrderDrink = CreateOrderDrink(records: [createOrderRecord])
         // POST
