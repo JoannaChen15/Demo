@@ -225,17 +225,22 @@ class MenuViewController: UIViewController {
     
     func configUI() {
         view.backgroundColor = .darkPrimary
-  
-        for index in 0...5 {
-            bannerImages.append(UIImage(named: "banner_\(index)")!)
-        }
-
+        setBannerImages()
         configNavigationBar()
         configMainScrollView()
         configBannerView()
         configBannerCollectionView()
         configBannerPageControl()
         configMenuTableView()
+    }
+    
+    func setBannerImages() {
+        bannerImages.append(UIImage(named: "banner_0")!)
+        bannerImages.append(UIImage(named: "banner_1")!)
+        bannerImages.append(UIImage(named: "banner_2")!)
+        bannerImages.append(UIImage(named: "banner_3")!)
+        bannerImages.append(UIImage(named: "banner_4")!)
+        bannerImages.append(UIImage(named: "banner_5")!)
     }
     
     func configNavigationBar() {
