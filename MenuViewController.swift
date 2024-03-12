@@ -14,7 +14,7 @@ class MenuViewController: UIViewController {
     static let shared = MenuViewController()
     
     let mainLoginViewController = MainLoginViewController()
-    
+        
     let mainScrollView = UIScrollView()
     
     let bannerView = UIView()
@@ -68,7 +68,6 @@ class MenuViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
         if !hasDisplayedLogin { // 如果還沒有顯示過 MainLoginViewController
             
             let mainLoginViewController = MainLoginViewController()
@@ -246,23 +245,15 @@ class MenuViewController: UIViewController {
     func configNavigationBar() {
         // 設置navigationBar背景色
         navigationController?.navigationBar.barTintColor = .darkPrimary
-        // 自訂navigationItem
-        let navigationItemTitleView = UIView()
-        navigationItemTitleView.snp.makeConstraints { make in
-            make.height.equalTo(navigationController?.navigationBar.bounds.height ?? 0)
-            make.width.equalTo(navigationController?.navigationBar.bounds.width ?? 0)
-        }
-        
+
         let imageView = UIImageView(image: UIImage(named: "logo-m"))
-        navigationItemTitleView.addSubview(imageView)
+        navigationItem.titleView = imageView
         imageView.contentMode = .scaleAspectFit
         imageView.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.height.equalToSuperview()
+            make.width.equalTo(200)
         }
         
         let logoutButton = UIButton()
-        navigationItemTitleView.addSubview(logoutButton)
         logoutButton.setTitle("登出", for: .normal)
         logoutButton.layer.borderColor = UIColor.white.cgColor
         logoutButton.layer.borderWidth = 1
@@ -273,12 +264,10 @@ class MenuViewController: UIViewController {
         logoutButton.snp.makeConstraints { make in
             make.width.equalTo(64)
             make.height.equalTo(32)
-            make.right.equalToSuperview()
-            make.centerY.equalToSuperview()
         }
         logoutButton.addTarget(self, action: #selector(logout), for: .touchUpInside)
-        
-        navigationItem.titleView = navigationItemTitleView
+        let rightButton = UIBarButtonItem(customView: logoutButton)
+        navigationItem.rightBarButtonItem = rightButton
     }
     
     func configMainScrollView() {
