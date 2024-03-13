@@ -68,6 +68,10 @@ class MenuViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        // 檢查若已有帳號登入，不顯示登入頁
+        if let user = Auth.auth().currentUser {
+            hasDisplayedLogin = true
+        }
         if !hasDisplayedLogin { // 如果還沒有顯示過 MainLoginViewController
             
             let mainLoginViewController = MainLoginViewController()
@@ -82,6 +86,12 @@ class MenuViewController: UIViewController {
     }
     
     @objc func logout() {
+        // Firebase登出
+        do {
+           try Auth.auth().signOut()
+        } catch {
+           print(error)
+        }
         // 自定義按鈕點擊事件處理
         let mainLoginViewController = MainLoginViewController()
         mainLoginViewController.onLoginSuccess = { [weak self] userName in
@@ -90,12 +100,6 @@ class MenuViewController: UIViewController {
         mainLoginViewController.modalPresentationStyle = .fullScreen
         present(mainLoginViewController, animated: true)
         hasDisplayedLogin = true // 設置為已經顯示過
-        // Firebase登出
-        do {
-           try Auth.auth().signOut()
-        } catch {
-           print(error)
-        }
     }
     
     // MARK: - GET Drink

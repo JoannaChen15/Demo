@@ -42,6 +42,7 @@ class MainLoginViewController: UIViewController {
     }
     
     @objc func guestLogin() {
+        // 檢查訪客名稱不為空值
         let userName = guestLoginTextField.text ?? ""
         if userName == "" {
             errorMessage.text = "請輸入訪客名稱"
