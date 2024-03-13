@@ -65,6 +65,37 @@ class RegisterViewController: UIViewController {
     }
     
     @objc func register() {
+        let email = accountTextField.text!
+        let password = passwordTextField.text!
+        // 檢查使用者名稱不為空值
+        let userName = userNameTextField.text ?? ""
+        if userName == "" {
+            errorMessage.text = "請輸入您的暱稱"
+        } else {
+            // 註冊
+            Auth.auth().createUser(withEmail: email, password: password) { result, error in
+                guard let user = result?.user,
+                      error == nil else {
+                    print(error?.localizedDescription ?? "error")
+                    self.errorMessage.text = "\(error!.localizedDescription)"
+                    return
+                }
+                print(user.email ?? "no email", user.uid)
+                // 設定使用者名稱
+                let changeRequest = Auth.auth().currentUser?.createProfileChangeRequest()
+                changeRequest?.displayName = userName
+                changeRequest?.commitChanges(completion: { error in
+                    guard error == nil else {
+                        print(error?.localizedDescription ?? "error")
+                        return
+                    }
+                    // 註冊完成後關閉視窗
+                    self.dismiss(animated: true) {
+                        NotificationCenter.default.post(name: Notification.Name("dismissMainLoginView"), object: nil)
+                    }
+                })
+            }
+        }
     }
         
     func configUI() {
