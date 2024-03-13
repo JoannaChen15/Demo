@@ -29,6 +29,8 @@ class RegisterViewController: UIViewController {
     let errorMessage = UILabel()
     let registerButton = UIButton()
     
+    let backButton = UIButton()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configUI()
@@ -96,6 +98,10 @@ class RegisterViewController: UIViewController {
                 })
             }
         }
+    }
+    
+    @objc func backButtonPressed(sender: UIButton) {
+        self.dismiss(animated: true)
     }
         
     func configUI() {
@@ -223,6 +229,24 @@ class RegisterViewController: UIViewController {
         registerButton.snp.makeConstraints { make in
             make.bottom.equalTo(scrollView.contentLayoutGuide).inset(60)
         }
+        
+        configBackButton()
+    }
+    
+    func configBackButton() {
+        scrollView.addSubview(backButton)
+        backButton.snp.makeConstraints { make in
+            make.top.equalTo(scrollView.frameLayoutGuide).inset(16)
+            make.left.equalTo(scrollView.frameLayoutGuide).inset(16)
+            make.size.equalTo(30)
+        }
+        // 設置圖標大小
+        if let image = UIImage(systemName: "xmark") {
+            let scaledImage = image.withConfiguration(UIImage.SymbolConfiguration(pointSize: 26, weight: .regular))
+            backButton.setImage(scaledImage, for: .normal)
+        }
+        backButton.tintColor = .gray
+        backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
     }
     
 }
