@@ -92,19 +92,19 @@ class MenuViewController: UIViewController {
     
     @objc func changeBanner() {
         imageIndex += 1
-        if imageIndex < (bannerImages.count - 1) {
-            let indexPath = IndexPath(item: imageIndex, section: 0)
-            bannerCollectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
-            bannerPageControl.currentPage = imageIndex
-        } else if imageIndex == (bannerImages.count - 1) {
-            let indexPath = IndexPath(item: imageIndex, section: 0)
-            bannerCollectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+        var indexPath = IndexPath(item: imageIndex, section: 0)
+        bannerCollectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+        bannerPageControl.currentPage = imageIndex
+        
+        // 切換到最後一張banner時(假的第一張banner)
+        if imageIndex >= (bannerImages.count - 1) {
             bannerPageControl.currentPage = 0
-        } else {
-            imageIndex = 0
-            let indexPath = IndexPath(item: imageIndex, section: 0)
-            bannerCollectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: false)
-            changeBanner()
+            // 0.5秒後(滾動動畫結束後)將最後一張偷偷換回第一張
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.imageIndex = 0
+                indexPath = IndexPath(item: self.imageIndex, section: 0)
+                self.bannerCollectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: false)
+            }
         }
     }
     
