@@ -19,8 +19,8 @@ class MenuViewController: UIViewController {
     
     let bannerView = UIView()
     let bannerCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
-    var bannerImages = [UIImage]()
     let bannerPageControl = UIPageControl()
+    var bannerImages = [UIImage]()
     
     let menuTableView = UITableView()
     var drinks = [Record]()
@@ -43,33 +43,14 @@ class MenuViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         configUI()
-        
-        mainScrollView.delegate = self
-        
-        bannerCollectionView.delegate = self
-        bannerCollectionView.dataSource = self
-        bannerCollectionView.register(BannerImageCell.self, forCellWithReuseIdentifier: "bannerImageCell")
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-        layout.minimumInteritemSpacing = 0
-        layout.minimumLineSpacing = 0
-        bannerCollectionView.collectionViewLayout = layout
-        
-        menuTableView.dataSource = self
-        menuTableView.delegate = self
-        menuTableView.register(DrinkCell.self, forCellReuseIdentifier: "drinkCell")
-        
-        // 註冊自定義的 table header
-        menuTableView.register(MenuHeaderView.self, forHeaderFooterViewReuseIdentifier: "menuHeader")
         fetchDrinkData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         // 檢查若已有帳號登入，不顯示登入頁
-        if let user = Auth.auth().currentUser {
+        if Auth.auth().currentUser != nil {
             hasDisplayedLogin = true
         }
         if !hasDisplayedLogin { // 如果還沒有顯示過 MainLoginViewController
@@ -92,7 +73,7 @@ class MenuViewController: UIViewController {
         } catch {
            print(error)
         }
-        // 自定義按鈕點擊事件處理
+        // 顯示登入頁
         let mainLoginViewController = MainLoginViewController()
         mainLoginViewController.onLoginSuccess = { [weak self] userName in
             self?.userName = userName
@@ -279,6 +260,7 @@ class MenuViewController: UIViewController {
         mainScrollView.snp.makeConstraints { make in
             make.edges.equalTo(view.safeAreaLayoutGuide)
         }
+        mainScrollView.delegate = self
         mainScrollView.bounces = false
     }
     
@@ -300,6 +282,14 @@ class MenuViewController: UIViewController {
             make.left.right.equalToSuperview()
             make.height.equalTo(230)
         }
+        bannerCollectionView.delegate = self
+        bannerCollectionView.dataSource = self
+        bannerCollectionView.register(BannerImageCell.self, forCellWithReuseIdentifier: "bannerImageCell")
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 0
+        bannerCollectionView.collectionViewLayout = layout
     }
     
     func configBannerPageControl() {
@@ -328,6 +318,11 @@ class MenuViewController: UIViewController {
             make.left.right.equalTo(mainScrollView.frameLayoutGuide)
             make.bottom.equalTo(mainScrollView.frameLayoutGuide)
         }
+        menuTableView.dataSource = self
+        menuTableView.delegate = self
+        menuTableView.register(DrinkCell.self, forCellReuseIdentifier: "drinkCell")
+        // 註冊自定義的 table header
+        menuTableView.register(MenuHeaderView.self, forHeaderFooterViewReuseIdentifier: "menuHeader")
     }
 }
 
