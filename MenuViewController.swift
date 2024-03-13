@@ -369,8 +369,10 @@ extension MenuViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        let pageNumber = scrollView.contentOffset.x / scrollView.bounds.width
-        bannerPageControl.currentPage = Int(pageNumber)
+        if scrollView == bannerCollectionView {
+            let pageNumber = scrollView.contentOffset.x / scrollView.bounds.width
+            bannerPageControl.currentPage = Int(pageNumber)
+        }
     }
 }
 
