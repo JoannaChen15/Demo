@@ -21,6 +21,8 @@ class MenuViewController: UIViewController {
     let bannerCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
     let bannerPageControl = UIPageControl()
     var bannerImages = [UIImage]()
+    var imageIndex = 0
+    var timer: Timer?
     
     let menuTableView = UITableView()
     var drinks = [Record]()
@@ -45,6 +47,7 @@ class MenuViewController: UIViewController {
         super.viewDidLoad()
         configUI()
         fetchDrinkData()
+        timer = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(changeBanner), userInfo: nil, repeats: true)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -66,6 +69,10 @@ class MenuViewController: UIViewController {
         }
     }
     
+    deinit {
+        timer?.invalidate()
+    }
+    
     @objc func logout() {
         // Firebase登出
         do {
@@ -81,6 +88,24 @@ class MenuViewController: UIViewController {
         mainLoginViewController.modalPresentationStyle = .fullScreen
         present(mainLoginViewController, animated: true)
         hasDisplayedLogin = true // 設置為已經顯示過
+    }
+    
+    @objc func changeBanner() {
+        imageIndex += 1
+        if imageIndex < (bannerImages.count - 1) {
+            let indexPath = IndexPath(item: imageIndex, section: 0)
+            bannerCollectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+            bannerPageControl.currentPage = imageIndex
+        } else if imageIndex == (bannerImages.count - 1) {
+            let indexPath = IndexPath(item: imageIndex, section: 0)
+            bannerCollectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+            bannerPageControl.currentPage = 0
+        } else {
+            imageIndex = 0
+            let indexPath = IndexPath(item: imageIndex, section: 0)
+            bannerCollectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: false)
+            changeBanner()
+        }
     }
     
     // MARK: - GET Drink
@@ -225,6 +250,7 @@ class MenuViewController: UIViewController {
         bannerImages.append(UIImage(named: "banner_3")!)
         bannerImages.append(UIImage(named: "banner_4")!)
         bannerImages.append(UIImage(named: "banner_5")!)
+        bannerImages.append(UIImage(named: "banner_0")!)
     }
     
     func configNavigationBar() {
@@ -294,7 +320,7 @@ class MenuViewController: UIViewController {
     
     func configBannerPageControl() {
         bannerView.addSubview(bannerPageControl)
-        bannerPageControl.numberOfPages = bannerImages.count
+        bannerPageControl.numberOfPages = (bannerImages.count - 1)
         bannerPageControl.currentPage = 0
         bannerPageControl.pageIndicatorTintColor = .unselected
         bannerPageControl.currentPageIndicatorTintColor = .secondary
@@ -345,8 +371,7 @@ extension MenuViewController: UICollectionViewDelegate, UICollectionViewDataSour
 
 extension MenuViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let itemSize = bannerCollectionView.frame.width
-        return CGSize(width: itemSize, height: itemSize)
+        return bannerCollectionView.bounds.size
     }
 }
 
