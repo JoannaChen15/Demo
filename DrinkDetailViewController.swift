@@ -7,6 +7,7 @@
 
 import UIKit
 import Kingfisher
+import Firebase
 
 class DrinkDetailViewController: UIViewController {
 
@@ -539,6 +540,11 @@ class DrinkDetailViewController: UIViewController {
         if selectedSize == nil || selectedIce == nil || selectedSugar == nil {
             checkRequiredOptions()
             return
+        }
+        // 檢查是否為帳號登入，取得使用者名稱
+        if let user = Auth.auth().currentUser {
+            userName = user.displayName!
+            print(userName)
         }
         // 設置訂單內容
         let createOrderFields = CreateOrderFields(
