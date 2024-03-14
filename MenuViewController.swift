@@ -47,7 +47,17 @@ class MenuViewController: UIViewController {
         super.viewDidLoad()
         configUI()
         fetchDrinkData()
-        timer = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(changeBanner), userInfo: nil, repeats: true)
+        
+        if #available(iOS 17.0, *) {
+            let timerProgress = UIPageControlTimerProgress(preferredDuration: 3)
+            bannerPageControl.progress = timerProgress
+            timerProgress.resetsToInitialPageAfterEnd = true
+            timerProgress.resumeTimer()
+            bannerPageControl.addTarget(self, action: #selector(signPageControlValueChanged), for: .valueChanged)
+        } else {
+            timer = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(changeBanner), userInfo: nil, repeats: true)
+        }
+            
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -88,6 +98,11 @@ class MenuViewController: UIViewController {
         mainLoginViewController.modalPresentationStyle = .fullScreen
         present(mainLoginViewController, animated: true)
         hasDisplayedLogin = true // 設置為已經顯示過
+    }
+    
+    @objc func signPageControlValueChanged(_ sender: UIPageControl) {
+        let indexPath = IndexPath(item: sender.currentPage, section: 0)
+        bannerCollectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
     }
     
     @objc func changeBanner() {
