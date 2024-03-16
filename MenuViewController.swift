@@ -375,11 +375,6 @@ extension MenuViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = bannerCollectionView.dequeueReusableCell(withReuseIdentifier: "bannerImageCell", for: indexPath) as! BannerImageCell
         cell.bannerImageView.image = bannerImages[indexPath.row]
-        if indexPath.row > imageIndex {
-            imageIndex = indexPath.row - 1
-        } else if indexPath.row < imageIndex{
-            imageIndex = indexPath.row + 1
-        }
         return cell
     }
     
@@ -388,6 +383,8 @@ extension MenuViewController: UICollectionViewDelegate, UICollectionViewDataSour
             let pageNumber = scrollView.contentOffset.x / scrollView.bounds.width
             bannerPageControl.currentPage = Int(pageNumber)
         }
+        // 手動滾動時同步imageIndex
+        imageIndex = bannerPageControl.currentPage
     }
 }
 
