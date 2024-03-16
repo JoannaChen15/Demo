@@ -12,12 +12,12 @@ struct CreateOrderDrink: Encodable {
     let records: [CreateOrderRecord]
 }
 
-// MARK: - Record
+// MARK: - CreateOrderRecord
 struct CreateOrderRecord: Encodable {
     let fields: CreateOrderFields
 }
 
-// MARK: - Fields
+// MARK: - CreateOrderFields
 struct CreateOrderFields: Codable {
     let drinkName: String
     let size: String
@@ -36,7 +36,7 @@ struct CreateOrderDrinkResponse: Decodable {
     let records: [CreateOrderDrinkResponseRecord]
 }
 
-// MARK: - Record
+// MARK: - CreateOrderDrinkResponseRecord
 struct CreateOrderDrinkResponseRecord: Decodable {
     let id: String
     let createdTime: String

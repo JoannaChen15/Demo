@@ -25,11 +25,11 @@ class MenuViewController: UIViewController {
     var timer: Timer?
     
     let menuTableView = UITableView()
-    var drinks = [Record]()
-    var drinksOfselectedCategory = [Record]()
+    var drinks = [DrinkRecord]()
+    private var drinksOfselectedCategory = [DrinkRecord]()
     
-    let baseURL = URL(string: "https://api.airtable.com/v0/appxrciNhGMQw3sSj")!
-    let apiKey = "patvAhzcinGLGQMUH.8c087e2edef8ee9df4e4a594218efbd6b3662092407055e81ed85e4aac1c2f9e"
+    private let baseURL = URL(string: "https://api.airtable.com/v0/appxrciNhGMQw3sSj")!
+    private let apiKey = "patvAhzcinGLGQMUH.8c087e2edef8ee9df4e4a594218efbd6b3662092407055e81ed85e4aac1c2f9e"
     
     var hasDisplayedLogin = false // 用來標記是否已經顯示過 MainLoginViewController
     var userName: String?
@@ -107,12 +107,12 @@ class MenuViewController: UIViewController {
     
     @objc func changeBanner() {
         imageIndex += 1
-        var indexPath = IndexPath(item: imageIndex, section: 0)
+        var indexPath = IndexPath(item: self.imageIndex, section: 0)
         bannerCollectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
         bannerPageControl.currentPage = imageIndex
         
         // 切換到最後一張banner時(假的第一張banner)
-        if imageIndex >= (bannerImages.count - 1) {
+        if imageIndex == (bannerImages.count - 1) {
             bannerPageControl.currentPage = 0
             // 0.5秒後(滾動動畫結束後)將最後一張偷偷換回第一張
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -132,13 +132,15 @@ class MenuViewController: UIViewController {
             guard let data else { return }
             do {
                 let decoder = JSONDecoder()
-                let drink = try decoder.decode(Drink.self, from: data)
-                self.drinks = drink.records ?? []
+                let drink = try decoder.decode(DrinkResponse.self, from: data)
+                // 抓到的資料存入變數
+                self.drinks = drink.records
                 for drink in self.drinks {
                     if drink.fields.category == Category.seasonal {
                         self.drinksOfselectedCategory.append(drink)
                     }
                 }
+                // 主執行緒更新畫面
                 DispatchQueue.main.async {
                     self.menuTableView.reloadData()
                     let contentHeight = self.menuTableView.bounds.height + (self.bannerView.bounds.height * 2)
@@ -406,7 +408,7 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
         
         cell.drinkName.text = drink.fields.name
         cell.drinkDescription.text = drink.fields.description
-        cell.drinkPrice.text = "中：\(drink.fields.medium) / 大：\(drink.fields.large)"
+        cell.drinkPrice.text = "中：$\(drink.fields.medium) / 大：$\(drink.fields.large)"
         cell.drinkImageView.kf.setImage(with: drink.fields.image.first?.url)
         
         cell.selectionStyle = .none

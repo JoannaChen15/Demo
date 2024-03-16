@@ -62,7 +62,7 @@ class DrinkDetailViewController: UIViewController {
     var totalAddOns = [String]()
     var selectedOptions = [String]()
     
-    var drink: Record!
+    var drink: DrinkRecord!
     private var orderData: CreateOrderFields?
     private var orderId: String?
     

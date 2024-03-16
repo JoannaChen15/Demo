@@ -7,23 +7,23 @@
 
 import Foundation
 
-// MARK: - Drink
-struct Drink: Decodable {
-    let records: [Record]?
+// MARK: - DrinkResponse
+struct DrinkResponse: Decodable {
+    let records: [DrinkRecord]
 }
 
-// MARK: - Record
-struct Record: Decodable {
-    let fields: Fields
+// MARK: - DrinkRecord
+struct DrinkRecord: Decodable {
+    let fields: DrinkFields
 }
 
-// MARK: - Fields
-struct Fields: Decodable {
+// MARK: - DrinkFields
+struct DrinkFields: Decodable {
     let name: String
     let description: String
     let medium: Int
     let large: Int
-    let image: [Image]
+    let image: [DrinkImage]
     let category: Category
 }
 
@@ -35,7 +35,7 @@ enum Category: String, Decodable {
     case cream = "雲蓋"
 }
 
-// MARK: - Image
-struct Image: Decodable {
-    let url: URL?
+// MARK: - DrinkImage
+struct DrinkImage: Decodable {
+    let url: URL
 }
