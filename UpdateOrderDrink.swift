@@ -20,28 +20,10 @@ struct UpdateOrderRecord: Encodable {
 
 // MARK: - Fields
 struct UpdateOrderFields: Encodable {
-    let size, ice, sugar: String
+    let size: String
+    let ice: String
+    let sugar: String
     let addOns: [String]
     let price: Int
     let numberOfCups: Int
-}
-
-
-// MARK: - UpdateOrderDrinkResponse
-struct UpdateOrderDrinkResponse: Decodable {
-    let records: [UpdateOrderDrinkResponseRecord]
-}
-
-// MARK: - Record
-struct UpdateOrderDrinkResponseRecord: Decodable {
-    let id, UpdatedTime: String
-    let fields: UpdateOrderDrinkResponseFields
-}
-
-// MARK: - Fields
-struct UpdateOrderDrinkResponseFields: Decodable {
-    let orderName, drinkName, size, ice, sugar : String
-    let addOns: [String]?
-    let price, numberOfCups: Int
-    let imageUrl: URL
 }

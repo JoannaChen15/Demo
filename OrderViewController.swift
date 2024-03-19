@@ -38,7 +38,9 @@ class OrderViewController: UIViewController {
             switch result {
             case .success(let orderListResponse):
                 self.orders = orderListResponse.records
-                self.updateUI()
+                DispatchQueue.main.async {
+                    self.updateUI()
+                }
             case .failure(let error):
                 print(error)
             }
@@ -71,17 +73,14 @@ class OrderViewController: UIViewController {
     }
     
     func updateUI() {
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            self.orderTableView.reloadData()
-            calculateQuantityAndPrice()
-            self.checkoutNumberOfCups.text = "共計 \(numberOfCups)杯"
-            self.checkoutPrice.text = "$\(totalPrice)"
-            if self.orders.count > 0 {
-                self.tabBarItem.badgeValue = "\(numberOfCups)"
-            } else {
-                self.tabBarItem.badgeValue = nil
-            }
+        orderTableView.reloadData()
+        calculateQuantityAndPrice()
+        checkoutNumberOfCups.text = "共計 \(numberOfCups)杯"
+        checkoutPrice.text = "$\(totalPrice)"
+        if orders.count > 0 {
+            tabBarItem.badgeValue = "\(numberOfCups)"
+        } else {
+            tabBarItem.badgeValue = nil
         }
     }
     
@@ -100,7 +99,9 @@ class OrderViewController: UIViewController {
             switch result {
             case .success(let orderListResponse):
                 self.orders = orderListResponse.records
-                self.updateUI()
+                DispatchQueue.main.async {
+                    self.updateUI()
+                }
             case .failure(let error):
                 print(error)
             }

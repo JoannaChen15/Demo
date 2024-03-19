@@ -1,5 +1,5 @@
 //
-//  CheckBox.swift
+//  Checkbox.swift
 //  Demo
 //
 //  Created by 陳柔夆 on 2024/2/27.
@@ -7,18 +7,18 @@
 
 import UIKit
 
-protocol CheckBoxDelegate {
-    func checkBoxTapped(_ sender: CheckBox)
+protocol CheckboxDelegate: AnyObject {
+    func checkboxTapped(_ sender: Checkbox)
 }
 
-class CheckBox: UIButton {
+class Checkbox: UIButton {
     
     let titleLable = UILabel()
     let checkImageView = UIImageView()
-    var checkoutName: String = ""
+    var shortName: String = ""
     var type: TypeOfOption?
-    var delegate: CheckBoxDelegate?
-    var status: CheckBoxStatus = .unchecked {
+    weak var delegate: CheckboxDelegate?
+    var status: CheckboxStatus = .unchecked {
         didSet {
             updateUI()
         }
@@ -31,7 +31,6 @@ class CheckBox: UIButton {
             make.left.equalToSuperview()
             make.centerY.equalToSuperview()
         }
-        titleLable.text = "test"
         titleLable.textColor = .darkPrimary
         titleLable.font = UIFont.systemFont(ofSize: 18)
         
@@ -62,11 +61,11 @@ class CheckBox: UIButton {
         case .checked:
             self.status = .unchecked
         }
-        self.delegate?.checkBoxTapped(sender as! CheckBox)
+        self.delegate?.checkboxTapped(sender as! Checkbox)
     }
 }
 
-enum CheckBoxStatus {
+enum CheckboxStatus {
     case checked
     case unchecked
     

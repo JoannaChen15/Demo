@@ -48,9 +48,7 @@ class DrinkDetailViewController: UIViewController {
     let numberOfCupsLabel = UILabel()
     let checkoutOptions = UILabel()
     let addToCartButton = UIButton()
-    
-    static let orderUpdateNotification = Notification.Name("orderUpdate")
-    
+        
     var priceDifference = 0
     var drinkPrice = 0
     var numberOfCups = 1
@@ -122,19 +120,19 @@ class DrinkDetailViewController: UIViewController {
         let radioButton = RadioButton()
         radioButton.titleLable.text = "\(title)"
         radioButton.titleLable.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        radioButton.checkoutName = checkoutName
+        radioButton.shortName = checkoutName
         radioButton.type = type
         radioButton.delegate = self
         return radioButton
     }
     
-    func createCheckBox(title: String, checkoutName: String) -> CheckBox {
-        let checkBox = CheckBox()
-        checkBox.titleLable.text = "\(title)"
-        checkBox.titleLable.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        checkBox.checkoutName = checkoutName
-        checkBox.delegate = self
-        return checkBox
+    func createCheckbox(title: String, checkoutName: String) -> Checkbox {
+        let checkbox = Checkbox()
+        checkbox.titleLable.text = "\(title)"
+        checkbox.titleLable.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        checkbox.shortName = checkoutName
+        checkbox.delegate = self
+        return checkbox
     }
     
     func layoutRadioButton(view: UIView, title: UILabel) {
@@ -159,22 +157,22 @@ class DrinkDetailViewController: UIViewController {
         }
     }
     
-    func layoutCheckBox(view: UIView, title: UILabel) {
-        var previousButton: CheckBox?
-        for case let checkBox as CheckBox in view.subviews {
+    func layoutCheckbox(view: UIView, title: UILabel) {
+        var previousButton: Checkbox?
+        for case let checkbox as Checkbox in view.subviews {
             if let previousButton = previousButton {
-                checkBox.snp.makeConstraints { make in
+                checkbox.snp.makeConstraints { make in
                     make.top.equalTo(previousButton.snp.bottom).offset(10)
                 }
             } else {
-                checkBox.snp.makeConstraints { make in
+                checkbox.snp.makeConstraints { make in
                     make.top.equalTo(title.snp.bottom).offset(10)
                 }
             }
-            checkBox.snp.makeConstraints { make in
+            checkbox.snp.makeConstraints { make in
                 make.left.right.equalToSuperview().inset(16)
             }
-            previousButton = checkBox
+            previousButton = checkbox
         }
     }
     
@@ -368,13 +366,13 @@ class DrinkDetailViewController: UIViewController {
             make.left.equalToSuperview().inset(16)
         }
         // 創建多選按鈕
-        let whiteTapioca = createCheckBox(title: "白玉 White Tapioca  +$10", checkoutName: "加白玉")
-        let agarPearl = createCheckBox(title: "水玉 Agar Pearl  +$10", checkoutName: "加水玉")
-        let confectionery = createCheckBox(title: "菓玉 Confectionery  +$10", checkoutName: "加菓玉")
+        let whiteTapioca = createCheckbox(title: "白玉 White Tapioca  +$10", checkoutName: "加白玉")
+        let agarPearl = createCheckbox(title: "水玉 Agar Pearl  +$10", checkoutName: "加水玉")
+        let confectionery = createCheckbox(title: "菓玉 Confectionery  +$10", checkoutName: "加菓玉")
         addOnsView.addSubview(whiteTapioca)
         addOnsView.addSubview(agarPearl)
         addOnsView.addSubview(confectionery)
-        layoutCheckBox(view: addOnsView, title: addOnsTitle)
+        layoutCheckbox(view: addOnsView, title: addOnsTitle)
         addOnsView.snp.makeConstraints { make in
             if let lastSubview = addOnsView.subviews.last {
                 make.bottom.equalTo(lastSubview.snp.bottom).offset(10)
@@ -548,9 +546,9 @@ class DrinkDetailViewController: UIViewController {
         // 設置訂單內容
         let createOrderFields = CreateOrderFields(
             drinkName: drink.fields.name,
-            size: selectedSize?.checkoutName ?? "",
-            ice: selectedIce?.checkoutName ?? "",
-            sugar: selectedSugar?.checkoutName ?? "",
+            size: selectedSize?.shortName ?? "",
+            ice: selectedIce?.shortName ?? "",
+            sugar: selectedSugar?.shortName ?? "",
             addOns: totalAddOns, price: drinkPrice * numberOfCups,
             orderName: userName ?? "", numberOfCups: numberOfCups,
             imageUrl: (drink.fields.image.first?.url)!)
@@ -573,9 +571,9 @@ class DrinkDetailViewController: UIViewController {
     @objc func updateOrder() {
         // 設置訂單更新內容
         let updateOrderFields = UpdateOrderFields(
-            size: selectedSize?.checkoutName ?? "",
-            ice: selectedIce?.checkoutName ?? "",
-            sugar: selectedSugar?.checkoutName ?? "",
+            size: selectedSize?.shortName ?? "",
+            ice: selectedIce?.shortName ?? "",
+            sugar: selectedSugar?.shortName ?? "",
             addOns: totalAddOns, price: drinkPrice * numberOfCups,
             numberOfCups: numberOfCups)
         
@@ -604,13 +602,13 @@ class DrinkDetailViewController: UIViewController {
     func updateCheckoutOptions() {
         selectedOptions = []
         if selectedSize != nil {
-            selectedOptions.append(selectedSize?.checkoutName ?? "")
+            selectedOptions.append(selectedSize?.shortName ?? "")
         }
         if selectedIce != nil {
-            selectedOptions.append(selectedIce?.checkoutName ?? "")
+            selectedOptions.append(selectedIce?.shortName ?? "")
         }
         if selectedSugar != nil {
-            selectedOptions.append(selectedSugar?.checkoutName ?? "")
+            selectedOptions.append(selectedSugar?.shortName ?? "")
         }
         if totalAddOns != [] {
             selectedOptions.append(contentsOf: totalAddOns)
@@ -650,7 +648,7 @@ class DrinkDetailViewController: UIViewController {
         handleRadioButtonSelect(checkoutName: orderData.size, in: sizeView, didSelectedOption: &selectedSize)
         handleRadioButtonSelect(checkoutName: orderData.ice, in: iceView, didSelectedOption: &selectedIce)
         handleRadioButtonSelect(checkoutName: orderData.sugar, in: sugarView, didSelectedOption: &selectedSugar)
-        handleCheckBox(totalAddOns: orderData.addOns ?? [])
+        handleCheckbox(totalAddOns: orderData.addOns ?? [])
         updateCheckoutOptions()
         drinkPrice = orderData.price / orderData.numberOfCups
         checkoutPrice.text = "$\(orderData.price)"
@@ -662,7 +660,7 @@ class DrinkDetailViewController: UIViewController {
     }
     
     func handleRadioButtonSelect(checkoutName: String, in view: UIView, didSelectedOption: inout RadioButton?) {
-        let selectedRadioButton = view.subviews.compactMap { $0 as? RadioButton }.first(where: { $0.checkoutName == checkoutName })
+        let selectedRadioButton = view.subviews.compactMap { $0 as? RadioButton }.first(where: { $0.shortName == checkoutName })
         selectedRadioButton?.status = .checked
         let requiredView = view.subviews.filter { $0.backgroundColor == .systemGray6 }.first
         requiredView?.backgroundColor = .correctGreenBackground
@@ -672,11 +670,11 @@ class DrinkDetailViewController: UIViewController {
         didSelectedOption = selectedRadioButton
     }
     
-    func handleCheckBox(totalAddOns: [String]) {
+    func handleCheckbox(totalAddOns: [String]) {
         for addonName in totalAddOns {
-            if let selectedCheckBox = addOnsView.subviews.compactMap({ $0 as? CheckBox }).first(where: { $0.checkoutName == addonName }) {
-                selectedCheckBox.status = .checked
-                self.totalAddOns.append(selectedCheckBox.checkoutName)
+            if let selectedCheckbox = addOnsView.subviews.compactMap({ $0 as? Checkbox }).first(where: { $0.shortName == addonName }) {
+                selectedCheckbox.status = .checked
+                self.totalAddOns.append(selectedCheckbox.shortName)
             }
         }
     }
@@ -684,10 +682,10 @@ class DrinkDetailViewController: UIViewController {
 
 extension DrinkDetailViewController: RadioButtonDelegate {
     
-    func optionButtonTapped(_ sender: RadioButton) {
+    func RadioButtonTapped(_ sender: RadioButton) {
         // 移除"請選擇..."
         removeCheckoutTitle()
-        // 根據按鈕的 type 設置選中的選項
+        // 根據按鈕的類型執行相應的操作
         switch sender.type {
         case .size:
             addSizeDifference(selectedButton: sender)
@@ -718,15 +716,15 @@ extension DrinkDetailViewController: RadioButtonDelegate {
     }
     
     func addSizeDifference(selectedButton: RadioButton?) {
-        if selectedButton?.checkoutName == "大杯" {
-            if selectedSize?.checkoutName == "大杯" {
+        if selectedButton?.shortName == "大杯" {
+            if selectedSize?.shortName == "大杯" {
                 return
             } else {
                 drinkPrice += priceDifference
             }
             
         } else {
-            if selectedSize?.checkoutName == "大杯" {
+            if selectedSize?.shortName == "大杯" {
                 drinkPrice -= priceDifference
             } else {
                 return
@@ -738,17 +736,17 @@ extension DrinkDetailViewController: RadioButtonDelegate {
     
 }
 
-extension DrinkDetailViewController: CheckBoxDelegate {
+extension DrinkDetailViewController: CheckboxDelegate {
     
-    func checkBoxTapped(_ sender: CheckBox) {
+    func checkboxTapped(_ sender: Checkbox) {
         removeCheckoutTitle()
         switch sender.status {
         case .checked:
             drinkPrice += 10
-            totalAddOns.append(sender.checkoutName)
+            totalAddOns.append(sender.shortName)
         case .unchecked:
             drinkPrice -= 10
-            let objectToRemove = sender.checkoutName
+            let objectToRemove = sender.shortName
             if let index = totalAddOns.firstIndex(of: objectToRemove) {
                 totalAddOns.remove(at: index)
             }

@@ -7,17 +7,17 @@
 
 import UIKit
 
-protocol RadioButtonDelegate {
-    func optionButtonTapped(_ sender: RadioButton)
+protocol RadioButtonDelegate: AnyObject {
+    func RadioButtonTapped(_ sender: RadioButton)
 }
 
 class RadioButton: UIButton {
     
     let titleLable = UILabel()
     let checkImageView = UIImageView()
-    var checkoutName: String = ""
+    var shortName: String = ""
     var type: TypeOfOption?
-    var delegate: RadioButtonDelegate?
+    weak var delegate: RadioButtonDelegate?
     var status: RadioButtonStatus = .unchecked {
         didSet {
             updateUI()
@@ -31,7 +31,6 @@ class RadioButton: UIButton {
             make.left.equalToSuperview()
             make.centerY.equalToSuperview()
         }
-        titleLable.text = "test"
         titleLable.textColor = .darkPrimary        
         titleLable.font = UIFont.systemFont(ofSize: 18)
         
@@ -57,7 +56,7 @@ class RadioButton: UIButton {
     
     @objc func onClick(sender: UIButton) {
         self.status = .checked
-        self.delegate?.optionButtonTapped(sender as! RadioButton)
+        self.delegate?.RadioButtonTapped(sender as! RadioButton)
     }
 }
 
