@@ -201,9 +201,11 @@ extension OrderViewController: UITableViewDelegate, UITableViewDataSource {
         return 160
     }
     
+    // delete
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             let order = self.orders[indexPath.row]
+            
             MenuViewController.shared.deleteOrder(orderID: order.id) { result in
                 switch result {
                 case .success(let message):
@@ -223,7 +225,7 @@ extension OrderViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let order = orders[indexPath.row]
         let drinkDetailViewController = DrinkDetailViewController()
-        drinkDetailViewController.editOrder(data: order.fields, id: order.id)
+        drinkDetailViewController.accessOrderData(data: order.fields, id: order.id)
         present(drinkDetailViewController, animated: true)
     }
     

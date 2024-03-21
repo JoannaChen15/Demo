@@ -48,7 +48,6 @@ class MainLoginViewController: UIViewController {
             errorMessage.text = "請輸入訪客名稱"
         } else {
             onLoginSuccess?(userName)
-            print(userName)
             self.dismiss(animated: true)
         }
     }

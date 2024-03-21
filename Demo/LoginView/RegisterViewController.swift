@@ -69,35 +69,39 @@ class RegisterViewController: UIViewController {
     @objc func register() {
         let email = accountTextField.text!
         let password = passwordTextField.text!
-        // 檢查使用者名稱不為空值
         let userName = userNameTextField.text ?? ""
+        
+        // 檢查暱稱不為空值
         if userName == "" {
             errorMessage.text = "請輸入您的暱稱"
         } else {
-            // 註冊
+            // Firebase註冊
             Auth.auth().createUser(withEmail: email, password: password) { result, error in
-                guard let user = result?.user,
-                      error == nil else {
-                    print(error?.localizedDescription ?? "error")
+                guard let user = result?.user, error == nil else {
+                    // 註冊失敗，顯示錯誤訊息
                     self.errorMessage.text = "\(error!.localizedDescription)"
                     return
                 }
-                print(user.email ?? "no email", user.uid)
-                // 設定使用者名稱
+                
+                // 註冊成功，設定使用者名稱
                 let changeRequest = Auth.auth().currentUser?.createProfileChangeRequest()
                 changeRequest?.displayName = userName
                 changeRequest?.commitChanges(completion: { error in
+                    
                     guard error == nil else {
-                        print(error?.localizedDescription ?? "error")
+                        // 設定使用者名稱失敗，顯示錯誤訊息
+                        self.errorMessage.text = "\(error!.localizedDescription)"
                         return
                     }
-                    // 註冊完成後關閉視窗
+
+                    // 設定使用者成功，註冊完成後關閉視窗
                     self.dismiss(animated: true) {
                         NotificationCenter.default.post(name: Notification.Name("dismissMainLoginView"), object: nil)
                     }
                 })
             }
         }
+        
     }
     
     @objc func backButtonPressed(sender: UIButton) {

@@ -7,7 +7,7 @@
 
 import UIKit
 import Kingfisher
-import Firebase
+import FirebaseAuth
 
 class MenuViewController: UIViewController {
     

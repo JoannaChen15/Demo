@@ -7,7 +7,7 @@
 
 import UIKit
 import Kingfisher
-import Firebase
+import FirebaseAuth
 
 class DrinkDetailViewController: UIViewController {
 
@@ -637,7 +637,7 @@ class DrinkDetailViewController: UIViewController {
         requiredView.backgroundColor = .wrongRedBackground
     }
     
-    func editOrder(data: CreateOrderFields, id: String) {
+    func accessOrderData(data: CreateOrderFields, id: String) {
         self.drink = MenuViewController.shared.drinks.first(where: { $0.fields.name == data.drinkName })
         self.orderData = data
         self.orderId = id
